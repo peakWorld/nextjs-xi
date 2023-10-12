@@ -17,7 +17,7 @@ const AFiles = [];
 const DFiles = [];
 
 stagedFiles.forEach((file) => {
-  if (!file.includes("posts/")) return;
+  if (!file.includes("posts/") || file.includes("posts/settings.json")) return;
 
   if (/^(AM?|MA)/.test(file)) {
     AFiles.push(file.split(/\s+/)[1]);
