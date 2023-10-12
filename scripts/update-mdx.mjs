@@ -33,8 +33,8 @@ stagedFiles.forEach((file) => {
     DFiles.push(chunks[0]);
   }
   if (/^R/.test(file)) {
-    DFiles.push(chunks[0]);
-    AFiles.push(chunks[1]);
+    AFiles.push(chunks[0]);
+    DFiles.push(chunks[1]);
   }
 });
 
