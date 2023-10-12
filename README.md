@@ -1,36 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 渲染模式
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* 静态生成
+在构建时生成 HTML 的预呈现方法。然后，预呈现的 HTML 将在每个请求中重复使用。
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+* 服务器端渲染
+服务器端呈现是在每个请求上生成 HTML 的预呈现方法。
 
-## Learn More
+* getStaticProps
+仅在服务器端运行, 永远不会在客户端运行。甚至不会包含在浏览器的JS包中。这意味着可以编写诸如直接数据库查询之类的代码，而无需将它们发送到浏览器。
 
-To learn more about Next.js, take a look at the following resources:
+## other
+* [Google: SEO Starter Guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide?hl=zh-cn)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 项目部署相关信息
+seo/性能/索引排名 等
+https://nextjs.org/learn/seo/introduction-to-seo

@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run update:mdx
+
+# npx husky add .husky/pre-commit "npm run update:mdx" 
