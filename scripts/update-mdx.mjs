@@ -9,7 +9,7 @@ const lines = execSync(
   .toString()
   .trim();
 // const stagedFiles = lines.split("\u0000");
-const stagedFiles = lines.match(/[MAR\s]+([^\sMAR]*)/g);
+const stagedFiles = lines.match(/[MARD\s]+([^\sMARD]*)/g);
 
 const settingFile = "./posts/settings.json";
 fs.ensureFileSync(settingFile);
