@@ -48,3 +48,5 @@ function cryptPwd(text) {
 }
 
 fs.writeJsonSync(settingFile, settings, { spaces: 2, encoding: "utf-8" });
+
+execSync(`git add ${settingFile}`);
