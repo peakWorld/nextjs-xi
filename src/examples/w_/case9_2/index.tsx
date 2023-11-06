@@ -1,8 +1,8 @@
 import { mat4, vec3, glMatrix } from "gl-matrix";
 import { useCallback } from "react";
 import useWebgl from "@/hooks/useWebgl";
-import useCube from "@/hooks/t_w/useCube";
-import useGui from "@/hooks/t_w/useGui";
+import useCube from "@/hooks/ex_w/useCube";
+import useGui from "@/hooks/ex_w/useGui";
 import vs from "./p_l.vs";
 import fs from "./p_l.fs";
 const marbleUrl = "/w_/marble.jpg";

@@ -1,7 +1,7 @@
 import useWebgl from "@/hooks/useWebgl";
 import { mat4, vec3 } from "gl-matrix";
 import { useCallback } from "react";
-import useBox from "@/hooks/t_w/useBox";
+import useBox from "@/hooks/ex_w/useBox";
 import vs from "./light.vs";
 import fs from "./light.fs";
 

@@ -1,7 +1,7 @@
 import useWebgl from "@/hooks/useWebgl";
 import { mat4, vec3 } from "gl-matrix";
 import { useCallback } from "react";
-import useBox, { positions } from "@/hooks/t_w/useBox2";
+import useBox, { positions } from "@/hooks/ex_w/useBox2";
 
 // 光源位置
 import pos_vs from "./pos.vs";

@@ -1,7 +1,7 @@
 import { mat4, vec3 } from "gl-matrix";
 import { useCallback } from "react";
-import usePlane from "@/hooks/t_w/usePlane";
-import useBox from "@/hooks/t_w/useBox";
+import usePlane from "@/hooks/ex_w/usePlane";
+import useBox from "@/hooks/ex_w/useBox";
 import useWebgl from "@/hooks/useWebgl";
 import vs from "./base.vs";
 import fs from "./base.fs";

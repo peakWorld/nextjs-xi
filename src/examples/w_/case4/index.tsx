@@ -1,5 +1,5 @@
-import usePlane from "@/hooks/t_w/usePlane";
-import useTria from "@/hooks/t_w/useTria";
+import usePlane from "@/hooks/ex_w/usePlane";
+import useTria from "@/hooks/ex_w/useTria";
 import useWebgl from "@/hooks/useWebgl";
 import { mat4, vec3 } from "gl-matrix";
 import { useCallback } from "react";
