@@ -20,7 +20,7 @@ const DFiles = [];
 
 stagedFiles.forEach((file) => {
   if (
-    !file.endsWith(".md") || // 非md文件
+    !file.endsWith(".md") || // 非.md文件
     !file.includes("posts/") ||
     file.includes("posts/settings.json")
   )
