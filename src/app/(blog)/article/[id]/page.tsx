@@ -1,4 +1,4 @@
-import { getAllPostIds, getPostData } from "@/lib/posts";
+import { getAllPostIds, getPostData } from "@/libs/doc.so";
 
 export default async function Article({ params }: { params: { id: string } }) {
   const postData = await getPostData(params.id);

@@ -2,14 +2,15 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "文档中心",
-  description: "Welcome to Next.js",
+  title: "Blog",
+  description: "Welcome to My Blog",
 };
 
 export default async function Home() {
   return (
-    <div className="flex items-center justify-center" id="root">
-      <Link href={`/article/pre-rendering`}>Go To Article</Link>
+    <div className="flex items-center justify-center flex-col" id="root">
+      <Link href={`/webgl/case1`}>Go To Webgl</Link>
+      <Link href={`/threejs/case1`}>Go To Threejs</Link>
     </div>
   );
 }
