@@ -20,11 +20,13 @@ const DFiles = [];
 
 stagedFiles.forEach((file) => {
   if (
-    !file.endsWith(".md") || // 非.md文件
+    // !file.endsWith(".md") || // 非.md文件
     !file.includes("posts/") ||
     file.includes("posts/settings.json")
   )
     return;
+
+  console.log("file", file);
   const [t, tmp] = file.split(/\s+/);
   const chunks = tmp.split("\u0000");
 
