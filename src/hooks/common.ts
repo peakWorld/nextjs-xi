@@ -1,12 +1,4 @@
-import {
-  useMemo,
-  useRef,
-  useCallback,
-  useEffect,
-  useState,
-  ReactElement,
-} from "react";
-import ReactDOM from "react-dom";
+import { useMemo, useRef, useCallback } from "react";
 
 /* 触发微任务 */
 export function useMutationObserver(cb: MutationCallback) {
