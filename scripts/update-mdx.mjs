@@ -19,7 +19,12 @@ const AFiles = [];
 const DFiles = [];
 
 stagedFiles.forEach((file) => {
-  if (!file.includes("posts/") || file.includes("posts/settings.json")) return;
+  if (
+    !file.endsWith(".md") || // 非md文件
+    !file.includes("posts/") ||
+    file.includes("posts/settings.json")
+  )
+    return;
   const [t, tmp] = file.split(/\s+/);
   const chunks = tmp.split("\u0000");
 
