@@ -1,0 +1,70 @@
+/* 单行 文本溢出时显示省略标记 */
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 多行 文本溢出时显示省略标记 */
+@mixin mul-text-ellipsis($num: 3) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $num;
+  overflow: hidden;
+}
+
+/* 背景图片 */
+@mixin bgImage($imgUrl, $width: 100%, $height: 100%, $position: center center) {
+  background-image: url($imgUrl);
+  background-repeat: no-repeat;
+  background-position: $position;
+  background-size: $width $height;
+}
+
+/* 0.5px */
+@mixin halfBorder {
+  // transform-scale
+  height: 1px;
+  transform: scale(0.5);
+  transform-origin: 50% 100%;
+
+  // 线性渐变linear-gradient
+  // height: 1px;
+  // background: linear-gradient(0deg, #fff, #000);
+
+  // 使用boxshadow
+  // height: 1px;
+  // background: none;
+  // box-shadow: 0 0.5px 0 #000;
+}
+
+/* 垂直居中 */
+@mixin toVertical {
+  // 1. 父元素相对定位
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  margin-top: -50px; // 必须提前知道被居中块级元素的尺寸
+
+  // 2. 父元素相对定位
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%); // 百分比相对于元素自身的尺寸
+}
+
+.mixin-percent {
+  width: 200px;
+  height: 300px;
+  background: palevioletred;
+
+  // 固定宽高比
+  & > div {
+    height: 0;
+    // 给padding的值设定为百分比时，将根据父容器的宽度来计算。
+    padding-top: 50%;
+    margin: 0 auto;
+    @include bgImage($bgImgUrl);
+  }
+
+  // 根据视窗vw/vh, 设置固定宽高比
+}
