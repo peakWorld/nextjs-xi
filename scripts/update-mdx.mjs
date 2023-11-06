@@ -56,6 +56,8 @@ function cryptPwd(text) {
   return md5.update(text).digest("hex");
 }
 
+console.log("settings", stagedFiles, AFiles, DFiles);
+
 fs.writeJsonSync(settingFile, settings, { spaces: 2, encoding: "utf-8" });
 
 execSync(`git add ${settingFile}`);
