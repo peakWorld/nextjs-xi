@@ -185,7 +185,7 @@ export interface Webgl {
   [index: string | symbol]: any;
 }
 
-export default (options: WebglOptions) => {
+export default function createGl(options: WebglOptions) {
   const wl = new Webgl(options);
   return new Proxy(wl, {
     get(target, key) {
@@ -196,4 +196,4 @@ export default (options: WebglOptions) => {
       return val;
     },
   });
-};
+}

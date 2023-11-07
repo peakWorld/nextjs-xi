@@ -120,5 +120,5 @@ export default function Case2() {
       });
     }, [])
   );
-  return <div id="case2"></div>;
+  return <div id="case2" className="w-full h-full" />;
 }

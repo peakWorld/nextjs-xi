@@ -232,5 +232,5 @@ export default function Case5() {
     )
   );
 
-  return <div id="case4">Case4</div>;
+  return <div id="case4" className="w-full h-full" />;
 }

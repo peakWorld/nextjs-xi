@@ -80,5 +80,5 @@ export default function Case6() {
     )
   );
 
-  return <div id="case6">Case6</div>;
+  return <div id="case6" className="w-full h-full" />;
 }

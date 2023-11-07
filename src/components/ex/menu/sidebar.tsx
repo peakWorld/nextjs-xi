@@ -17,7 +17,7 @@ export default function SiderBar({ menus }: Props) {
 
   const data = menus[EXTYPE[segment]] ?? [];
   return (
-    <div className="w-32 flex flex-col items-center mr-3">
+    <div className="w-32 flex flex-col items-center mr-3 p-2 bg-slate-100">
       {data.map((it) => (
         <Link
           key={it.path}

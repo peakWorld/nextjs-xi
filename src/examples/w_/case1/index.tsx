@@ -97,7 +97,7 @@ export default function Case1() {
   );
 
   return (
-    <div id="case1">
+    <div id="case1" className="w-full h-full">
       <canvas
         ref={ref}
         width={400}

@@ -476,5 +476,5 @@ export default function Case7_4() {
     )
   );
 
-  return <div id="case7">Case7</div>;
+  return <div id="case7" className="w-full h-full" />;
 }

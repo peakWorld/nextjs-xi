@@ -24,10 +24,5 @@ export default function GetPage({ id, type }: { id: string; type: string }) {
   const Page = page.current;
 
   if (!Page) return null;
-  return (
-    <>
-      <Page />
-      <Link href={`/`}>Go Home</Link>
-    </>
-  );
+  return <Page />;
 }

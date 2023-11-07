@@ -395,5 +395,5 @@ export default function Case7_3() {
       [box]
     )
   );
-  return <div id="case7">Case7</div>;
+  return <div id="case7" className="w-full h-full" />;
 }

@@ -76,5 +76,5 @@ export default function Case9_1() {
     )
   );
 
-  return <div id="case9">Case9</div>;
+  return <div id="case9" className="w-full h-full" />;
 }
