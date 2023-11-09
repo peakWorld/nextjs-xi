@@ -1,6 +1,6 @@
 import { isFunc } from "@/utils/type";
 import { Shader } from "./shader";
-import { Texture, type TextureType } from "./texture";
+import { Texture } from "./texture";
 import { Camera, type TNumber } from "./camera";
 
 interface WebglOptions {
@@ -119,7 +119,9 @@ export class Webgl {
   }
 
   setGl() {
-    this.gl = this.dom.getContext("webgl2") as WebGL2RenderingContext;
+    this.gl = this.dom.getContext("webgl2", {
+      stencil: true,
+    }) as WebGL2RenderingContext;
   }
 
   /**
@@ -145,8 +147,8 @@ export class Webgl {
     return shader;
   }
 
-  async createTexture(url: string, unit: number, type?: TextureType) {
-    const texture = new Texture(this.gl, unit, type);
+  async createTexture(url: string, unit: number, alpha?: boolean) {
+    const texture = new Texture(this.gl, unit, alpha);
     await texture.createTexture(`${location.origin}${url}`);
     return texture;
   }
