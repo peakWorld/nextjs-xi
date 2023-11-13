@@ -1,0 +1,5 @@
+{
+  "name": "mainFileds_2",
+  "main": "./node-cjs.js",
+  "module": "./node-esm.js"
+}

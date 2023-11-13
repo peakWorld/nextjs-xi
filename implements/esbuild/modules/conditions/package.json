@@ -1,0 +1,22 @@
+{
+  "name": "conditions",
+  "exports": {
+    "./case1": {
+      "default": "./case1/default.js",
+      "import": "./case1/import.js",
+      "require": "./case1/require.js",
+      "browser": "./case1/browser.js",
+      "node": "./case1/node.js"
+    },
+    "./case2": {
+      "browser": "./case2/browser.js",
+      "node": "./case2/node.js",
+      "default": "./case2/default.js"
+    },
+    "./case3": {
+      "custom1": "./case3/custom1.js",
+      "custom2": "./case3/custom2.js",
+      "default": "./case3/default.js"
+    }
+  }
+}
