@@ -1,5 +1,4 @@
 // https://medium.com/free-code-camp/typescript-curry-ramda-types-f747e99744ab
-// Curry V0 库里V0
 
 type Params<F extends (...args: any[]) => any> = F extends (
   ...args: infer T
@@ -27,4 +26,5 @@ type ClassInfer<I> = I extends Promise<infer G> ? G : never;
 type ArrayInfer<T> = T extends (infer U)[] ? U : never;
 
 type TupleInfer<T> = T extends [infer A, ...(infer B)[]] ? [A, B] : never;
-type x = TupleInfer<[string, number, string]>;
+
+// Curry V0 库里V0

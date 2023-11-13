@@ -10,11 +10,17 @@
 - [effectivetypescript posts](https://effectivetypescript.com/all-posts/)
 - [challenges](https://github.com/type-challenges/type-challenges/blob/main/README.zh-CN.md)
 
-## 文档结构
-- app 页面
-  - (ex-3d)
-  - blog
-- examples 案例
-  - et_ effective-typescript && type-challenges
-  - t_  threejs
-  - w_  webgl
+## 目录结构
+- posts 文档
+
+- src Web端代码
+  - app 页面
+    - (ex-3d)
+    - blog
+  - examples 案例
+    - t_  threejs
+    - w_  webgl
+
+- implements Node端代码
+  - ts  effective-typescript && type-challenges
+  - esbuild

@@ -26,7 +26,6 @@ stagedFiles.forEach((file) => {
   )
     return;
 
-  console.log("file", file);
   const [t, tmp] = file.split(/\s+/);
   const chunks = tmp.split("\u0000");
 
