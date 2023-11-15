@@ -59,7 +59,9 @@
     "a12_1": "cd ./api/c_12 && node excute_color.mjs",
     "a12_2": "cd ./api/c_12 && node excute_format_messages.mjs",
     "c1_1": "cd ./content-types/c_1 && node excute_javaScript.mjs",
-    "p1_1": "cd ./plugins/c_1 && node using_plugins.mjs"
+    "p1_1": "cd ./plugins/c_1 && node using_plugins.mjs",
+    "p2_1": "cd ./plugins/c_2 && node using_resolve_cb.mjs",
+    "p3_1": "cd ./plugins/c_3 && node using_onload_cb.mjs"
   },
   "keywords": [],
   "author": "",

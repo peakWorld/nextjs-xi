@@ -8,7 +8,7 @@ const lines = execSync(
 )
   .toString()
   .trim();
-const stagedFiles = lines.match(/[MARD\s]+([^\sMARD]*)/g);
+const stagedFiles = lines.match(/[AMRD\s]+([^\sAMRD]*)/g);
 
 const settingFile = "./posts/settings.json";
 fs.ensureFileSync(settingFile);
