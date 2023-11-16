@@ -61,7 +61,13 @@
     "c1_1": "cd ./content-types/c_1 && node excute_javaScript.mjs",
     "p1_1": "cd ./plugins/c_1 && node using_plugins.mjs",
     "p2_1": "cd ./plugins/c_2 && node using_resolve_cb.mjs",
-    "p3_1": "cd ./plugins/c_3 && node using_onload_cb.mjs"
+    "p2_2": "cd ./plugins/c_2 && node using_resolve_mul.mjs",
+    "p2_3": "cd ./plugins/c_2 && node using_resolve_namespace.mjs",
+    "p3_1": "cd ./plugins/c_3 && node using_onload_cb.mjs",
+    "p3_2": "cd ./plugins/c_3 && node using_cache.mjs",
+    "p4_1": "cd ./plugins/c_4 && node using_onstart.mjs",
+    "p5_1": "cd ./plugins/c_5 && node using_resolve.mjs",
+    "p6_1": "cd ./plugins/c_6 && node using_http.mjs"
   },
   "keywords": [],
   "author": "",
