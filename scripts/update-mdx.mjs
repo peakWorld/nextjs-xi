@@ -2,7 +2,8 @@ import fs from "fs-extra";
 import { execSync } from "child_process";
 import crypto from "crypto";
 
-console.log(process.argv, process.argv[2]);
+const isPreCommit = process.argv[2] === "pre-commit";
+console.log(process.argv, process.argv[2], process);
 
 const lines = execSync(
   // "git diff --staged --diff-filter=ACMR --name-only -z"
