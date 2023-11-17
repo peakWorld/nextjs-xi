@@ -32,9 +32,9 @@
 * path
 底层模块源代码的未解析路径; 默认行为导入路径为相对路径或包名，但插件可以用来引入新的路径形式(https等)。
 * importer
-包含要解析导入的模块的路径。只有在命名空间为file时，此路径才保证是文件系统路径。
+包含要解析导入的 **模块的路径**。只有在命名空间为file时，此路径才保证是文件系统路径。
 * namespace
-包含要解析导入的模块的命名空间; 默认行为加载的模块，默认命名空间为 file。
+包含要解析导入的 **模块的命名空间**; 默认行为加载的模块，默认命名空间为 file。
 * resolveDir
 将导入路径解析为文件系统上的实际路径时要使用的文件系统目录。
 - 对于文件命名空间的模块，默认值为模块所在的目录。
@@ -71,7 +71,7 @@ warnings: [
 ```
 * pluginName
 允许将此插件的名称替换为此路径解析操作的其他名称。??
-* pluginData
+* pluginData [p2_4]
 将传递给插件链中运行的下一个插件。
 - 如果从 onLoad 插件返回它，它将传递给该文件中的任何导入的 onResolve 插件
 - 如果从 onResolve 插件返回它，一个任意的 onLoad 插件将在加载文件时传递给它
@@ -81,7 +81,7 @@ warnings: [
 传递一个可选的URL query或hash附加到路径中，但不包含在路径本身中。
 - 必须以 ? 或 # 开头，因为旨在用作 URL 查询或哈希。
 - esbuild将namespace、path和suffix组合视为唯一的模块标识符，因此通过为相同的路径返回不同的后缀，告诉esbuild创建模块的另一个副本。
-* watchFiles and watchDirs [p2_2]
+* watchFiles and watchDirs [p2_5]
 允许为watch模式返回额外的文件系统路径以进行扫描。
 - 默认情况下，esbuild仅扫描提供给onLoad插件的路径，且在命名空间为file时才扫描。如果插件需要对文件系统中的其他更改做出反应，需要使用这些属性中的一个。
 - 如果自上次构建以来 watchFiles 数组中的任何文件发生更改(可能会检查文件内容和/或文件的元数据)，将触发重建。
@@ -99,7 +99,7 @@ warnings: [
 
 ### On-load arguments
 * path
-模块的完全解析路径; 如果命名空间是文件，那么它应该被视为文件系统路径，否则路径可以采取任何形式。
+模块的完全解析路径; 如果文件命名空间，那么它应该被视为文件系统路径，否则路径可以采取任何形式。
 * namespace
 模块路径所在的命名空间，由解析此文件的on-resolve回调设置; 对于使用esbuild的默认行为加载的模块，它默认为文件命名空间。
 * suffix
@@ -116,7 +116,7 @@ warnings: [
 - 如果没有设置，esbuild 将继续运行在当前回调之后注册的加载回调。如果内容仍未设置，如果解析路径位于文件命名空间中，esbuild 将默认从文件系统加载内容。
 * loader
 如何解释内容。例如: js loader 以JavaScript来解析内容。
-* resolveDir
+* resolveDir [p3_2]
 在将本模块中的导入路径解析为文件系统上的实际路径时要使用的文件系统目录。
 - 对于文件命名空间中的模块，默认值为模块路径的目录部分。
 - 对于非文件命名空间, 除非插件提供一个值，否则此值默认为空; 如果插件没有提供一个值，esbuild 的默认行为将不解析此模块中的任何导入。
@@ -128,7 +128,7 @@ warnings: [
 * watchFiles and watchDirs
 允许返回watch模式要扫描的其他文件系统路径。
 
-### Caching your plugin
+### Caching your plugin [p3_3]
 缓存可以存储在内存中（有利于与 esbuild 的重建 API 一起使用）、磁盘（有利于跨单独的构建脚本调用进行缓存），甚至可以存储在服务器上（有利于可以在不同开发人员计算机之间共享的非常缓慢的转换）。
 
 ## On-start callbacks [p4_1]
@@ -161,3 +161,7 @@ warnings: [
 ## Example plugins
 
 ### HTTP plugin[p6_1]
+
+### WebAssembly plugin[p6_2]
+
+### Svelte plugin[p6_3]
