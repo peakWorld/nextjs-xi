@@ -1,5 +1,6 @@
 import esbuild from "esbuild";
 import path from "path";
+import fs from "fs";
 
 let example1 = {
   name: "example1",
@@ -9,12 +10,26 @@ let example1 = {
 
     // 将所有以glsl结尾的导入路径(对应一个模块/[虚拟]文件) 归属到glsl namespace下
     // 只是归属命名空间的(未实现真实的解析)
-    build.onResolve({ filter: /glsl$/ }, (args) => {
-      console.log("onResolve glsl", args);
+    build.onResolve({ filter: /\.glsl$/ }, (args) => {
+      // console.log("onResolve glsl", args);
+
+      // 可以在此处对路径做处理, 方便onLoad处理文件
+      const url = path.join(
+        "/Users/windlliu/twk/nextjs-xi/implements/esbuild/plugins/c_2/app",
+        args.path
+      );
       return {
-        path: args.path,
+        path: url,
         namespace: "glsl",
       };
+    });
+
+    // 以命名空间来过滤路径(非文件命名空间, 自定义空间)
+    // 返回该路径对应模块的内容
+    build.onLoad({ filter: /.*/, namespace: "glsl" }, async (args) => {
+      console.log("args", args);
+      const contents = fs.readFileSync(args.path, { encoding: "utf-8" });
+      return { contents };
     });
   },
 };

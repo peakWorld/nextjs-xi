@@ -1,1 +1,3 @@
-import fs from "../assets/fs.glsl";
+import fs from "assets/fs.glsl";
+
+export { fs };

@@ -1,3 +1,5 @@
-import vs from "./assets/vs.glsl";
+import vs from "assets/vs.glsl";
 
-import "./mb/a";
+import { fs } from "./mb/a";
+
+console.log("vs | fs", vs, fs);

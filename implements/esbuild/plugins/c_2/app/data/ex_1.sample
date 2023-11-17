@@ -1,0 +1,3 @@
+import "data/ex_2.sample";
+
+export default class Ex1 {}

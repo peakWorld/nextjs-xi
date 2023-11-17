@@ -14,7 +14,7 @@ let example1 = {
       console.log("example1 build started");
     });
     build.onEnd((result) => {
-      console.log("example1 build ended");
+      console.log("example1 build ended", result);
     });
 
     build.onDispose(() => {
