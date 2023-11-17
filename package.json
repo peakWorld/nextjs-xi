@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "update:mdx": "node ./scripts/update-mdx.mjs"
+    "update:posts": "node ./scripts/posts.mjs"
   },
   "dependencies": {
     "ahooks": "^3.7.8",
