@@ -2,6 +2,8 @@ import fs from "fs-extra";
 import { execSync } from "child_process";
 import crypto from "crypto";
 
+console.log(process.argv);
+
 const lines = execSync(
   // "git diff --staged --diff-filter=ACMR --name-only -z"
   "git status -s -z"
