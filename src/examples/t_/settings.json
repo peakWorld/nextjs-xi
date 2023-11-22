@@ -1,10 +1,14 @@
 [
   {
-    "path": "case1",
-    "title": "画点"
+    "path": "case1_1",
+    "title": "Hello Cube"
   },
   {
-    "path": "case2",
-    "title": "画线"
+    "path": "case1_2",
+    "title": "响应式设计"
+  },
+  {
+    "path": "case1_2",
+    "title": "响应式设计"
   }
 ]
