@@ -10,7 +10,7 @@ export default async function Home() {
   return (
     <div className="flex items-center justify-center flex-col" id="root">
       <Link href={`/webgl/case1`}>Go To Webgl</Link>
-      <Link href={`/threejs/case1`}>Go To Threejs</Link>
+      <Link href={`/threejs/case1_1`}>Go To Threejs</Link>
       <Link href={`/blog`}>Go To Blog</Link>
     </div>
   );
