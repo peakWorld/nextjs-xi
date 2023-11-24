@@ -21,6 +21,8 @@ const settings =
 const AFiles = [];
 const DFiles = [];
 
+console.log(lines, stagedFiles);
+
 stagedFiles.forEach((file) => {
   if (
     !file.includes(".md") || // 非.md文件
@@ -30,6 +32,7 @@ stagedFiles.forEach((file) => {
     return;
 
   const [t, tmp] = file.split(/\s+/);
+  console.log(file, "   ", t, "   ", tmp);
   const chunks = tmp.split("\u0000");
 
   if (!chunks[0]) return;
