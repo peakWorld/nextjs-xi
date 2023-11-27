@@ -11,7 +11,7 @@ const lines = execSync(
 )
   .toString()
   .trim();
-const stagedFiles = lines.match(/[AMRD\s]+([^\sAMRD]*)/g);
+const stagedFiles = lines.match(/[AMRD\s]+([^\sAMRD]*)/g); // 文件夹名字中含有AMRD大写字母会有问题
 
 const settingFile = "./posts/settings.json";
 fs.ensureFileSync(settingFile);
@@ -20,8 +20,6 @@ const settings =
 
 const AFiles = [];
 const DFiles = [];
-
-console.log(lines, stagedFiles);
 
 stagedFiles.forEach((file) => {
   if (
