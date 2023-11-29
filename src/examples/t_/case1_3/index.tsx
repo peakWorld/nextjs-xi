@@ -33,6 +33,7 @@ export default function Case1_3() {
     // camera.position.set(2, 1, 5);
 
     const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xaaaaaa);
 
     // const axesHelper = new THREE.AxesHelper(10);
     // scene.add(axesHelper);
@@ -60,7 +61,7 @@ export default function Case1_3() {
     // scene.add(createEdgesLine());
 
     // 6. WireframeGeometry
-    scene.add(createWireframeLine());
+    // scene.add(createWireframeLine());
 
     function render(time: number) {
       time *= 0.001;
