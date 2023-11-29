@@ -7,9 +7,11 @@
   "93b4079e1cb30a66511be260fb8cca31": "posts/三维/threejs/基础.md",
   "e6e4f3f79fbf42e482c9d1e14e02373f": "posts/人工智能/comfy-ui/安装.md",
   "e18f88a5368cfab75e22cd7e99abdad1": "posts/人工智能/stable-diffusion/基础准备.md",
-  "5db95cb1724ff2190f8fc6c1776432c0": "posts/人工智能/stable-diffusion/实践例子.md",
-  "22f141b1c839b0370c7c309848179224": "posts/人工智能/stable-diffusion/技巧.md",
   "77590bdd9e7e5220819aa46717d853ed": "posts/人工智能/stable-diffusion/插件/ControlNet.md",
   "4b8ddeab6eec563d1c7cef0281efb13e": "posts/人工智能/编码提效.md",
-  "c7a36ddb68cf0644c23e88a8e64b45fc": "posts/人工智能/stable-diffusion/提示词.md"
+  "c7a36ddb68cf0644c23e88a8e64b45fc": "posts/人工智能/stable-diffusion/提示词.md",
+  "908025bf170ecfb360bdaa40fbfbb0a7": "posts/人工智能/stable-diffusion/实践/头像设计.md",
+  "c71376756b4f4aad7b2499184ffadf92": "posts/人工智能/stable-diffusion/技巧/姿势相关.md",
+  "124fee62fbd2187d94a7633434ad211b": "posts/人工智能/stable-diffusion/技巧/面部相关.md",
+  "dd7e19e31e4d08ef35b8bccdd69fa14f": "posts/人工智能/stable-diffusion/技巧/高清化.md"
 }
