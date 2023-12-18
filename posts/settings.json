@@ -1,9 +1,5 @@
 {
   "6033eaedbd7ec2ffe37a4267b1968f0e": "posts/三维/webgl/总结.md",
-  "9d3795b37212f0e1a3acea838e361b55": "posts/前端/vite/esbuild/Plugins.md",
-  "351ef4f1f529033b74dd4410ed75c4a2": "posts/前端/vite/source-code/使用模块.md",
-  "eb0d6e462ef20df7037615c8bc945239": "posts/前端/vite/source-code/准备工作.md",
-  "4b37805dfa252237d6d1f6389823e946": "posts/前端/vite/source-code/原理.md",
   "93b4079e1cb30a66511be260fb8cca31": "posts/三维/threejs/基础.md",
   "e6e4f3f79fbf42e482c9d1e14e02373f": "posts/人工智能/comfy-ui/安装.md",
   "e18f88a5368cfab75e22cd7e99abdad1": "posts/人工智能/stable-diffusion/基础准备.md",
@@ -18,7 +14,13 @@
   "b281afb3b13418a8f9cdf1d9eac28bdf": "posts/人工智能/stable-diffusion/插件/a_detailer.md",
   "5f743c2cda6a33b1eb2b93c9de7ef378": "posts/人工智能/stable-diffusion/插件/control_net.md",
   "7f92b336a94e1a1896a39b327f3512a7": "posts/人工智能/stable-diffusion/插件/tiled_diffusion.md",
-  "b90207378bd097b07ecdfe71c8f6f2c9": "posts/前端/vite/基础.md",
-  "f3fa0e087865edfc23e49bac09542c8f": "posts/前端/vite/问题.md",
-  "c71f42b7be44fe1850f8eddbd4242e28": "posts/前端/基础知识/算法.md"
+  "c71f42b7be44fe1850f8eddbd4242e28": "posts/前端/基础知识/算法.md",
+  "18b6c45851130c2301fd47645fd8e760": "posts/构建工具/vite/esbuild/API.md",
+  "1e7679c609371ed6af4097d4a760cc28": "posts/构建工具/vite/esbuild/Plugins.md",
+  "349fdb367e64d49e004fb31cb813b0dc": "posts/构建工具/vite/esbuild/content-types.md",
+  "858df3a70ec15a2a0c5230fbe8dd19b8": "posts/构建工具/vite/source-code/使用模块.md",
+  "023d18765ebdb389854115b67c4415a8": "posts/构建工具/vite/source-code/准备工作.md",
+  "0d3b94cb974f459d90192fd58392c670": "posts/构建工具/vite/source-code/原理.md",
+  "ff89ca8d5bcff7cbd6d59c093864914b": "posts/构建工具/vite/基础.md",
+  "bef0213b739c9368e10180881e053d23": "posts/构建工具/vite/问题.md"
 }
