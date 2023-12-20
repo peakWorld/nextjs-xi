@@ -1,4 +1,7 @@
-## 项目集合
+# 项目集合
+[如何让你的开源项目变得非常棒](http://blog.clojurewerkz.org/blog/2013/04/20/how-to-make-your-open-source-project-really-awesome/)
+[维护更新日志](https://keepachangelog.com/zh-CN/1.0.0/)
+[语言化版本](https://semver.org/lang/zh-CN/)
 
 ## 参考链接
 * [Google: SEO Starter Guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide?hl=zh-cn)
