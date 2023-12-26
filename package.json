@@ -34,6 +34,7 @@
     "@types/react-dom": "^18",
     "@types/three": "^0.158.1",
     "autoprefixer": "^10.4.16",
+    "concurrently": "^8.2.2",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
     "husky": "^8.0.3",
