@@ -36,6 +36,8 @@
     "scripts/*.mjs"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "implements",
+    "posts"
   ]
 }
