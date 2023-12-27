@@ -11,7 +11,7 @@ export interface Element {
   type: "Element";
   tag: string;
   props: Attribute[];
-  children: Element[];
+  children: Node[];
   isSelfClosing: boolean;
 }
 
@@ -20,3 +20,23 @@ export interface Attribute {
   name: string;
   value: any;
 }
+
+export interface Text {
+  type: "Text";
+  content: string;
+}
+
+export interface Interpolation {
+  type: "Interpolation";
+  content: {
+    type: "Expression";
+    content: string;
+  };
+}
+
+export interface Comment {
+  type: "Comment";
+  content: string;
+}
+
+export type Node = Element | Text | Interpolation | Comment;

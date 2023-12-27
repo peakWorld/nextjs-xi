@@ -1,7 +1,7 @@
 import { parseTag, parseText, parseInterpolation, parseComment } from "./parse";
 import { isEnd } from "./util";
 import { TextModes } from "./constant";
-import type { Context, Element } from "./type";
+import type { Context, Element, Node } from "./type";
 
 export function parse(str: string) {
   const context: Context = {
@@ -22,7 +22,7 @@ export function parse(str: string) {
 }
 
 function parseChildren(context: Context, ancestors: Element[]) {
-  let nodes = [];
+  let nodes: Node[] = [];
   const { mode, source } = context;
 
   while (!isEnd(context, ancestors)) {
@@ -77,5 +77,7 @@ function parseElement(context: Context, ancestors: Element[]) {
   return element;
 }
 
-const nodes = parse(`<div id = "foo" v-show="display">{{ a + 1 }}</div>`);
-console.log(nodes);
+const nodes = parse(
+  `<div id="foo" :val="aa" @click="func" v-show="display">{{ a + 1 }}</div>`
+);
+console.log(nodes.children[0]);
