@@ -2,4 +2,8 @@
   "editor.quickSuggestions": {
     "strings": "on"
   },
+  "code-runner.executorMap": {
+    "typescript": "node -r ts-node/register",
+    "javascript": "node"
+  }
 }
