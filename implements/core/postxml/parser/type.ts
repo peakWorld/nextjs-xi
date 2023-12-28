@@ -1,10 +1,11 @@
-import { type TextModes } from "./constant";
+import { type TextModes } from "./constant.js";
 
 export interface Context {
   source: string;
   mode: TextModes;
   advanceBy: (size: number) => void;
   advanceSpaces: () => void;
+  options: ParserOptions;
 }
 
 export interface Element {
@@ -39,4 +40,13 @@ export interface Comment {
   content: string;
 }
 
-export type Node = Element | Text | Interpolation | Comment;
+export interface RootNode {
+  type: "Root";
+  children: Node[];
+}
+
+export type Node = Element | Text | Attribute | Interpolation | Comment;
+
+export type AstNode = RootNode | Node;
+
+export interface ParserOptions {}

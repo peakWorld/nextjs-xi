@@ -4,8 +4,8 @@
   "description": "核心处理",
   "main": "",
   "scripts": {
-    "watch:parser": "concurrently \"npm run watch\" \"npm run parser\"",
-    "parser": "cross-env nodemon build/parser/index.js",
+    "watch:postxml": "concurrently \"npm run watch\" \"npm run postxml\"",
+    "postxml": "cross-env nodemon build/postxml/index.js",
     "watch": "tsc -w -p tsconfig.json"
   },
   "keywords": [],

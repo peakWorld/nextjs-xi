@@ -1,5 +1,5 @@
-import { namedCharacterReference } from "./constant";
-import type { Context, Element } from "./type";
+import { namedCharacterReference } from './constant.js';
+import type { Context, Element } from './type.js';
 
 export function isEnd(context: Context, ancestors: Element[]) {
   if (!context.source) return true;
@@ -16,7 +16,7 @@ export function decodeHtml(rawText: string, asAttr = false) {
   let offset = 0;
   const end = rawText.length;
   // 解码后的文本将作为返回值
-  let decodedText = "";
+  let decodedText = '';
   // 引用表中实体名称的最大长度
   let maxCRNameLength = 0;
 
@@ -46,8 +46,8 @@ export function decodeHtml(rawText: string, asAttr = false) {
     advance(head.index);
 
     // 满足为命名字符引用, 否则为数字字符引用
-    if (head[0] === "&") {
-      let name = "";
+    if (head[0] === '&') {
+      let name = '';
       let value;
       // 命名字符引用下一个字符必须是 ASCII 字母或数字; 否则为普通文本
       if (/[0-9a-z]/i.test(rawText[1])) {
@@ -55,7 +55,7 @@ export function decodeHtml(rawText: string, asAttr = false) {
         if (!maxCRNameLength) {
           maxCRNameLength = Object.keys(namedCharacterReference).reduce(
             (max, name) => Math.max(max, name.length),
-            0
+            0,
           );
         }
         // 从最大长度对文本进行截取, 并试图去引用表中找到对应的项
@@ -65,30 +65,30 @@ export function decodeHtml(rawText: string, asAttr = false) {
         }
         // 找到对应项的值
         if (value) {
-          const semi = name.endsWith(";"); // 实体名称最后一个匹配字符是否为分号
+          const semi = name.endsWith(';'); // 实体名称最后一个匹配字符是否为分号
           // 如果解码文本作为属性值; 最后一个匹配的字符不是分号, 且最后一个匹配字符的下一个字符是等于号、ASCII字母或数字
           // 由于历史原因, 将字符&和实体名称作为普通文字
           if (
             asAttr &&
             !semi &&
-            /[=a-z0-9]/i.test(rawText[name.length + 1] || "")
+            /[=a-z0-9]/i.test(rawText[name.length + 1] || '')
           ) {
-            decodedText += "&" + name;
+            decodedText += '&' + name;
             advance(1 + name.length);
           } else {
             decodedText += value;
             advance(1 + name.length);
           }
         } else {
-          decodedText += "&" + name;
+          decodedText += '&' + name;
           advance(1 + name.length);
         }
       } else {
-        decodedText += "&";
+        decodedText += '&';
         advance(1);
       }
     } else {
-      const hex = head[0] === "&#x"; // 判断十进制/十六进制
+      const hex = head[0] === '&#x'; // 判断十进制/十六进制
       const pattern = hex ? /^&#x([0-9a-f]+);?/i : /^&#([0-9]+);?/i;
       const body = pattern.exec(rawText);
 

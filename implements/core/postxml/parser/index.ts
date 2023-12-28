@@ -1,9 +1,14 @@
-import { parseTag, parseText, parseInterpolation, parseComment } from "./parse";
-import { isEnd } from "./util";
-import { TextModes } from "./constant";
-import type { Context, Element, Node } from "./type";
+import {
+  parseTag,
+  parseText,
+  parseInterpolation,
+  parseComment,
+} from "./parse.js";
+import { isEnd } from "./util.js";
+import { TextModes } from "./constant.js";
+import type { Context, Element, Node, ParserOptions } from "./type.js";
 
-export function parse(str: string) {
+export function parse(str: string, options?: ParserOptions) {
   const context: Context = {
     source: str,
     mode: TextModes.DATA,
@@ -16,6 +21,7 @@ export function parse(str: string) {
         context.advanceBy(match[0].length);
       }
     },
+    options,
   };
   const nodes = parseChildren(context, []);
   return { type: "Root", children: nodes };
@@ -23,25 +29,25 @@ export function parse(str: string) {
 
 function parseChildren(context: Context, ancestors: Element[]) {
   let nodes: Node[] = [];
-  const { mode, source } = context;
+  const { mode } = context;
 
   while (!isEnd(context, ancestors)) {
     let node;
     if (mode === TextModes.DATA || mode === TextModes.RCDATA) {
-      if (mode === TextModes.DATA && source[0] === "<") {
-        if (source[1] === "!") {
-          if (source.startsWith("<!--")) {
+      if (mode === TextModes.DATA && context.source[0] === "<") {
+        if (context.source[1] === "!") {
+          if (context.source.startsWith("<!--")) {
             node = parseComment(context);
-          } else if (source.startsWith("<![CDATA[")) {
+          } else if (context.source.startsWith("<![CDATA[")) {
             // node = parseCDATA(context, ancestors);
           }
-        } else if (source[1] === "/") {
+        } else if (context.source[1] === "/") {
           console.error("无效的结束标签");
           continue;
-        } else if (/[a-z]/i.test(source[1])) {
+        } else if (/[a-z]/i.test(context.source[1])) {
           node = parseElement(context, ancestors);
         }
-      } else if (source.startsWith("{{")) {
+      } else if (context.source.startsWith("{{")) {
         node = parseInterpolation(context);
       }
     }
@@ -76,8 +82,3 @@ function parseElement(context: Context, ancestors: Element[]) {
   }
   return element;
 }
-
-const nodes = parse(
-  `<div id="foo" :val="aa" @click="func" v-show="display">{{ a + 1 }}</div>`
-);
-console.log(nodes.children[0]);
