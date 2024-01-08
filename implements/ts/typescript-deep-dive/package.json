@@ -1,0 +1,15 @@
+{
+  "name": "typescript-deep-dive",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./build/ches/project-relative.js"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.2.1"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.29",
+    "@types/node": "^20.10.6"
+  }
+}
