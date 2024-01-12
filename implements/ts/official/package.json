@@ -4,14 +4,13 @@
   "private": true,
   "scripts": {
     "start": "concurrently \"npm run watch\" \"npm run dev\"",
-    "dev": "nodemon build/files/metadata.js",
+    "dev": "nodemon build/src/index.js",
     "watch": "tsc -w -p tsconfig.json"
   },
   "dependencies": {
-    "reflect-metadata": "^0.2.1"
+    "concurrently": "^8.2.2"
   },
   "devDependencies": {
-    "@types/jquery": "^3.5.29",
     "@types/node": "^20.10.6"
   }
 }

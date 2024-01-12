@@ -1,5 +1,10 @@
 [深入理解 TypeScript](https://jkchao.github.io/typescript-book-chinese/)
 
+[js库声明文件](https://github.com/DefinitelyTyped/DefinitelyTyped)
+
+[metadata](https://rbuckton.github.io/reflect-metadata/#introduction)
+
+
 # 项目相关
 
 ## 编译上下文
@@ -129,8 +134,6 @@ Utility.log("1"); // 作为变量, 只有export的属性才能访问
 ```
 
 # 类型系统
-
-[js库声明文件](https://github.com/DefinitelyTyped/DefinitelyTyped)
 
 * 类型注解
 在类型声明空间中可用的任何内容都可以用作类型注解。
@@ -309,13 +312,64 @@ let foo: Adder = (a, b) => a + b; // 赋值, 类型注解 => 推断类型
 
 const foo = { a: 123, b: 456 };
 foo.a // 字面量结构化, 推断值类型
-const { a } = foo // 结构, 推断变量类型
+const { a } = foo // 解构, 推断变量类型
 ```
 
 ## 类型兼容性
 用于确定一个类型是否能赋值给其他类型。
-<!-- TODO -->
-<!-- https://jkchao.github.io/typescript-book-chinese/typings/typeCompatibility.html#%E5%AE%89%E5%85%A8%E6%80%A7 -->
+
+* 结构化
+只要结构匹配，名称无关紧要。
+
+* 变体
+1. 协变（Covariant）：只在同一个方向；
+2. 逆变（Contravariant）：只在相反的方向；
+3. 双向协变（Bivariant）：包括同一个方向和不同方向；
+4. 不变（Invariant）：如果类型不完全相同，则它们是不兼容的。
+
+* 枚举
+- 枚举与数字类型相互兼容
+- 来自于不同枚举的枚举变量，被认为是不兼容的
+
+* 类
+- 仅仅只有实例成员和方法会相比较，构造函数和静态成员不会被检查。
+- 私有的和受保护的成员必须来自于相同的类。
+
+* 泛型
+仅当类型参数在被一个成员使用时，才会影响兼容性。
+```ts
+// 未被成员使用
+interface Empty<T> {}
+let x: Empty<number>;
+let y: Empty<string>;
+x = y; // ok
+
+// 被成员使用
+interface Empty<T> { data: T; }
+let x: Empty<number>;
+let y: Empty<string>;
+x = y; // Error
+```
+
+### 函数
+比较两个函数时, 需要考虑到的事情
+
+* 返回类型
+协变：返回类型必须包含足够的数据。
+
+* 参数
+```ts
+// 参数调用 => 实参赋值形参, 就像类型注解; 推断实参类型
+
+// 参数数量 => 更少的参数数量是好的
+interface X {
+  (err: Error, data: any): null
+}
+let x2_1: X = () => null
+let x2_2: X = (err) => null
+let x2_3: X = (err, data) => null
+let x2_4: X = (err, data, more) => null // Error 实参数量多了
+```
 
 ## Never
 一个可靠的，代表永远不会发生的类型。
@@ -504,7 +558,6 @@ Singleton.someMethod();
 ```
 
 ## Reflect Metadata
-[文档](https://rbuckton.github.io/reflect-metadata/#introduction)
 ```ts
 // 执行yarn add reflect-metadata
 // 文件中引入 import "reflect-metadata"
@@ -512,8 +565,63 @@ Singleton.someMethod();
 
 ## 协变与逆变
 <!-- TODO -->
-<!-- https://jkchao.github.io/typescript-book-chinese/tips/covarianceAndContravariance.html -->
+* 约定标记
+```ts
+A ≼ B 意味着 A 是 B 的子类型。
+A → B 指的是以 A 为参数类型，以 B 为返回值类型的函数类型。
+x : A 意味着 x 的类型为 A。
+```
+
+
+
 
 ## infer
 在extends条件语句中待推断的类型变量
+```ts
+type ReturnType<T> = T extends (...args: any[]) => infer P ? P : any;
 
+type Func = () => User;
+type Test = ReturnType<Func>; // Test = User
+```
+
+* union 转 intersection，如：T1 | T2 -> T1 & T2
+```ts
+// 同一类型变量的多个候选类型将会被推断为交叉类型
+type Bar<T> = T extends { a: (x: infer U) => void; b: (x: infer U) => void } ? U : never;
+type T21 = Bar<{ a: (x: T1) => void; b: (x: T2) => void }>; // T1 & T2
+
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never;
+type Result = UnionToIntersection<T1 | T2>; // T1 & T2
+```
+
+# FAQS
+
+## 类型系统的行为
+
+* 结构化类型
+TypeScript使用结构化类型, 结构化类型系统背后的思想是如果他们的成员类型是兼容的，则他们是兼容的。在结构化的类型系统中，这些类型具有不同名称的事实并不重要，因为它们具有相同类型的成员，所以它们是相同的
+```ts
+class Animal {
+  age = 18;
+  name = "himly";
+}
+class Dog extends Animal {
+  sex = 1;
+}
+class Cat {
+  age = 18;
+  name = "cat";
+}
+const an1: Animal = new Dog(); // 成员类型兼容, Dog兼容Animal; 子类型
+const an1_1: Animal = new Cat(); // 成员类型兼容, Cat兼容Animal; 非子类型
+const an1_2: Animal = { age: 12, name: "other" }; // 成员类型兼容; 对象字面量
+
+const an1_3: Animal = { age: 12, name: "other", sex: 1 }; // Error: 对象字面量只能指定已知属性
+const an1_4: Animal = { age: 12 }; // Error: 缺少属性 "name"
+
+const an2_1: { age: number; name: string } = new Dog(); // 和如下字面量有相同属性, 但是兼容成功
+const an2_3: { age: number; name: string } = { age: 12, name: "other", sex: 1 }; // Error: 对象字面量只能指定已知属性
+```
+
+* 类型删除
+移除了类型断言、接口、类型别名和一些其他编译期间的类型结构；意味着在运行时，没有信息表明变量的类型。
