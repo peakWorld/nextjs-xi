@@ -51,3 +51,14 @@ interface B {
 }
 const a: A | B = { type: "h", key: "b" };
 const b: A & B = { type: "h", name: "a", key: "b" };
+
+// forEach(callbackfn: (value: T, index: number, array: T[]) => void, thisArg?: any): void;
+[].forEach(() => {});
+
+function doSomething(): number {
+  return 42;
+}
+function callMeMaybe(callback: () => void) {
+  callback();
+}
+callMeMaybe(doSomething);

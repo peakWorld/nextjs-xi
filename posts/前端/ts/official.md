@@ -1,3 +1,7 @@
+# 有效链接
+[通用js库声明文件](https://github.com/DefinitelyTyped/DefinitelyTyped)
+[metadata](https://rbuckton.github.io/reflect-metadata/#introduction)
+
 ## 装饰器
 使用`@expression`这种形式，expression求值后必须为一个函数，它会在运行时被调用，被装饰的声明信息做为参数传入。
 ```ts

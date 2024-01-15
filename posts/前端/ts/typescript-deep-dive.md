@@ -1,9 +1,4 @@
-[深入理解 TypeScript](https://jkchao.github.io/typescript-book-chinese/)
-
-[js库声明文件](https://github.com/DefinitelyTyped/DefinitelyTyped)
-
-[metadata](https://rbuckton.github.io/reflect-metadata/#introduction)
-
+[书籍目录](https://jkchao.github.io/typescript-book-chinese/)
 
 # 项目相关
 
@@ -131,6 +126,9 @@ namespace Utility {
   }
 }
 Utility.log("1"); // 作为变量, 只有export的属性才能访问
+
+// 组织：可以方便地将逻辑相关的对象和类型分组在一起。
+// 名称冲突：对于避免命名冲突非常重要。
 ```
 
 # 类型系统
@@ -261,7 +259,7 @@ let p2: Person = {}; // ✅
 type Element = (event as any) as HTMLElement;
 ```
 
-## 类型保护
+## 类型保护(运行时检查类型)
 使用更小范围下的对象类型，缩小类型范围
 ```ts
 // typeof
@@ -369,6 +367,25 @@ let x2_1: X = () => null
 let x2_2: X = (err) => null
 let x2_3: X = (err, data) => null
 let x2_4: X = (err, data, more) => null // Error 实参数量多了
+```
+
+* 参数是逆变，返回结果是协变
+```ts
+// 形参、实参的参数、返回结果是父子类关系
+
+// 形参 Animal => Animal, 实参 Dog => Dog; 实参参数Dog是形参参数Animal的子类(协变)、类型不符合
+function doAnimal(cb: (animal: Animal) => Animal) {}
+doAnimal((dog: Dog) => dog); // Error：参数“dog”和“animal” 的类型不兼容。
+
+// 形参 Dog => Dog, 实参 Animal => Animal; 实参结果Animal是形参结果Animal的父类(逆变)、类型不符合
+function doAnimal2(cb: (dog: Dog) => Dog) {}
+doAnimal2((animal: Animal) => animal); // Error：不能将类型“Animal”分配给类型“Dog”。
+
+function doAnimal3(cb: (dog: Dog) => Animal) {}
+doAnimal3((animal: Animal) => animal); // ✅
+
+function doAnimal4(cb: (dog: Dog) => Animal) {}
+doAnimal4((dog: Dog) => dog); // ✅
 ```
 
 ## Never
@@ -564,16 +581,13 @@ Singleton.someMethod();
 ```
 
 ## 协变与逆变
-<!-- TODO -->
+<!-- TODO https://jkchao.github.io/typescript-book-chinese/tips/covarianceAndContravariance.html-->
 * 约定标记
 ```ts
 A ≼ B 意味着 A 是 B 的子类型。
 A → B 指的是以 A 为参数类型，以 B 为返回值类型的函数类型。
 x : A 意味着 x 的类型为 A。
 ```
-
-
-
 
 ## infer
 在extends条件语句中待推断的类型变量
@@ -625,3 +639,72 @@ const an2_3: { age: number; name: string } = { age: 12, name: "other", sex: 1 };
 
 * 类型删除
 移除了类型断言、接口、类型别名和一些其他编译期间的类型结构；意味着在运行时，没有信息表明变量的类型。
+
+* 有更少参数的函数能够赋值给具有更多参数的函数
+```ts
+// forEach(callbackfn: (value: T, index: number, array: T[]) => void, thisArg?: any): void;
+const handler = (v) => v + 1;
+[].forEach(handler);
+
+// handler函数的参数v是回调函数中的有效参数，handler可以安全的忽略额外的参数。
+```
+
+* 一个返回值不是void的函数，可以赋值给一个返回值为void的函数
+```ts
+// 一个返回值类型为 void 的函数，它会说：“无论你的返回值是否存在，我都不会检查它”。
+function doSomething(): number {
+  return 42;
+}
+function callMeMaybe(callback: () => void) {
+  callback();
+}
+callMeMaybe(doSomething);
+```
+
+## 类
+永远不应该声明一个没有属性的类、接口。
+```ts
+class Alpha { x: number; }
+class Bravo { x: number; }
+class Charlie { private x: number; }
+class Delta { private x: number; }
+
+let a = new Alpha(), b = new Bravo(), c = new Charlie(), d = new Delta();
+
+a = b; // OK
+c = d; // Error
+
+// 类进行结构上的比较
+// 当一个成员是 private 或者 protected 时，它们必须来自同一个声明，才能被视为与另一个 private 或者 protected 的成员相同。
+```
+
+* 当Bar是一个类时，Bar和typeof Bar的区别
+```ts
+class Bar {}
+let bar: Bar
+let BarCls: typeof Bar
+
+// 定义一个类时,实际上定义了两个不同的类型
+
+// 类型一：类的实例
+// Bar 类实例的类型，定义了类的实例具有的属性和方法，是一个通过调用类的构造函数来返回的类型。
+
+// 类型二：类对象本身，作为构造函数
+// typeof Bar 匿名的类型(构造函数具有的类型)，包含类中可能含有的 static 属性和方法
+```
+
+* 子类属性初始值会覆盖基类构造函数中设置的值
+
+* 声明类和接口的区别
+```ts
+declare class Example {
+  Method(): void;
+}
+
+interface Example {
+  Method(): void;
+}
+
+// interface 适用于描述对象结构、永远不会生成代码，只是类型系统中的一个工件。
+// declare class 适用于描述在外部存在的现有类。使用extends从class继承，编译器是将生成所有代码来连接原型链和转发构造函数等。
+```
