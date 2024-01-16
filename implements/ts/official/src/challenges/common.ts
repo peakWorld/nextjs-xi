@@ -1,5 +1,3 @@
-// https://medium.com/free-code-camp/typescript-curry-ramda-types-f747e99744ab
-
 type Params<F extends (...args: any[]) => any> = F extends (
   ...args: infer T
 ) => any

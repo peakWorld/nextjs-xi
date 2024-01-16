@@ -25,5 +25,8 @@
   "2ff3c9ad76a14cea9efe3e8a7775b70c": "posts/构建工具/babel/基础.md",
   "a83671fa7281227e7c3ae1b0d2b95f26": "posts/构建工具/postcss/基础.md",
   "04fd23df5457097d42cd84f4219be35b": "posts/前端/vue/设计与实现/模板解析器.md",
-  "1cabad175d221023d8d3db2f6be34f38": "posts/构建工具/postcss/less.md"
+  "1cabad175d221023d8d3db2f6be34f38": "posts/构建工具/postcss/less.md",
+  "f38bfe748125b1544bc2c20d4f607e6c": "posts/前端/ts/typescript-deep-dive.md",
+  "878ef98d602bb98a6e6a985ca594fd28": "posts/前端/ts/official.md",
+  "ffc3660772850218a66d02366eea3129": "posts/前端/ts/编译原理.md"
 }
