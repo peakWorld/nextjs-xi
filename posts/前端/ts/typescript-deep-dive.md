@@ -158,7 +158,7 @@ t1 = null; // 能被赋值给任意类型的变量
 
 // 开启严格模式
 let t2: null;
-t2 = null; // 只能赋值给自身类型的变量
+t2 = null; // 只能赋值给自身｜any类型的变量
 ```
 
 * void
@@ -501,7 +501,6 @@ function Activatable<TBase extends Constructor>(Base: TBase) {
     }
   };
 }
-
 
 class User { name = ''; } // 简单的类
 const TimestampedUser = Timestamped(User); // 添加 Timestamped 的 User

@@ -11,8 +11,6 @@ TypeScript编译为另一种高级语言JavaScript; 运行的是JavaScript,而�
 
 ## Item-2
 TypeScript是一种不同的语言，具体取决于它的配置方式。
-* [配置]noImplicitAny 控制变量是否必须具有已知类型。
-* [配置]strictNullChecks 控制null和undefined是否为每种类型允许的值。
 
 1. 启用noImplicitAny 除非将JavaScript项目转换为TypeScript。
 2. 启用strictNullChecks 以防止“未定义不是对象”类型的运行时错误。
@@ -24,5 +22,3 @@ tsc(Typescript编译器)做了两件事：
 2. 类型检测：检查代码是否存在类型错误。
 
 由于执行的是JavaScript，这意味着类型不会影响代码的运行方式。
-
-* [配置]noEmitOnError 控制是否禁用错误输出。
