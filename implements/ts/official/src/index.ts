@@ -1,1 +1,2 @@
-import "./decorators";
+import "./syntax";
+import "./versions";

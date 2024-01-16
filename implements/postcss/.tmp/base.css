@@ -1,0 +1,18 @@
+/** 变量 */
+body {
+  height: 20px;
+}
+.banner {
+  color: #0ee;
+  font-weight: bold;
+  background: url("../img/white-sand.png");
+}
+.block {
+  color: red;
+  background-color: red;
+  padding: 20px;
+}
+.block .inner {
+  margin: 20px;
+}
+/** 混合 */
