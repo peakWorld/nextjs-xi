@@ -1,0 +1,33 @@
+// 文件导入
+@import url('./var.less');
+
+/** 变量 */
+@width: 10px; // AtRuleVar{name, value|params}
+@height: @width + 10px;
+@my-selector: banner;
+@images: "../img";
+@property: color;
+
+body {
+  height: @height; // Decl{value}
+}
+
+// 变量插值 @{xx}
+.@{my-selector} { // Rule{selector}
+  @{property}: #0ee; // Decl{prop}
+  font-weight: bold;
+  background: url("@{images}/white-sand.png"); // Decl{value}
+}
+
+// 属性作为变量 $xx
+.block {
+  color: red;
+  background-color: $color; // Decl{value}
+
+  padding: 20px;
+  .inner {
+    margin: $padding; // Decl{value}
+  }
+}
+
+/** 混合 */

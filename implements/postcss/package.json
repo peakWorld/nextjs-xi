@@ -4,12 +4,21 @@
   "description": "",
   "main": "",
   "scripts": {
-    "plugin": "node ./plugin/index.js"
+    "plugin": "cross-env NODE_ENV=plugin node ./src/index.js",
+    "less": "cross-env NODE_ENV=less node ./src/index.js",
+    "scss": "cross-env NODE_ENV=scss node ./src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "postcss": "^8.4.32"
+    "cross-env": "^7.0.3",
+    "less": "^4.2.0",
+    "postcss": "^8.4.32",
+    "postcss-less": "^6.0.0",
+    "postcss-scss": "^4.0.9"
+  },
+  "devDependencies": {
+    "fs-extra": "^11.2.0"
   }
 }
