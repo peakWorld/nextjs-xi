@@ -12,7 +12,7 @@ export interface MkMeta {
   id: string;
 }
 
-const postsDirectory = path.join(process.cwd(), "doc");
+const postsDirectory = path.join(process.cwd(), "posts");
 
 export const getSortedPostsData = cache(() => {
   const fileNames = fs.readdirSync(postsDirectory);

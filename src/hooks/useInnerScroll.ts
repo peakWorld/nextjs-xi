@@ -1,5 +1,6 @@
+"use client";
+
 import { useRef, useLayoutEffect } from "react";
-import "./index.scss";
 
 interface UseInnerScrollProps {
   ready?: boolean; // html结构是否已经准备完成(比如loading/failed等状态下, 获取到的元素高度不是最终结构的高度)

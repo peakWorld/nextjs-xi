@@ -4,21 +4,29 @@
   "description": "",
   "main": "",
   "scripts": {
-    "plugin": "cross-env NODE_ENV=plugin node ./src/index.js",
-    "less": "cross-env NODE_ENV=less node ./src/index.js",
-    "scss": "cross-env NODE_ENV=scss node ./src/index.js"
+    "start": "concurrently -n \"TS,STYLE,RUN\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run watch-ts\" \"npm run watch-style\" \"npm run watch-less\"",
+    "watch-ts": "tsc -w -p tsconfig.json",
+    "watch-style": "chokidar \"**/*.less\" \"**/*.scss\" -c \"npm run less\"",
+    "watch-less": "cross-env NODE_ENV=less nodemon ./build/src/index.js",
+    "watch-scss": "cross-env NODE_ENV=scss nodemon ./build/src/index.js",
+    "less": "cross-env NODE_ENV=less node ./build/src/index.js",
+    "scss": "cross-env NODE_ENV=scss node ./build/src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cross-env": "^7.0.3",
+    "fs-extra": "^11.2.0",
     "less": "^4.2.0",
     "postcss": "^8.4.32",
     "postcss-less": "^6.0.0",
     "postcss-scss": "^4.0.9"
   },
   "devDependencies": {
-    "fs-extra": "^11.2.0"
+    "@types/node": "^20.11.3",
+    "@types/postcss-less": "^4.0.6",
+    "chokidar-cli": "^3.0.0",
+    "concurrently": "^8.2.2"
   }
 }

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { resizeRendererToDisplaySize } from "../utils";
-export default function Case1_3() {
+export default function Case1_4() {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function Case1_3() {
     scene.add(light);
 
     // 要更新旋转角度的对象数组
-    const objects: THREE.Mesh[] = [];
+    const objects: THREE.Object3D[] = [];
 
     // 一球多用
     const radius = 1;
@@ -46,11 +46,19 @@ export default function Case1_3() {
       heightSegments
     );
 
+    // 空白场景对象 日、地
+    const solarSystem = new THREE.Object3D();
+    scene.add(solarSystem);
+    objects.push(solarSystem);
+
     // 太阳
-    const sunMaterial = new THREE.MeshPhongMaterial({ emissive: 0xffff00 });
+    const sunMaterial = new THREE.MeshPhongMaterial({
+      emissive: 0xffff00,
+    });
     const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
     sunMesh.scale.set(5, 5, 5); // 影响局部空间中的所有子元素
-    scene.add(sunMesh);
+    solarSystem.add(sunMesh);
+    objects.push(sunMesh);
 
     // 中心点光源(模拟太阳光)
     const color = 0xffffff;
@@ -58,16 +66,35 @@ export default function Case1_3() {
     const pointlight = new THREE.PointLight(color, intensity);
     scene.add(pointlight);
 
+    // 空白场景对象 地、月
+    const earthOrbit = new THREE.Object3D();
+    earthOrbit.position.x = 10;
+    solarSystem.add(earthOrbit);
+    objects.push(earthOrbit);
+
     // 地球
     const earthMaterial = new THREE.MeshPhongMaterial({
       color: 0x2233ff,
       emissive: 0x112244,
     });
     const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
-    earthMesh.position.x = 10;
-    scene.add(earthMesh);
+    earthOrbit.add(earthMesh);
     objects.push(earthMesh);
-    sunMesh.add(earthMesh);
+
+    // 空白场景对象 月
+    const moonOrbit = new THREE.Object3D();
+    moonOrbit.position.x = 2;
+    earthOrbit.add(moonOrbit);
+
+    // 月球
+    const moonMaterial = new THREE.MeshPhongMaterial({
+      color: 0x888888,
+      emissive: 0x222222,
+    });
+    const moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
+    moonMesh.scale.set(0.5, 0.5, 0.5);
+    moonOrbit.add(moonMesh);
+    objects.push(moonMesh);
 
     function render(time: number) {
       time *= 0.001;
@@ -78,9 +105,12 @@ export default function Case1_3() {
       }
 
       objects.forEach((e) => {
-        if (e instanceof THREE.Mesh) {
-          e.rotation.y = time;
-        }
+        e.rotation.y = time;
+
+        const axes = new THREE.AxesHelper();
+        (axes.material as THREE.Material).depthTest = false; // 关闭深度测试, 不会检查其是否在其他东西后面进行绘制
+        axes.renderOrder = 1; // 调整绘制顺序, 会在所有球体之后被绘制
+        e.add(axes);
       });
 
       renderer.render(scene, camera);

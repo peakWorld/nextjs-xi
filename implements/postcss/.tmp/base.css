@@ -15,4 +15,42 @@ body {
 .block .inner {
   margin: 20px;
 }
-/** 混合 */
+/** 父选择器 */
+a.text {
+  color: blue;
+}
+a.text:hover {
+  color: green;
+}
+a.text a.text {
+  color: green;
+}
+/** Extend */
+.inline,
+nav ul,
+nav ul {
+  color: red;
+}
+nav ul {
+  background: blue;
+}
+nav ul {
+  background: green;
+}
+/** Mixins */
+.a {
+  color: red;
+}
+.mixin-class {
+  color: red;
+  background-color: green;
+}
+.important {
+  background: #f5f5f5 no-repeat !important;
+  color: green !important;
+}
+/** Merge */
+.myclass {
+  box-shadow: inset 0 0 10px #555, 0 0 20px black;
+  transform: scale(2) rotate(15deg);
+}
