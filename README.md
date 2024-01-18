@@ -20,9 +20,6 @@
   - app 页面
     - (ex-3d)
     - blog
-  - examples 案例
-    - t_  threejs
-    - w_  webgl
 
 - implements Node端代码
   - ts  effective-typescript && type-challenges

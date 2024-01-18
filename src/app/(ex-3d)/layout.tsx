@@ -1,4 +1,4 @@
-import EXMenu from "@/components/ex/menu";
+import EXMenu from "./_components/menu";
 
 export default function P3dLayout({ children }: { children: React.ReactNode }) {
   return (

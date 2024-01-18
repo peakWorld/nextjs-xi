@@ -1,6 +1,6 @@
-import GetPage from "@/components/getPage";
-import { EXTYPE } from "@/const";
-import useNotFound from "@/hooks/useExNotFound";
+import GetPage from "@/app/(ex-3d)/_components/getPage";
+import { EXTYPE } from "@/app/(ex-3d)/const";
+import useNotFound from "@/app/(ex-3d)/_hooks/useExNotFound";
 
 export default function Threejs({ params }: { params: { id: string } }) {
   useNotFound(EXTYPE.threejs, params.id);
