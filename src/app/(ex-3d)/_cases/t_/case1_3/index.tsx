@@ -2,16 +2,16 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/comon";
-import createExtrudeMesh from "./ExtrudeGeometry";
-import createLatheMesh from "./LatheGeometry";
-import createTextMesh from "./TextGeometry";
-import createTubeMesh from "./TubeGeometry";
+import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/common";
+import createExtrudeMesh from "./extrudeGeometry";
+import createLatheMesh from "./latheGeometry";
+import createTextMesh from "./textGeometry";
+import createTubeMesh from "./tubeGeometry";
 import {
   createEdgesLine,
   createWireframeLine,
-} from "./EdgesOrWireframeGeometry";
-import { creatCubicBezierCurve3Line } from "./Line";
+} from "./edgesOrWireframeGeometry";
+import { creatCubicBezierCurve3Line } from "./line";
 export default function Case1_3() {
   const ref = useRef<HTMLCanvasElement>(null);
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/comon";
+import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/common";
 export default function Case1_4() {
   const ref = useRef<HTMLCanvasElement>(null);
 

@@ -1,7 +1,7 @@
 // 辅助
 
 import * as THREE from "three";
-import createExtrudeMesh from "./ExtrudeGeometry";
+import createExtrudeMesh from "./extrudeGeometry";
 
 export function createEdgesLine() {
   // 针对几合体, 生成边缘网格
