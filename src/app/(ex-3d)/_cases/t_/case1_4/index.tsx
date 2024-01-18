@@ -2,13 +2,18 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/common";
+import AxisGridHelper from "@/app/(ex-3d)/_utils/t_/helpers/axisGrid";
+
 export default function Case1_4() {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     let timer = -1;
     const canvas = ref.current as HTMLCanvasElement;
+
+    const gui = new GUI();
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -97,6 +102,18 @@ export default function Case1_4() {
     //   e.add(axes);
     // });
 
+    function makeAxisGrid(node: THREE.Object3D, label: string, units?: number) {
+      const helper = new AxisGridHelper(node, units);
+      gui.add(helper, "visible").name(label);
+    }
+
+    makeAxisGrid(solarSystem, "solarSystem", 25);
+    makeAxisGrid(sunMesh, "sunMesh");
+    makeAxisGrid(earthOrbit, "earthOrbit");
+    makeAxisGrid(earthMesh, "earthMesh");
+    makeAxisGrid(moonOrbit, "moonOrbit");
+    makeAxisGrid(moonMesh, "moonMesh");
+
     function render(time: number) {
       time *= 0.001;
 
@@ -106,7 +123,7 @@ export default function Case1_4() {
       }
 
       objects.forEach((e) => {
-        e.rotation.y = time;
+        // e.rotation.y = time;
       });
 
       renderer.render(scene, camera);
