@@ -185,6 +185,44 @@
       "nodes": [
         {
           "type": "decl",
+          "prop": "box-shadow+",
+          "value": "inset 0 0 10px #555"
+        },
+        {
+          "type": "decl",
+          "prop": "transform+_",
+          "value": "scale(2)"
+        }
+      ],
+      "selector": ".mixin()"
+    },
+    {
+      "type": "rule",
+      "nodes": [
+        {
+          "type": "atrule",
+          "name": "mixin",
+          "params": "()",
+          "mixin": true
+        },
+        {
+          "type": "decl",
+          "prop": "box-shadow+",
+          "value": "0 0 20px black"
+        },
+        {
+          "type": "decl",
+          "prop": "transform+_",
+          "value": "rotate(15deg)"
+        }
+      ],
+      "selector": ".myclass"
+    },
+    {
+      "type": "rule",
+      "nodes": [
+        {
+          "type": "decl",
           "prop": "color",
           "value": "red"
         }
@@ -234,36 +272,7 @@
           "value": "@color"
         }
       ],
-      "selector": ".foo (@bg; @color: #900)"
-    },
-    {
-      "type": "rule",
-      "nodes": [
-        {
-          "type": "atrule",
-          "name": "foo",
-          "params": "(#f5f5f5 no-repeat, green)",
-          "mixin": true,
-          "important": true
-        }
-      ],
-      "selector": ".important"
-    },
-    {
-      "type": "rule",
-      "nodes": [
-        {
-          "type": "decl",
-          "prop": "box-shadow+",
-          "value": "inset 0 0 10px #555"
-        },
-        {
-          "type": "decl",
-          "prop": "transform+_",
-          "value": "scale(2)"
-        }
-      ],
-      "selector": ".mixin()"
+      "selector": ".mixin (@bg; @color: #900)"
     },
     {
       "type": "rule",
@@ -271,21 +280,47 @@
         {
           "type": "atrule",
           "name": "mixin",
-          "params": "()",
-          "mixin": true
-        },
-        {
-          "type": "decl",
-          "prop": "box-shadow+",
-          "value": "0 0 20px black"
-        },
-        {
-          "type": "decl",
-          "prop": "transform+_",
-          "value": "rotate(15deg)"
+          "params": "(#f5f5f5 no-repeat, green)",
+          "mixin": true,
+          "important": true
         }
       ],
-      "selector": ".myclass"
+      "selector": ".class1"
+    },
+    {
+      "type": "rule",
+      "nodes": [
+        {
+          "type": "atrule",
+          "name": "mixin",
+          "params": "(@color: #efca44; @bg: red)",
+          "mixin": true
+        }
+      ],
+      "selector": ".class2"
+    },
+    {
+      "type": "rule",
+      "nodes": [
+        {
+          "type": "decl",
+          "prop": "box-shadow",
+          "value": "@arguments"
+        }
+      ],
+      "selector": ".box-shadow(@x: 0, @y: 0, @blur: 1px, @color: #000)"
+    },
+    {
+      "type": "rule",
+      "nodes": [
+        {
+          "type": "atrule",
+          "name": "box-shadow",
+          "params": "(2px, 5px)",
+          "mixin": true
+        }
+      ],
+      "selector": ".big-block"
     }
   ]
 }

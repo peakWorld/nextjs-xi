@@ -123,7 +123,7 @@ export default function Case1_4() {
       }
 
       objects.forEach((e) => {
-        // e.rotation.y = time;
+        e.rotation.y = time;
       });
 
       renderer.render(scene, camera);
@@ -134,6 +134,7 @@ export default function Case1_4() {
     return () => {
       if (timer > -1) cancelAnimationFrame(timer);
       renderer.dispose();
+      document.querySelector(".lil-gui")?.remove();
     };
   }, []);
 

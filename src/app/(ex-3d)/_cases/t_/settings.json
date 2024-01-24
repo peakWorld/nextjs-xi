@@ -14,5 +14,29 @@
   {
     "path": "case1_4",
     "title": "场景"
+  },
+  {
+    "path": "case1_4?k=tank",
+    "title": "场景(实践)"
+  },
+  {
+    "path": "case1_5",
+    "title": "材质"
+  },
+  {
+    "path": "case1_6",
+    "title": "纹理"
+  },
+  {
+    "path": "case1_6?k=load",
+    "title": "纹理(加载)"
+  },
+  {
+    "path": "case1_6?k=target",
+    "title": "纹理(后台渲染)"
+  },
+  {
+    "path": "case1_6?k=mips",
+    "title": "纹理(过滤)"
   }
 ]

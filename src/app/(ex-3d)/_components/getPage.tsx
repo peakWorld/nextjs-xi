@@ -3,14 +3,22 @@ import { useEffect, useRef } from "react";
 import { useUpdate } from "ahooks";
 import { EXMAP } from "@/app/(ex-3d)/const";
 
-export default function GetPage({ id, type }: { id: string; type: string }) {
+export default function GetPage({
+  pageId,
+  pageKey,
+  type,
+}: {
+  pageId: string;
+  pageKey: string;
+  type: string;
+}) {
   const page = useRef<() => React.ReactNode>();
   const update = useUpdate();
 
   useEffect(() => {
     async function loadPage() {
       try {
-        const pageFunc = (await EXMAP[type](id)).default;
+        const pageFunc = (await EXMAP[type](pageId, pageKey)).default;
         page.current = pageFunc;
         update();
       } catch (err) {
@@ -18,7 +26,7 @@ export default function GetPage({ id, type }: { id: string; type: string }) {
       }
     }
     loadPage();
-  }, [id, update, type]);
+  }, [pageId, pageKey, update, type]);
 
   const Page = page.current;
 
