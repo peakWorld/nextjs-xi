@@ -1,7 +1,13 @@
 declare module "*.vs";
 declare module "*.fs";
 
-declare global {}
+declare global {
+  declare module "three" {
+    export interface Object3D {
+      [k: string]: any;
+    }
+  }
+}
 
 interface Window {
   [k: string]: any;

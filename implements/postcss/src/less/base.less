@@ -76,8 +76,6 @@ nav ul:extend(.inline) { // Rule{selector} => extend:true
   #b();
 }
 
-
-
 // 参数
 .mixin (@bg; @color: #900) {
   background: @bg; // Decl{value} 父级selector中是否传入参数
@@ -90,7 +88,6 @@ nav ul:extend(.inline) { // Rule{selector} => extend:true
 .class2 {
   .mixin(@color: #efca44; @bg: red);
 }
-
 
 // 参数-arguments
 .box-shadow(@x: 0, @y: 0, @blur: 1px, @color: #000) {

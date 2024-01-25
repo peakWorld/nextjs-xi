@@ -38,5 +38,13 @@
   {
     "path": "case1_6?k=mips",
     "title": "纹理(过滤)"
+  },
+  {
+    "path": "case1_6?k=operate",
+    "title": "纹理(操作)"
+  },
+  {
+    "path": "case1_7",
+    "title": "光照"
   }
 ]
