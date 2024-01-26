@@ -1,11 +1,3 @@
-# 执行命令
-```ts
-// watch-ts 监听ts文件, 有文件修改则重新编译
-// watch-less 监听ts编译后的文件, ts每次重新编译 重新执行一次 命令‘less’
-// watch-style 监听less|scss文件, 有文件修改则执行一次 命令‘less’
-// less 执行编译后的文件
-```
-
 # Node
 ```ts
 // Node comment

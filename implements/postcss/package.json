@@ -4,9 +4,9 @@
   "description": "",
   "main": "",
   "scripts": {
-    "start": "concurrently -n \"TS,STYLE,RUN\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run watch-ts\" \"npm run watch-style\" \"npm run watch-less\"",
+    "start": "concurrently -n \"TS,STYLE,RUN\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run watch-ts\" \"npm run watch-style\" \"npm run watch-scss\"",
     "watch-ts": "tsc -w -p tsconfig.json",
-    "watch-style": "chokidar \"**/*.less\" \"**/*.scss\" -c \"npm run less\"",
+    "watch-style": "chokidar \"**/*.less\" \"**/*.scss\" -c \"npm run scss\"",
     "watch-less": "cross-env NODE_ENV=less nodemon ./build/src/index.js",
     "watch-scss": "cross-env NODE_ENV=scss nodemon ./build/src/index.js",
     "less": "cross-env NODE_ENV=less node ./build/src/index.js",
@@ -21,7 +21,8 @@
     "less": "^4.2.0",
     "postcss": "^8.4.32",
     "postcss-less": "^6.0.0",
-    "postcss-scss": "^4.0.9"
+    "postcss-scss": "^4.0.9",
+    "sass": "^1.70.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.3",

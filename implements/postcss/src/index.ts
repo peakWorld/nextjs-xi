@@ -12,7 +12,7 @@ const env = process.env.NODE_ENV;
 const bins = path.join(process.cwd(), "./node_modules/.bin");
 
 // 删除less中ast非必要属性
-function deleteLessAstProp(node: any, ast: any) {
+function deleteAstProp(node: any, ast: any) {
   const {
     raws,
     source,
@@ -27,7 +27,7 @@ function deleteLessAstProp(node: any, ast: any) {
   ast.nodes.push(rest);
   if (node.nodes) {
     rest.nodes = [];
-    node.nodes.forEach((it: any) => deleteLessAstProp(it, rest));
+    node.nodes.forEach((it: any) => deleteAstProp(it, rest));
   }
 }
 
@@ -59,7 +59,7 @@ function deleteLessAstProp(node: any, ast: any) {
     });
 
     const ast = { type: "root", nodes: [] };
-    result.root.each((node) => deleteLessAstProp(node, ast));
+    result.root.each((node) => deleteAstProp(node, ast));
 
     // 输出ast树
     fs.writeJsonSync(`${dirUrl}/less.json`, ast, { spaces: 2 });
@@ -70,7 +70,7 @@ function deleteLessAstProp(node: any, ast: any) {
   // scss相关
   // https://www.sass.hk
   if (env === "scss") {
-    const url = path.join(process.cwd(), "./src/scss/base.less");
+    const url = path.join(process.cwd(), "./src/scss/base.scss");
     const source = fs.readFileSync(url).toString();
 
     const parser = postcss();
@@ -80,7 +80,14 @@ function deleteLessAstProp(node: any, ast: any) {
       syntax: scss,
     });
 
+    const ast = { type: "root", nodes: [] };
+    result.root.each((node) => deleteAstProp(node, ast));
+
     // 输出ast树
-    fs.writeJsonSync(`${dirUrl}/less.json`, result.root, { spaces: 2 });
+    fs.writeJsonSync(`${dirUrl}/scss.json`, ast, { spaces: 2 });
+    // 编译成css
+    child_process.exec(
+      `${bins}/sass ${url} ${dirUrl}/base.css --no-source-map`
+    );
   }
 })();

@@ -1,3 +1,9 @@
+// less插件
+@plugin "less";
+.show-me-pi {
+  width: pi();
+}
+
 // 文件导入
 @import url('./var.less');
 
@@ -54,12 +60,12 @@ nav ul:extend(.inline) { // Rule{selector} => extend:true
 }
 
 /** Merge */
-.mixin() {
+.merge() {
   box-shadow+: inset 0 0 10px #555;
   transform+_: scale(2);
 }
 .myclass {
-  .mixin();
+  .merge();
   box-shadow+: 0 0 20px black; // + 逗号链接
   transform+_: rotate(15deg); // +_ 空格链接
 }
@@ -76,17 +82,27 @@ nav ul:extend(.inline) { // Rule{selector} => extend:true
   #b();
 }
 
+// 命名空间
+#outer() {
+  .inner {
+    color: red;
+  }
+}
+.c {
+  #outer.inner();
+}
+
 // 参数
-.mixin (@bg; @color: #900) {
+.mixinParams (@bg; @color: #900) {
   background: @bg; // Decl{value} 父级selector中是否传入参数
   color: @color;
 }
 .class1 {
-  .mixin(#f5f5f5 no-repeat, green) !important; // AtRuleMixin{name, params}
+  .mixinParams(#f5f5f5 no-repeat, green) !important; // AtRuleMixin{name, params}
 }
 // 参数-命名
 .class2 {
-  .mixin(@color: #efca44; @bg: red);
+  .mixinParams(@color: #efca44; @bg: red);
 }
 
 // 参数-arguments
@@ -95,4 +111,101 @@ nav ul:extend(.inline) { // Rule{selector} => extend:true
 }
 .big-block {
   .box-shadow(2px, 5px);
+}
+
+// 函数
+.average(@x, @y) {
+  @result: ((@x + @y) / 2);
+}
+div {
+  padding: .average(16px, 50px)[@result];
+}
+
+// 递归
+.loop(@counter) when (@counter > 0) {
+  width: (10px * @counter);
+  .column-@{counter} {
+    width: (@counter * 25%);
+  }
+  .loop(@counter - 1);
+}
+div { .loop(5) }
+
+// if else
+.mixin(@a) when (lightness(@a) >= 50%) {
+  background-color: black;
+}
+.mixin(@a) when (lightness(@a) < 50%) {
+  background-color: white;
+}
+.mixin(@a) {
+  color: @a;
+}
+.class1 { .mixin(#ddd) }
+.class2 { .mixin(#555) }
+
+// 比较
+@media: mobile;
+.mixin2(@a) when (@media = mobile) { // 与非参数进行比较
+  background-color: @a;
+}
+.max(@a; @b) when (@a > @b) { width: @a } // 参数相互比较
+.class3 {
+  .mixin2(#ddd);
+  .max(10px, 5px);
+}
+
+// 逻辑运算符
+.mixin3(@a) when (isnumber(@a)) and (@a > 0) { // AND
+  width: @a;
+}
+.mixin3_1(@a) when (@a > 10), (@a < -10) { // OR
+  font-size: @a;
+}
+.mixin3_2(@b) when not (@b > 0) {} // NOT
+.class4 {
+  .mixin3(5px);
+  .mixin3_1(20px);
+}
+
+// 类型检查功能
+// 类型检查 => iscolor isnumber isstring iskeyword isurl
+// 特殊单位 => ispixel ispercentage isem isunit
+.mixin4(@a) when (ispixel(@a)), (isem(@a)) {
+  width: @a;
+}
+.class5 {
+  .mixin4(1);
+  .mixin4(2px);
+  .mixin4(3em);
+}
+
+// 样式直接使用 when
+@my-option: true;
+button when (@my-option) {
+  color: white;
+  & text when not (@my-option) {
+    font-size: 12px;
+  }
+  & text when (@my-option) {
+    font-size: 24px;
+  }
+}
+
+// 规则集
+@ruleset: {
+  color: red;
+  .text {
+    font-size: 12px;
+  }
+};
+h1 { @ruleset(); }
+
+.ruleset(@rules) {
+  color: red;
+  @rules();
+}
+header {
+  font-size: 12px;
+  .ruleset({ background-color: red; }); // 规则集与minix结合
 }
