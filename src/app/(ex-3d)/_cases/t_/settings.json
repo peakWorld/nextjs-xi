@@ -46,5 +46,13 @@
   {
     "path": "case1_7",
     "title": "光照"
+  },
+  {
+    "path": "case1_7?k=rect",
+    "title": "光照(矩形区域光)"
+  },
+  {
+    "path": "case1_8",
+    "title": "相机"
   }
 ]
