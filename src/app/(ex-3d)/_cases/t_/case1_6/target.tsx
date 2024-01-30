@@ -96,7 +96,7 @@ export default function Case1_6() {
       renderer.setRenderTarget(null);
 
       // 后期渲染
-      // 利用renderTarget.texture将纹理渲染到前台
+      // 利用renderTarget.texture将纹理渲染到前台, 正交相机的正面大小为整个屏幕
       const viewWidth = canvas.clientWidth / pixelSize;
       const viewHeight = canvas.clientHeight / pixelSize;
       planeCamera.left = -viewWidth / 2;
@@ -105,7 +105,8 @@ export default function Case1_6() {
       planeCamera.bottom = -viewHeight / 2;
       planeCamera.updateProjectionMatrix();
 
-      planeMesh.scale.set(renderTarget.width, renderTarget.height, 1); // planeMesh的纹理保存了要渲染的图像
+      // planeMesh的纹理保存了要渲染的图像, 将planeMesh铺满整个屏幕
+      planeMesh.scale.set(renderTarget.width, renderTarget.height, 1);
       renderer.render(planeScene, planeCamera);
 
       timer = requestAnimationFrame(render);

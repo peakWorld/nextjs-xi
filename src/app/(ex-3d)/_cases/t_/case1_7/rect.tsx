@@ -135,7 +135,6 @@ export default function Case1_7() {
         camera.updateProjectionMatrix();
       }
 
-      controls.update();
       renderer.render(scene, camera);
     }
     timer = requestAnimationFrame(render);

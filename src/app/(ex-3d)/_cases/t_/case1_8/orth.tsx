@@ -21,32 +21,39 @@ export default function Case1_8() {
       canvas,
     });
 
-    const fov = 45;
-    const aspect = 2; // 默认canvas的宽高比
+    const size = 1;
     const near = 5;
-    const far = 100;
-    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    const far = 50;
+    const camera = new THREE.OrthographicCamera( // 正交相机, 主相机
+      -size,
+      size,
+      size,
+      -size,
+      near,
+      far
+    );
+    camera.zoom = 0.2;
     camera.position.set(0, 10, 20);
 
     const cameraHelper = new THREE.CameraHelper(camera);
 
     const gui = new GUI();
-    gui.add(camera, "fov", 1, 180);
+    gui.add(camera, "zoom", 0.01, 1, 0.01).listen();
     const minMaxGUIHelper = new MinMaxGUIHelper(camera, "near", "far", 0.1);
-    gui.add(minMaxGUIHelper, "min", 0.1, 100, 0.1).name("near");
-    gui.add(minMaxGUIHelper, "max", 0.1, 100, 0.1).name("far");
+    gui.add(minMaxGUIHelper, "min", 0.1, 50, 0.1).name("near");
+    gui.add(minMaxGUIHelper, "max", 0.1, 50, 0.1).name("far");
 
     const controls = new OrbitControls(camera, view1Elem); // 相机控制器
     controls.target.set(0, 5, 0);
     controls.update();
 
-    const camera2 = new THREE.PerspectiveCamera(
+    const camera2 = new THREE.PerspectiveCamera( // 观察相机
       60, // fov
       2, // aspect
       0.1, // near
       500 // far
     );
-    camera2.position.set(40, 10, 30);
+    camera2.position.set(16, 28, 40);
     camera2.lookAt(0, 5, 0);
 
     const controls2 = new OrbitControls(camera2, view2Elem);
@@ -83,7 +90,7 @@ export default function Case1_8() {
         side: THREE.DoubleSide,
       });
       const plane = new THREE.Mesh(planeGeo, planeMat);
-      plane.rotation.x = Math.PI * -0.5;
+      plane.rotation.x = Math.PI * -0.5; // 负值, 正时针旋转
       scene.add(plane);
 
       const cubeSize = 4;
@@ -133,8 +140,11 @@ export default function Case1_8() {
       renderer.setScissorTest(true);
 
       {
+        // 宽高比,
+        // 正交相机高度为2个单位, 那么宽度除以2才是正确值
         const aspect = setScissorForElement(view1Elem);
-        camera.aspect = aspect;
+        camera.left = -aspect;
+        camera.right = aspect;
         camera.updateProjectionMatrix();
         cameraHelper.update();
         cameraHelper.visible = false;

@@ -53,6 +53,22 @@
   },
   {
     "path": "case1_8",
-    "title": "相机"
+    "title": "相机(透视)"
+  },
+  {
+    "path": "case1_8?k=z",
+    "title": "相机(z冲突)"
+  },
+  {
+    "path": "case1_8?k=orth",
+    "title": "相机(正交)"
+  },
+  {
+    "path": "case1_8?k=2d",
+    "title": "相机(正交/拟2D)"
+  },
+  {
+    "path": "case1_9",
+    "title": "阴影"
   }
 ]
