@@ -1,0 +1,97 @@
+@import './var.scss';
+
+/** 嵌套规则 */
+#main p {
+  color: #00ff00;
+  .redbox {
+    background-color: #ff0000;
+  }
+}
+
+// 父选择器
+a {
+  font-weight: bold;
+  &-sidebar { border: 1px solid; }
+  &:hover { text-decoration: underline; }
+}
+
+// 嵌套属性
+.funky {
+  font: {
+    family: fantasy;
+    size: 30em;
+    weight: bold;
+  }
+}
+
+// 占位符选择器
+%cls1 {
+  font-weight: bold;
+}
+
+/** 语法 */
+
+// 变量
+$width: 5em;
+$font-size: 24px;
+$line-height: 10px;
+$name: foo;
+$attr: border;
+$content: null;
+$content: "Non-null content" !default; // 变量是 null 空值时将视为被 !default 赋值。
+
+#main {
+  width: $width;
+}
+
+// 运算
+p {
+  content: "Foo " + Bar; // 有引号字符串（位于 + 左侧）连接无引号字符串，运算结果是有引号的
+  font-family: sans- + "serif"; // 无引号字符串（位于 + 左侧）连接有引号字符串，运算结果则没有引号
+  width: 1in + 8pt;
+  font: 10px/8px;
+  font: #{$font-size}/#{$line-height};
+  color: hsl(0, 100%, 50%); // 函数
+}
+// 插值语法
+p:before {
+  content: "I ate #{5 + 10} pies!";
+}
+
+p.#{$name} {
+  #{$attr}-color: blue;
+  content: $content;
+}
+
+/** 指令 */
+
+// @media
+.sidebar {
+  width: 300px;
+  @media screen and (orientation: landscape) {
+    width: 500px;
+  }
+}
+
+// @extend 样式继承
+.error {
+  border: 1px #f00;
+  background-color: #fdd;
+}
+.seriousError {
+  @extend .error;
+  border-width: 3px;
+}
+
+@media print {
+  .error {
+    border: 1px #f00;
+    background-color: #fdd;
+  }
+  .seriousError {
+    @extend .error; // 必须延伸@media中的选择器
+    border-width: 3px;
+  }
+}
+
+/** 控制指令 */

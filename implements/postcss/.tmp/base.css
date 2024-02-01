@@ -1,1 +1,81 @@
+@charset "UTF-8";
+.var {
+  color: red;
+}
 
+/** 嵌套规则 */
+#main p {
+  color: #00ff00;
+}
+#main p .redbox {
+  background-color: #ff0000;
+}
+
+a {
+  font-weight: bold;
+}
+a-sidebar {
+  border: 1px solid;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.funky {
+  font-family: fantasy;
+  font-size: 30em;
+  font-weight: bold;
+}
+
+/** 语法 */
+#main {
+  width: 5em;
+}
+
+p {
+  content: "Foo Bar";
+  font-family: sans-serif;
+  width: 1.1111111111in;
+  font: 10px/8px;
+  font: 24px/10px;
+  color: hsl(0, 100%, 50%);
+}
+
+p:before {
+  content: "I ate 15 pies!";
+}
+
+p.foo {
+  border-color: blue;
+  content: "Non-null content";
+}
+
+/** 指令 */
+.sidebar {
+  width: 300px;
+}
+@media screen and (orientation: landscape) {
+  .sidebar {
+    width: 500px;
+  }
+}
+
+.error, .seriousError {
+  border: 1px #f00;
+  background-color: #fdd;
+}
+
+.seriousError {
+  border-width: 3px;
+}
+
+@media print {
+  .error, .seriousError {
+    border: 1px #f00;
+    background-color: #fdd;
+  }
+  .seriousError {
+    border-width: 3px;
+  }
+}
+/** 控制指令 */
