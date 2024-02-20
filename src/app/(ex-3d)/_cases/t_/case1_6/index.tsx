@@ -12,19 +12,12 @@ export default function Case1_6() {
     let timer = -1;
     const canvas = ref.current as HTMLCanvasElement;
 
-    const gui = new GUI();
-
-    const loader = new THREE.TextureLoader();
-    function loadColorTexture(path: string) {
-      const texture = loader.load(path);
-      texture.colorSpace = THREE.SRGBColorSpace;
-      return texture;
-    }
-
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       canvas,
     });
+
+    const scene = new THREE.Scene();
 
     const fov = 60;
     const aspect = 2; // 默认canvas的宽高比
@@ -33,10 +26,17 @@ export default function Case1_6() {
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.z = 35;
 
-    const scene = new THREE.Scene();
+    {
+      const ambientLight = new THREE.AmbientLight(0xffffff);
+      scene.add(ambientLight);
+    }
 
-    const ambientLight = new THREE.AmbientLight(0xffffff);
-    scene.add(ambientLight);
+    const loader = new THREE.TextureLoader();
+    function loadColorTexture(path: string) {
+      const texture = loader.load(path);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      return texture;
+    }
 
     const geometry = new THREE.BoxGeometry(5, 5, 5);
 

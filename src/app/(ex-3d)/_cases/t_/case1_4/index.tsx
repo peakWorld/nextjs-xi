@@ -20,6 +20,8 @@ export default function Case1_4() {
       canvas,
     });
 
+    const scene = new THREE.Scene();
+
     const fov = 40;
     const aspect = 2; // 默认canvas的宽高比
     const near = 0.1;
@@ -29,13 +31,13 @@ export default function Case1_4() {
     camera.up.set(0, 0, 1);
     camera.lookAt(0, 0, 0);
 
-    const scene = new THREE.Scene();
-
-    // 中心点光源(模拟太阳光)
-    const color = 0xffffff;
-    const intensity = 500;
-    const pointlight = new THREE.PointLight(color, intensity);
-    scene.add(pointlight);
+    {
+      // 中心点光源(模拟太阳光)
+      const color = 0xffffff;
+      const intensity = 500;
+      const pointlight = new THREE.PointLight(color, intensity);
+      scene.add(pointlight);
+    }
 
     // 要更新旋转角度的对象数组
     const objects: THREE.Object3D[] = [];
@@ -44,11 +46,7 @@ export default function Case1_4() {
     const radius = 1;
     const widthSegments = 6;
     const heightSegments = 6;
-    const sphereGeometry = new THREE.SphereGeometry(
-      radius,
-      widthSegments,
-      heightSegments
-    );
+    const sphereGeometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
 
     // 空白场景对象 日、地
     const solarSystem = new THREE.Object3D();

@@ -17,7 +17,10 @@ export default function Case1_1() {
     });
     renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
 
-    // 2. 相机
+    // 2. 场景
+    const scene = new THREE.Scene();
+
+    // 3. 相机
     const fov = 75;
     const aspect = canvas.offsetWidth / canvas.offsetHeight;
     const near = 0.1;
@@ -25,15 +28,19 @@ export default function Case1_1() {
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.z = 2; // 摄像机默认指向Z轴负方向，上方向朝向Y轴正方向。
 
-    // 3. 场景
-    const scene = new THREE.Scene();
+    // 4. 平行光(方向、光色、强度)
+    const color = 0xffffff;
+    const intensity = 3;
+    const light = new THREE.DirectionalLight(color, intensity);
+    light.position.set(-1, 2, 4); // 默认指向原点, 通过改变target/position来修改光照方向
+    scene.add(light);
 
-    // 4. 网格
+    // 5. 网格
     const boxWidth = 1;
     const boxHeight = 1;
     const boxDepth = 1;
-    const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth); // 4.1 几何体
-    const material = new THREE.MeshPhongMaterial({ color: 0x44aa88 }); // 4.2 材质
+    const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth); // 5.1 几何体
+    const material = new THREE.MeshPhongMaterial({ color: 0x44aa88 }); // 5.2 材质
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
@@ -45,19 +52,9 @@ export default function Case1_1() {
       cube.position.x = x;
       return cube;
     }
-    const cubes = [
-      makeCube(geometry, 0x8844aa, -2),
-      makeCube(geometry, 0xaa8844, 2),
-    ];
+    const cubes = [makeCube(geometry, 0x8844aa, -2), makeCube(geometry, 0xaa8844, 2)];
 
-    // 7. 平行光(方向、光色、强度)
-    const color = 0xffffff;
-    const intensity = 3;
-    const light = new THREE.DirectionalLight(color, intensity);
-    light.position.set(-1, 2, 4); // 默认指向原点, 通过改变target/position来修改光照方向
-    scene.add(light);
-
-    // 6. 动画
+    // 7. 动画
     function render(time: number) {
       time *= 0.001; // 将时间单位变为秒
 
@@ -71,7 +68,7 @@ export default function Case1_1() {
         it.rotation.y = rot;
       });
 
-      // 5. 渲染
+      // 6. 渲染
       renderer.render(scene, camera);
       timer = requestAnimationFrame(render);
     }

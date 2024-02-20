@@ -7,10 +7,7 @@ import createExtrudeMesh from "./extrudeGeometry";
 import createLatheMesh from "./latheGeometry";
 import createTextMesh from "./textGeometry";
 import createTubeMesh from "./tubeGeometry";
-import {
-  createEdgesLine,
-  createWireframeLine,
-} from "./edgesOrWireframeGeometry";
+import { createEdgesLine, createWireframeLine } from "./edgesOrWireframeGeometry";
 import { creatCubicBezierCurve3Line } from "./line";
 export default function Case1_3() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -24,6 +21,9 @@ export default function Case1_3() {
       canvas,
     });
 
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xaaaaaa);
+
     const fov = 75;
     const aspect = 2; // 默认canvas的宽高比
     const near = 0.1;
@@ -31,9 +31,6 @@ export default function Case1_3() {
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.z = 12;
     // camera.position.set(2, 1, 5);
-
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xaaaaaa);
 
     // const axesHelper = new THREE.AxesHelper(10);
     // scene.add(axesHelper);

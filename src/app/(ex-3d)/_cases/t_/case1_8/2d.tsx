@@ -14,6 +14,7 @@ export default function Case1_8() {
       antialias: true,
       canvas,
     });
+    const scene = new THREE.Scene();
 
     // 原点在左上角，模拟2D canvas
     const left = 0;
@@ -22,17 +23,8 @@ export default function Case1_8() {
     const bottom = canvas.height;
     const near = -1;
     const far = 1;
-    const camera = new THREE.OrthographicCamera(
-      left,
-      right,
-      top,
-      bottom,
-      near,
-      far
-    );
+    const camera = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
     camera.zoom = 1;
-
-    const scene = new THREE.Scene();
 
     const loader = new THREE.TextureLoader();
     const textures = [

@@ -12,6 +12,26 @@ export default function Case1_6() {
     let timer = -1;
     const canvas = ref.current as HTMLCanvasElement;
 
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      canvas,
+    });
+
+    const scene = new THREE.Scene();
+
+    // 真正场景
+    const fov = 60;
+    const aspect = 2; // 默认canvas的宽高比
+    const near = 0.1;
+    const far = 50;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.z = 15;
+
+    {
+      const ambientLight = new THREE.AmbientLight(0xffffff);
+      scene.add(ambientLight);
+    }
+
     const gui = new GUI();
     const obj = { scale: 0.6 };
     gui
@@ -32,24 +52,6 @@ export default function Case1_6() {
       texture.colorSpace = THREE.SRGBColorSpace;
       return texture;
     }
-
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      canvas,
-    });
-
-    // 真正场景
-    const fov = 60;
-    const aspect = 2; // 默认canvas的宽高比
-    const near = 0.1;
-    const far = 50;
-    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 15;
-
-    const scene = new THREE.Scene();
-
-    const ambientLight = new THREE.AmbientLight(0xffffff);
-    scene.add(ambientLight);
 
     const geometry = new THREE.BoxGeometry(8, 8, 8);
     const material = new THREE.MeshBasicMaterial({

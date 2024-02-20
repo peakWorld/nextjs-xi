@@ -21,6 +21,9 @@ export default function Case1_8() {
       canvas,
     });
 
+    const scene = new THREE.Scene();
+
+    /***** 主相机场景 */
     const fov = 45;
     const aspect = 2; // 默认canvas的宽高比
     const near = 5;
@@ -29,6 +32,7 @@ export default function Case1_8() {
     camera.position.set(0, 10, 20);
 
     const cameraHelper = new THREE.CameraHelper(camera);
+    scene.add(cameraHelper);
 
     const gui = new GUI();
     gui.add(camera, "fov", 1, 180);
@@ -40,6 +44,7 @@ export default function Case1_8() {
     controls.target.set(0, 5, 0);
     controls.update();
 
+    /***** 辅助相机 */
     const camera2 = new THREE.PerspectiveCamera(
       60, // fov
       2, // aspect
@@ -52,9 +57,6 @@ export default function Case1_8() {
     const controls2 = new OrbitControls(camera2, view2Elem);
     controls2.target.set(0, 5, 0);
     controls2.update();
-
-    const scene = new THREE.Scene();
-    scene.add(cameraHelper);
 
     {
       const color = 0xffffff;
@@ -96,11 +98,7 @@ export default function Case1_8() {
       const sphereRadius = 3;
       const sphereWidthDivisions = 32;
       const sphereHeightDivisions = 16;
-      const sphereGeo = new THREE.SphereGeometry(
-        sphereRadius,
-        sphereWidthDivisions,
-        sphereHeightDivisions
-      );
+      const sphereGeo = new THREE.SphereGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
       const sphereMat = new THREE.MeshPhongMaterial({ color: "#CA8" });
       const sphere = new THREE.Mesh(sphereGeo, sphereMat);
       sphere.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
@@ -111,11 +109,9 @@ export default function Case1_8() {
       const canvasRect = canvas.getBoundingClientRect();
       const elemRect = elem.getBoundingClientRect();
 
-      const right =
-        Math.min(elemRect.right, canvasRect.right) - canvasRect.left;
+      const right = Math.min(elemRect.right, canvasRect.right) - canvasRect.left;
       const left = Math.max(0, elemRect.left - canvasRect.left);
-      const bottom =
-        Math.min(elemRect.bottom, canvasRect.bottom) - canvasRect.top;
+      const bottom = Math.min(elemRect.bottom, canvasRect.bottom) - canvasRect.top;
       const top = Math.max(0, elemRect.top - canvasRect.top);
 
       const width = Math.min(canvasRect.width, right - left);

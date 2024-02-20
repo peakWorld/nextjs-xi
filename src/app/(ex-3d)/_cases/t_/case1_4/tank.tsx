@@ -2,12 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-// import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import {
-  resizeRendererToDisplaySize,
-  makePCamera,
-} from "@/app/(ex-3d)/_utils/t_/common";
-// import AxisGridHelper from "@/app/(ex-3d)/_utils/t_/helpers/axisGrid";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { resizeRendererToDisplaySize, makePCamera } from "@/app/(ex-3d)/_utils/t_/common";
 
 export default function Case1_4_Tank() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -16,8 +12,6 @@ export default function Case1_4_Tank() {
     let timer = -1;
     const canvas = ref.current as HTMLCanvasElement;
 
-    // const gui = new GUI();
-
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       canvas,
@@ -25,11 +19,11 @@ export default function Case1_4_Tank() {
     renderer.setClearColor(0xaaaaaa);
     renderer.shadowMap.enabled = true; // shadow: 使用阴影贴图
 
+    const scene = new THREE.Scene();
+
     const camera = makePCamera();
     camera.position.set(8, 4, 10).multiplyScalar(3);
     camera.lookAt(0, 0, 0);
-
-    const scene = new THREE.Scene();
 
     {
       const light = new THREE.DirectionalLight(0xffffff, 3);
@@ -136,11 +130,7 @@ export default function Case1_4_Tank() {
     const turretWidth = 0.1;
     const turretHeight = 0.1;
     const turretLength = carLength * 0.75 * 0.2;
-    const turretGeometry = new THREE.BoxGeometry(
-      turretWidth,
-      turretHeight,
-      turretLength
-    );
+    const turretGeometry = new THREE.BoxGeometry(turretWidth, turretHeight, turretLength);
     const turretMesh = new THREE.Mesh(turretGeometry, bodyMaterial);
     const turretPivot = new THREE.Object3D();
     turretMesh.castShadow = true;

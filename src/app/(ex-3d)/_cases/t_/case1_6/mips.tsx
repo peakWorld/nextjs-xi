@@ -3,10 +3,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import {
-  resizeRendererToDisplaySize,
-  createMip,
-} from "@/app/(ex-3d)/_utils/t_/common";
+import { resizeRendererToDisplaySize, createMip } from "@/app/(ex-3d)/_utils/t_/common";
 
 enum MIPS {
   LinearFilter = THREE.LinearFilter,
@@ -23,8 +20,29 @@ export default function Case1_6() {
   useEffect(() => {
     let timer = -1;
     const canvas = ref.current as HTMLCanvasElement;
-
     const gui = new GUI();
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      canvas,
+    });
+
+    const scene = new THREE.Scene();
+    const objec3D = new THREE.Object3D();
+    objec3D.rotation.x = Math.PI * 0.35; // 正值为逆时针方向旋转。
+    scene.add(objec3D);
+
+    const fov = 60;
+    const aspect = 2; // 默认canvas的宽高比
+    const near = 0.1;
+    const far = 150;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.z = 15;
+
+    {
+      const ambientLight = new THREE.AmbientLight(0xffffff);
+      scene.add(ambientLight);
+    }
 
     const mipmap = [];
 
@@ -82,25 +100,6 @@ export default function Case1_6() {
         console.log("min =>", ev, minFilter);
       });
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      canvas,
-    });
-
-    const fov = 60;
-    const aspect = 2; // 默认canvas的宽高比
-    const near = 0.1;
-    const far = 150;
-    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 15;
-
-    const scene = new THREE.Scene();
-    const objec3D = new THREE.Object3D();
-    objec3D.rotation.x = Math.PI * 0.35; // 正值为逆时针方向旋转。
-    scene.add(objec3D);
-
-    const ambientLight = new THREE.AmbientLight(0xffffff);
-    scene.add(ambientLight);
     const geometry = new THREE.PlaneGeometry(1, 80);
     const material = new THREE.MeshBasicMaterial({
       map: texture,

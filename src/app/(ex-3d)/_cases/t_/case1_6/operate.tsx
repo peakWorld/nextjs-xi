@@ -4,10 +4,7 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/common";
-import {
-  DegRadHelper,
-  StringToNumberHelper,
-} from "@/app/(ex-3d)/_utils/t_/helpers/index";
+import { DegRadHelper, StringToNumberHelper } from "@/app/(ex-3d)/_utils/t_/helpers/index";
 
 export default function Case1_6() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -15,6 +12,24 @@ export default function Case1_6() {
   useEffect(() => {
     let timer = -1;
     const canvas = ref.current as HTMLCanvasElement;
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      canvas,
+    });
+    const scene = new THREE.Scene();
+
+    const fov = 60;
+    const aspect = 2; // 默认canvas的宽高比
+    const near = 0.1;
+    const far = 50;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.z = 15;
+
+    {
+      const ambientLight = new THREE.AmbientLight(0xffffff);
+      scene.add(ambientLight);
+    }
 
     const loader = new THREE.TextureLoader();
     function loadColorTexture(path: string) {
@@ -48,26 +63,7 @@ export default function Case1_6() {
     gui.add(texture.offset, "y", -2, 2, 0.01).name("texture.offset.y");
     gui.add(texture.center, "x", -0.5, 1.5, 0.01).name("texture.center.x");
     gui.add(texture.center, "y", -0.5, 1.5, 0.01).name("texture.center.y");
-    gui
-      .add(new DegRadHelper(texture, "rotation"), "value", -360, 360)
-      .name("texture.rotation");
-
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      canvas,
-    });
-
-    const fov = 60;
-    const aspect = 2; // 默认canvas的宽高比
-    const near = 0.1;
-    const far = 50;
-    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 15;
-
-    const scene = new THREE.Scene();
-
-    const ambientLight = new THREE.AmbientLight(0xffffff);
-    scene.add(ambientLight);
+    gui.add(new DegRadHelper(texture, "rotation"), "value", -360, 360).name("texture.rotation");
 
     const geometry = new THREE.BoxGeometry(5, 5, 5);
     const material = new THREE.MeshBasicMaterial({

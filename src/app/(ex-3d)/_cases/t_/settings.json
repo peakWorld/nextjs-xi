@@ -69,6 +69,22 @@
   },
   {
     "path": "case1_9",
-    "title": "阴影"
+    "title": "阴影(假阴影)"
+  },
+  {
+    "path": "case1_9?k=light",
+    "title": "阴影(光阴影)"
+  },
+  {
+    "path": "case1_10",
+    "title": "雾"
+  },
+  {
+    "path": "case1_10?k=help",
+    "title": "雾(辅助)"
+  },
+  {
+    "path": "case1_10?k=car",
+    "title": "雾(展示)"
   }
 ]

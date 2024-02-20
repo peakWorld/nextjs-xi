@@ -20,6 +20,8 @@ export default function Case1_5() {
       canvas,
     });
 
+    const scene = new THREE.Scene();
+
     const fov = 60;
     const aspect = 2; // 默认canvas的宽高比
     const near = 0.1;
@@ -27,16 +29,16 @@ export default function Case1_5() {
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.z = 35;
 
-    const scene = new THREE.Scene();
+    {
+      const ambientLight = new THREE.AmbientLight(0x000000);
+      scene.add(ambientLight);
 
-    const ambientLight = new THREE.AmbientLight(0x000000);
-    scene.add(ambientLight);
-
-    const color = 0xffffff;
-    const intensity = 500;
-    const pointlight = new THREE.PointLight(color, intensity);
-    pointlight.position.set(20, 12, 15);
-    scene.add(pointlight);
+      const color = 0xffffff;
+      const intensity = 500;
+      const pointlight = new THREE.PointLight(color, intensity);
+      pointlight.position.set(20, 12, 15);
+      scene.add(pointlight);
+    }
 
     const geometry = new THREE.TorusKnotGeometry(10, 3, 200, 32);
 

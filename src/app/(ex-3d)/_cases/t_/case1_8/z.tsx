@@ -19,6 +19,8 @@ export default function Case1_8() {
       logarithmicDepthBuffer: true, // 解决z冲突
     });
 
+    const scene = new THREE.Scene();
+
     const fov = 45;
     const aspect = 2; // 默认canvas的宽高比
     const near = 0.00001;
@@ -35,8 +37,6 @@ export default function Case1_8() {
     const controls = new OrbitControls(camera, canvas); // 相机控制器
     controls.target.set(0, 5, 0);
     controls.update();
-
-    const scene = new THREE.Scene();
 
     {
       const color = 0xffffff;
@@ -71,21 +71,13 @@ export default function Case1_8() {
       const sphereRadius = 3;
       const sphereWidthDivisions = 32;
       const sphereHeightDivisions = 16;
-      const sphereGeo = new THREE.SphereGeometry(
-        sphereRadius,
-        sphereWidthDivisions,
-        sphereHeightDivisions
-      );
+      const sphereGeo = new THREE.SphereGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
       const numSpheres = 20;
       for (let i = 0; i < numSpheres; ++i) {
         const sphereMat = new THREE.MeshPhongMaterial();
         sphereMat.color.setHSL(i * 0.73, 1, 0.5);
         const mesh = new THREE.Mesh(sphereGeo, sphereMat);
-        mesh.position.set(
-          -sphereRadius - 1,
-          sphereRadius + 2,
-          i * sphereRadius * -2.2
-        );
+        mesh.position.set(-sphereRadius - 1, sphereRadius + 2, i * sphereRadius * -2.2);
         scene.add(mesh);
       }
     }

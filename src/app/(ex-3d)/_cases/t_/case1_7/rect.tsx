@@ -7,10 +7,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
 import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/common";
-import {
-  ColorGUIHelper,
-  DegRadHelper,
-} from "@/app/(ex-3d)/_utils/t_/helpers/index";
+import { ColorGUIHelper, DegRadHelper } from "@/app/(ex-3d)/_utils/t_/helpers/index";
 
 export default function Case1_7() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -20,13 +17,14 @@ export default function Case1_7() {
     const canvas = ref.current as HTMLCanvasElement;
 
     const gui = new GUI();
+    RectAreaLightUniformsLib.init(); // 必须引入初始化
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       canvas,
     });
 
-    RectAreaLightUniformsLib.init(); // 必须引入初始化
+    const scene = new THREE.Scene();
 
     const fov = 45;
     const aspect = 2; // 默认canvas的宽高比
@@ -39,7 +37,30 @@ export default function Case1_7() {
     controls.target.set(0, 5, 0);
     controls.update();
 
-    const scene = new THREE.Scene();
+    // 矩形光
+    {
+      const color = 0xffffff;
+      const intensity = 1;
+      const width = 12;
+      const height = 4;
+      const light = new THREE.RectAreaLight(color, intensity, width, height);
+      light.position.set(0, 10, 0);
+      light.rotation.x = THREE.MathUtils.degToRad(-90);
+      scene.add(light);
+
+      const helper = new RectAreaLightHelper(light);
+      light.add(helper);
+
+      gui.addColor(new ColorGUIHelper(light, "color"), "value").name("color");
+      gui.add(light, "intensity", 0, 10, 0.01);
+      gui.add(light, "width", 0, 20);
+      gui.add(light, "height", 0, 20);
+      gui.add(new DegRadHelper(light.rotation, "x"), "value", -180, 180).name("x rotation");
+      gui.add(new DegRadHelper(light.rotation, "y"), "value", -180, 180).name("y rotation");
+      gui.add(new DegRadHelper(light.rotation, "z"), "value", -180, 180).name("z rotation");
+
+      makeXYZGUI(gui, light.position, "position", () => {});
+    }
 
     {
       const planeSize = 40;
@@ -71,59 +92,19 @@ export default function Case1_7() {
       const sphereRadius = 3;
       const sphereWidthDivisions = 32;
       const sphereHeightDivisions = 16;
-      const sphereGeo = new THREE.SphereGeometry(
-        sphereRadius,
-        sphereWidthDivisions,
-        sphereHeightDivisions
-      );
+      const sphereGeo = new THREE.SphereGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
       const sphereMat = new THREE.MeshStandardMaterial({ color: "#CA8" });
       const sphere = new THREE.Mesh(sphereGeo, sphereMat);
       sphere.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
       scene.add(sphere);
     }
 
-    function makeXYZGUI(
-      gui: GUI,
-      vector3: THREE.Vector3,
-      name: string,
-      onChangeFn: () => void
-    ) {
+    function makeXYZGUI(gui: GUI, vector3: THREE.Vector3, name: string, onChangeFn: () => void) {
       const folder = gui.addFolder(name);
       folder.add(vector3, "x", -10, 10).onChange(onChangeFn);
       folder.add(vector3, "y", 0, 10).onChange(onChangeFn);
       folder.add(vector3, "z", -10, 10).onChange(onChangeFn);
       folder.open();
-    }
-
-    // 矩形光
-    {
-      const color = 0xffffff;
-      const intensity = 1;
-      const width = 12;
-      const height = 4;
-      const light = new THREE.RectAreaLight(color, intensity, width, height);
-      light.position.set(0, 10, 0);
-      light.rotation.x = THREE.MathUtils.degToRad(-90);
-      scene.add(light);
-
-      const helper = new RectAreaLightHelper(light);
-      light.add(helper);
-
-      gui.addColor(new ColorGUIHelper(light, "color"), "value").name("color");
-      gui.add(light, "intensity", 0, 10, 0.01);
-      gui.add(light, "width", 0, 20);
-      gui.add(light, "height", 0, 20);
-      gui
-        .add(new DegRadHelper(light.rotation, "x"), "value", -180, 180)
-        .name("x rotation");
-      gui
-        .add(new DegRadHelper(light.rotation, "y"), "value", -180, 180)
-        .name("y rotation");
-      gui
-        .add(new DegRadHelper(light.rotation, "z"), "value", -180, 180)
-        .name("z rotation");
-
-      makeXYZGUI(gui, light.position, "position", () => {});
     }
 
     function render(time: number) {
