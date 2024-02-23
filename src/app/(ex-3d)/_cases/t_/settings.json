@@ -86,5 +86,17 @@
   {
     "path": "case1_10?k=car",
     "title": "雾(展示)"
+  },
+  {
+    "path": "case1_11",
+    "title": "渲染目标"
+  },
+  {
+    "path": "case1_12",
+    "title": "缓冲几何体(自定义)"
+  },
+  {
+    "path": "case1_12?k=typed",
+    "title": "缓冲几何体(类型数组)"
   }
 ]

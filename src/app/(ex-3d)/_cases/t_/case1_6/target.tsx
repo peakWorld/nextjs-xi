@@ -81,10 +81,7 @@ export default function Case1_6() {
       time *= 0.001;
       mesh.rotation.set(time, time, time);
 
-      if (resizeRendererToDisplaySize(renderer, canvas)) {
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        camera.updateProjectionMatrix();
-      }
+      resizeRendererToDisplaySize(renderer, canvas);
 
       // 渲染场景
       // 将真正场景绘制到renderTarget, 更新对应纹理
