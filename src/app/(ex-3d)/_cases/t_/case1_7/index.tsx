@@ -5,10 +5,7 @@ import * as THREE from "three";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/common";
-import {
-  ColorGUIHelper,
-  DegRadHelper,
-} from "@/app/(ex-3d)/_utils/t_/helpers/index";
+import { ColorGUIHelper, DegRadHelper } from "@/app/(ex-3d)/_utils/t_/helpers/index";
 
 export default function Case1_7() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -67,23 +64,14 @@ export default function Case1_7() {
       const sphereRadius = 3;
       const sphereWidthDivisions = 32;
       const sphereHeightDivisions = 16;
-      const sphereGeo = new THREE.SphereGeometry(
-        sphereRadius,
-        sphereWidthDivisions,
-        sphereHeightDivisions
-      );
+      const sphereGeo = new THREE.SphereGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
       const sphereMat = new THREE.MeshPhongMaterial({ color: "#CA8" });
       const sphere = new THREE.Mesh(sphereGeo, sphereMat);
       sphere.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
       scene.add(sphere);
     }
 
-    function makeXYZGUI(
-      gui: GUI,
-      vector3: THREE.Vector3,
-      name: string,
-      onChangeFn: () => void
-    ) {
+    function makeXYZGUI(gui: GUI, vector3: THREE.Vector3, name: string, onChangeFn: () => void) {
       const folder = gui.addFolder(name);
       folder.add(vector3, "x", -10, 10).onChange(onChangeFn);
       folder.add(vector3, "y", 0, 10).onChange(onChangeFn);
@@ -100,9 +88,7 @@ export default function Case1_7() {
       scene.add(light);
 
       const folder = gui.addFolder("AmbientLight(环境光)");
-      folder
-        .addColor(new ColorGUIHelper(light, "color"), "value")
-        .name("color");
+      folder.addColor(new ColorGUIHelper(light, "color"), "value").name("color");
       folder.add(light, "intensity", 0, 2, 0.01);
       folder.add(light, "visible");
       folder.close();
@@ -118,12 +104,8 @@ export default function Case1_7() {
       scene.add(light);
 
       const folder = gui.addFolder("HemisphereLight(半球光)");
-      folder
-        .addColor(new ColorGUIHelper(light, "color"), "value")
-        .name("skyColor");
-      folder
-        .addColor(new ColorGUIHelper(light, "groundColor"), "value")
-        .name("groundColor");
+      folder.addColor(new ColorGUIHelper(light, "color"), "value").name("skyColor");
+      folder.addColor(new ColorGUIHelper(light, "groundColor"), "value").name("groundColor");
       folder.add(light, "intensity", 0, 2, 0.01);
       folder.add(light, "visible");
       folder.close();
@@ -150,9 +132,7 @@ export default function Case1_7() {
       }
 
       const folder = gui.addFolder("DirectionalLight(方向光)");
-      folder
-        .addColor(new ColorGUIHelper(light, "color"), "value")
-        .name("color");
+      folder.addColor(new ColorGUIHelper(light, "color"), "value").name("color");
       folder.add(light, "intensity", 0, 2, 0.01);
       makeXYZGUI(folder, light.position, "position", updateLight);
       makeXYZGUI(folder, light.target.position, "target", updateLight);
@@ -181,9 +161,7 @@ export default function Case1_7() {
       }
 
       const folder = gui.addFolder("PointLightHelper(点光源)");
-      folder
-        .addColor(new ColorGUIHelper(light, "color"), "value")
-        .name("color");
+      folder.addColor(new ColorGUIHelper(light, "color"), "value").name("color");
       folder.add(light, "intensity", 0, 250, 1);
       folder.add(light, "distance", 0, 40).onChange(updateLight);
       makeXYZGUI(folder, light.position, "position", updateLight);
@@ -214,15 +192,10 @@ export default function Case1_7() {
       }
 
       const folder = gui.addFolder("SpotLight(聚光灯)");
-      folder
-        .addColor(new ColorGUIHelper(light, "color"), "value")
-        .name("color");
+      folder.addColor(new ColorGUIHelper(light, "color"), "value").name("color");
       folder.add(light, "intensity", 0, 250, 1);
       folder.add(light, "distance", 0, 40).onChange(updateLight);
-      folder
-        .add(new DegRadHelper(light, "angle"), "value", 0, 90)
-        .name("angle")
-        .onChange(updateLight);
+      folder.add(new DegRadHelper(light, "angle"), "value", 0, 90).name("angle").onChange(updateLight);
       folder.add(light, "penumbra", 0, 1, 0.01);
       makeXYZGUI(folder, light.position, "position", updateLight);
       makeXYZGUI(folder, light.target.position, "target", updateLight);
@@ -233,7 +206,6 @@ export default function Case1_7() {
     }
 
     function render(time: number) {
-      timer = requestAnimationFrame(render);
       time *= 0.001;
 
       if (resizeRendererToDisplaySize(renderer, canvas)) {
@@ -242,6 +214,7 @@ export default function Case1_7() {
       }
 
       renderer.render(scene, camera);
+      timer = requestAnimationFrame(render);
     }
     timer = requestAnimationFrame(render);
 

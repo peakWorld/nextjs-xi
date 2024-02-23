@@ -83,15 +83,13 @@ export default function Case1_8() {
     }
 
     function render() {
-      timer = requestAnimationFrame(render);
-
       if (resizeRendererToDisplaySize(renderer, canvas)) {
         camera.aspect = canvas.clientWidth / canvas.clientHeight;
         camera.updateProjectionMatrix();
       }
 
-      controls.update();
       renderer.render(scene, camera);
+      timer = requestAnimationFrame(render);
     }
     timer = requestAnimationFrame(render);
 

@@ -110,7 +110,6 @@ export default function Case1_10() {
     scene.add(mesh);
 
     function render(time: number) {
-      timer = requestAnimationFrame(render);
       time *= 0.001;
       mesh.rotation.set(time * 0.1, time * 0.11, 0);
 
@@ -120,6 +119,7 @@ export default function Case1_10() {
       }
 
       renderer.render(scene, camera);
+      timer = requestAnimationFrame(render);
     }
     timer = requestAnimationFrame(render);
 

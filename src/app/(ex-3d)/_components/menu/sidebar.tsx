@@ -2,11 +2,7 @@
 
 import Link from "next/link";
 import clsx from "clsx";
-import {
-  useSelectedLayoutSegment,
-  useSearchParams,
-  useParams,
-} from "next/navigation";
+import { useSelectedLayoutSegment, useSearchParams, useParams } from "next/navigation";
 import { type ExSettings, EXTYPE } from "@/app/(ex-3d)/const";
 
 interface Props {
@@ -21,12 +17,10 @@ export default function SiderBar({ menus }: Props) {
   if (search.has("ms")) return null;
 
   const data = menus[EXTYPE[segment]] ?? [];
-  const current = search.get("k")
-    ? `${params.id}?k=${search.get("k")}`
-    : params.id;
+  const current = search.get("k") ? `${params.id}?k=${search.get("k")}` : params.id;
 
   return (
-    <div className="w-32 flex flex-col items-center mr-3 p-2 bg-slate-100">
+    <div className="w-40 flex flex-col items-center mr-3 p-2 bg-slate-100 overflow-y-auto">
       {data.map((it) => (
         <Link
           key={it.path}

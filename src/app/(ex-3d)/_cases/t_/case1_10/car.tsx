@@ -119,7 +119,6 @@ export default function Case1_10() {
 
     const target = [1, 1, 0.7];
     function render(time: number) {
-      timer = requestAnimationFrame(render);
       time *= 0.001;
 
       camera.lookAt(target[0] + Math.sin(time * 0.25) * 0.5, target[1], target[2]);
@@ -130,6 +129,7 @@ export default function Case1_10() {
       }
 
       renderer.render(scene, camera);
+      timer = requestAnimationFrame(render);
     }
     timer = requestAnimationFrame(render);
 

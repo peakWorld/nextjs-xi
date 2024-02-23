@@ -99,7 +99,7 @@ export default function Case1_10() {
     const segmentsAround = 24;
     const segmentsDown = 16;
     const { positions, indices } = makeSpherePositions(segmentsAround, segmentsDown);
-    const normals = positions.slice(); // 每个球面点的法线即 原点到坐标本身的向量
+    const normals = positions.slice(); // 每个球面点的法线 即原点到坐标本身的向量
 
     const geometry = new THREE.BufferGeometry();
     const positionNumComponents = 3;

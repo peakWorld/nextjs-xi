@@ -90,7 +90,6 @@ export default function Case1_10() {
     scene.add(mesh);
 
     function render(time: number) {
-      timer = requestAnimationFrame(render);
       time *= 0.001;
 
       rtCubes.forEach((cube, ndx) => {
@@ -112,6 +111,7 @@ export default function Case1_10() {
       mesh.rotation.x = time;
       mesh.rotation.y = time * 1.1;
       renderer.render(scene, camera);
+      timer = requestAnimationFrame(render);
     }
     timer = requestAnimationFrame(render);
 

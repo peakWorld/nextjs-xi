@@ -108,7 +108,6 @@ export default function Case1_7() {
     }
 
     function render(time: number) {
-      timer = requestAnimationFrame(render);
       time *= 0.001;
 
       if (resizeRendererToDisplaySize(renderer, canvas)) {
@@ -117,6 +116,7 @@ export default function Case1_7() {
       }
 
       renderer.render(scene, camera);
+      timer = requestAnimationFrame(render);
     }
     timer = requestAnimationFrame(render);
 

@@ -73,7 +73,6 @@ export default function Case1_10() {
     ];
 
     function render(time: number) {
-      timer = requestAnimationFrame(render);
       time *= 0.001;
 
       cubes.forEach((cube, ndx) => {
@@ -89,6 +88,7 @@ export default function Case1_10() {
       }
 
       renderer.render(scene, camera);
+      timer = requestAnimationFrame(render);
     }
     timer = requestAnimationFrame(render);
 
