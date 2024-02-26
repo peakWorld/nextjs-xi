@@ -45,12 +45,21 @@ export default function Case2_1() {
     }
 
     const things: Thing[] = [];
-    const geometry = new THREE.SphereGeometry(2);
+    const geometry = new THREE.SphereGeometry();
 
-    function createThing() {
+    const info = canvas.getBoundingClientRect();
+
+    function createThing(evt: MouseEvent) {
+      const x = ((evt.clientX - info.left) / info.width) * 2 - 1;
+      const y = -((evt.clientY - info.top) / info.height) * 2 + 1;
+      // let stand = new THREE.Vector4(x, y, 0, 1.0); // 将标准化坐标转到世界坐标
+      // stand = stand.applyMatrix4(camera.projectionMatrixInverse).applyMatrix4(camera.matrixWorldInverse);
+      // console.log("stand", stand);
+
       const material = new THREE.MeshBasicMaterial({ color: new THREE.Color() });
       material.color.setHSL(Math.random(), 1, 0.25);
       const mesh = new THREE.Mesh(geometry, material);
+      // mesh.position.set(stand.x, stand.y, stand.z);
 
       scene.add(mesh);
       things.push({

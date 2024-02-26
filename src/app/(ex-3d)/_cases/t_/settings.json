@@ -106,5 +106,13 @@
   {
     "path": "case2_2",
     "title": "调试"
+  },
+  {
+    "path": "case2_3?k=screenshot",
+    "title": "Tip(截图)"
+  },
+  {
+    "path": "case2_3?k=drawing",
+    "title": "Tip(绘图)"
   }
 ]
