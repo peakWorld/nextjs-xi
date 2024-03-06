@@ -109,10 +109,22 @@
   },
   {
     "path": "case2_3?k=screenshot",
-    "title": "Tip(截图)"
+    "title": "技巧-截图"
   },
   {
     "path": "case2_3?k=drawing",
-    "title": "Tip(绘图)"
+    "title": "技巧-绘图"
+  },
+  {
+    "path": "case2_3?k=keyword",
+    "title": "技巧-键盘输入"
+  },
+  {
+    "path": "case2_3?k=alpha",
+    "title": "技巧-透明化"
+  },
+  {
+    "path": "case3_1",
+    "title": "优化大量对象"
   }
 ]

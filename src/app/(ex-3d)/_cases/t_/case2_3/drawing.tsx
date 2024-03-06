@@ -21,7 +21,7 @@ export default function Case2_3() {
 
     const scene = new THREE.Scene();
 
-    const camera = new THREE.OrthographicCamera(-2, 2, 1, -1, -1, 1);
+    const camera = new THREE.OrthographicCamera(-2, 2, 1, -1, -1, 1); // 正交相机下
 
     {
       const color = 0xffffff;
