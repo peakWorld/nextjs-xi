@@ -31,5 +31,6 @@
   "ffc3660772850218a66d02366eea3129": "posts/前端/ts/编译原理.md",
   "aa020c2609d1af447698577c7ef17a66": "posts/构建工具/postcss/scss.md",
   "05282cab643dc7fbbac78e74db9c7ee0": "posts/三维/threejs/技巧.md",
-  "1c39cfe88c7888e80f4c4843543bb873": "posts/三维/threejs/优化.md"
+  "1c39cfe88c7888e80f4c4843543bb873": "posts/三维/threejs/优化.md",
+  "454904c355bf9e9d9e7e5acf80539dea": "posts/前端/vue/设计与实现/同构渲染.md"
 }
