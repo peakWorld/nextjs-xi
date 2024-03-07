@@ -1,0 +1,29 @@
+{
+  "name": "vue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "start": "concurrently -n \"TS,RUN\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run watch-ts\" \"npm run dev\"",
+    "watch-ts": "tsc -w -p tsconfig.json",
+    "dev": "nodemon ./build/同构渲染/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "fs-extra": "^11.2.0",
+    "less": "^4.2.0",
+    "postcss": "^8.4.32",
+    "postcss-less": "^6.0.0",
+    "postcss-scss": "^4.0.9",
+    "sass": "^1.70.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.3",
+    "@types/postcss-less": "^4.0.6",
+    "chokidar-cli": "^3.0.0",
+    "concurrently": "^8.2.2"
+  }
+}
