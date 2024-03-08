@@ -31,7 +31,7 @@ export default function Case2_3() {
   }, []);
 
   return (
-    <div className="wrap">
+    <div className="wrap2_3">
       <canvas id="c1"></canvas>
       <canvas id="c2" tabIndex={0}></canvas>
       <canvas id="c3" tabIndex={1}></canvas>
