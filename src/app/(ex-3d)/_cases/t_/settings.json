@@ -125,6 +125,14 @@
   },
   {
     "path": "case3_1?k=globe_2d",
-    "title": "优化大量对象(2d地球)"
+    "title": "2d地球"
+  },
+  {
+    "path": "case3_1?k=globe",
+    "title": "3d地球"
+  },
+  {
+    "path": "case3_1?k=globe_3d",
+    "title": "3d地球(优化)"
   }
 ]
