@@ -13,7 +13,7 @@
   },
   {
     "path": "case1_4",
-    "title": "场景"
+    "title": "场景(地月系统)"
   },
   {
     "path": "case1_4?k=tank",
@@ -134,5 +134,25 @@
   {
     "path": "case3_1?k=globe_3d",
     "title": "3d地球(优化)"
+  },
+  {
+    "path": "case3_1?k=globe_colorful",
+    "title": "3d地球(多彩)"
+  },
+  {
+    "path": "case3_2?k=multi",
+    "title": "3d地球(多数据)"
+  },
+  {
+    "path": "case3_2?k=animation",
+    "title": "3d地球(形变动画)"
+  },
+  {
+    "path": "case3_3",
+    "title": "离屏渲染"
+  },
+  {
+    "path": "case3_3?k=ray",
+    "title": "离屏渲染(射线拾取)"
   }
 ]

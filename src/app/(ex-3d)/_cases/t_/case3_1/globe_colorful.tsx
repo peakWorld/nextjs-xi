@@ -78,7 +78,7 @@ export default function Case3_1() {
       const lonHelper = new THREE.Object3D(); // 经度辅助, 绕Y轴旋转
       const latHelper = new THREE.Object3D(); // 纬度辅助, 绕X轴旋转
       const positionHelper = new THREE.Object3D(); // 位置辅助
-      positionHelper.position.z = 1; // 地球球体的半径为1, 此处才设置为1
+      positionHelper.position.z = 1;
       lonHelper.add(latHelper);
       latHelper.add(positionHelper);
 
@@ -90,6 +90,7 @@ export default function Case3_1() {
       const lonFudge = Math.PI * 0.5;
       const latFudge = Math.PI * -0.135;
       const geometries: THREE.BufferGeometry[] = [];
+      const color = new THREE.Color();
 
       // 使用经度和纬度遍历数据 latNdx 纬度索引；lonNdx 经度索引
       data.forEach((row: UN[], latNdx: number) => {
@@ -113,17 +114,31 @@ export default function Case3_1() {
           // 将经纬度转换成世界坐标
           positionHelper.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
           originHelper.updateWorldMatrix(true, false);
+          geometry.applyMatrix4(originHelper.matrixWorld); // 对网格进行处理, 获得新的网格信息
 
-          // originHelper 一个点经过 平移、旋转、缩放等变换后得到的坐标
-          // originHelper.matrixWorld 就是这个点坐标经历过的操作, 这里套用给geometry、即geometry中的所有点
-          geometry.applyMatrix4(originHelper.matrixWorld); // 对网格进行处理, 获得新的网格点坐标
+          // 计算每个网格的颜色
+          const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
+          const saturation = 1;
+          const lightness = THREE.MathUtils.lerp(0.4, 1.0, amount);
+          color.setHSL(hue, saturation, lightness);
+          const rgb = color.toArray().map((v) => v * 255);
+          const numVerts = geometry.getAttribute("position").count; // 创建一个数组来存储每个顶点的颜色
+          const itemSize = 3; // r, g, b
+          const colors = new Uint8Array(itemSize * numVerts);
+          // 将颜色复制到每个顶点的颜色数组中
+          colors.forEach((v, ndx) => {
+            colors[ndx] = rgb[ndx % 3];
+          });
+          const normalized = true;
+          const colorAttrib = new THREE.BufferAttribute(colors, itemSize, normalized);
+          geometry.setAttribute("color", colorAttrib);
 
           geometries.push(geometry);
         });
       });
 
       const mergedGeometry = BufferGeometryUtils.mergeGeometries(geometries, false);
-      const material = new THREE.MeshBasicMaterial({ color: "red" });
+      const material = new THREE.MeshBasicMaterial({ vertexColors: true });
       const mesh = new THREE.Mesh(mergedGeometry, material);
       scene.add(mesh);
     }
