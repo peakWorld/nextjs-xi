@@ -154,5 +154,9 @@
   {
     "path": "case3_3?k=ray",
     "title": "离屏渲染(射线拾取)"
+  },
+  {
+    "path": "case3_3?k=orbit",
+    "title": "离屏渲染(相机控制)"
   }
 ]
