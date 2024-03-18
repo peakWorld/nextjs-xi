@@ -14,7 +14,7 @@ const bins = path.join(process.cwd(), "./node_modules/.bin");
 // 删除less中ast非必要属性
 function deleteAstProp(node: any, ast: any) {
   const {
-    raws,
+    // raws,
     source,
     parent,
     inputs,
@@ -86,8 +86,6 @@ function deleteAstProp(node: any, ast: any) {
     // 输出ast树
     fs.writeJsonSync(`${dirUrl}/scss.json`, ast, { spaces: 2 });
     // 编译成css
-    child_process.exec(
-      `${bins}/sass ${url} ${dirUrl}/base.css --no-source-map`
-    );
+    child_process.exec(`${bins}/sass ${url} ${dirUrl}/base.css --no-source-map`);
   }
 })();

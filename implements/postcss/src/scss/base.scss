@@ -1,4 +1,7 @@
-@import './var.scss';
+@import "./var.scss";
+
+/** 变量 */
+$color: white;
 
 /** 嵌套规则 */
 #main p {
@@ -11,8 +14,12 @@
 // 父选择器
 a {
   font-weight: bold;
-  &-sidebar { border: 1px solid; }
-  &:hover { text-decoration: underline; }
+  &-sidebar {
+    border: 1px solid;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 // 嵌套属性
@@ -95,3 +102,94 @@ p.#{$name} {
 }
 
 /** 控制指令 */
+
+// if
+$type: monster;
+p {
+  @if $type == ocean {
+    color: blue;
+  } @else if $type == matador {
+    color: red;
+  } @else if $type == monster {
+    color: green;
+  } @else {
+    color: black;
+  }
+}
+
+// for
+@for $i from 1 through 3 {
+  .item-#{$i} {
+    width: 2em * $i;
+  }
+}
+
+// each
+@each $animal in puma, sea-slug, egret, salamander {
+  .#{$animal}-icon {
+    background-image: url("/images/#{$animal}.png");
+  }
+}
+
+// while
+$i: 6;
+@while $i > 0 {
+  .item-#{$i} {
+    width: 2em * $i;
+  }
+  $i: $i - 2;
+}
+
+/** 混合 */
+@mixin header-text {
+  font-size: 20px;
+}
+.bg {
+  @include header-text;
+}
+
+// 带参数
+@mixin sexy-border($color, $width) {
+  border: {
+    color: $color;
+    width: $width;
+    style: dashed;
+  }
+}
+p {
+  @include sexy-border(blue, 1in); // 按顺序传参
+}
+h1 {
+  @include sexy-border($color: blue, $width: 2in); // 按名传参
+}
+
+// 参数变量
+@mixin box-shadow($shadows...) {
+  -moz-box-shadow: $shadows;
+  -webkit-box-shadow: $shadows;
+  box-shadow: $shadows;
+}
+.shadows {
+  @include box-shadow(0px 4px 5px #666, 2px 6px 10px #999);
+}
+
+// 混合样式
+@mixin colorful {
+  color: red;
+  @content;
+}
+
+.bg {
+  @include colorful() {
+    background-color: green;
+  }
+}
+
+/** 函数  **/
+@function grid-width($n) {
+  @return $n * 40px + ($n - 1) * 10px;
+}
+
+#sidebar {
+  width: grid-width(5);
+}

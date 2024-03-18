@@ -75,6 +75,8 @@ export default function Case2_3() {
 
     function getCanvasRelativePosition(event: MouseEvent | Touch) {
       const rect = canvas.getBoundingClientRect();
+      // canvas.width 画布横轴像素值；rect.width canvas元素宽度
+      // 将屏幕尺寸坐标转化为相对于像素的值
       return {
         x: ((event.clientX - rect.left) * canvas.width) / rect.width,
         y: ((event.clientY - rect.top) * canvas.height) / rect.height,

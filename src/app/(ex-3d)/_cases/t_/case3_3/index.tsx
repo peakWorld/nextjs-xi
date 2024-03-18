@@ -9,10 +9,11 @@ export default function Case3_3() {
   useEffect(() => {
     const canvas = ref.current as HTMLCanvasElement;
     let resizeFunc = () => {};
+    let worker: Worker;
 
     function startWorker() {
       const offscreen = canvas.transferControlToOffscreen();
-      const worker = new Worker(new URL("./worker.ts", import.meta.url), { type: "module" }); // 启用我们的Worker
+      worker = new Worker(new URL("./worker-cube.ts", import.meta.url), { type: "module" }); // 启用我们的Worker
       worker.postMessage({ type: "init", canvas: offscreen }, [offscreen]); // 把 offscreen 对象传入给它
 
       function sendSize() {
@@ -44,6 +45,7 @@ export default function Case3_3() {
 
     return () => {
       window.removeEventListener("resize", resizeFunc);
+      if (worker) worker.terminate();
     };
   }, []);
 

@@ -19,6 +19,3 @@ function size(data: Data) {
   state.width = data.width;
   state.height = data.height;
 }
-
-// Worker根本看不见DOM结构, 需要把尺寸变化发送给Worker
-// const state = { width: 300, height: 150, pixel: 1 };

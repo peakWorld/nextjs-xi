@@ -1,0 +1,22 @@
+{
+  "name": "learn-eslint",
+  "version": "0.0.1",
+  "description": "学习使用eslint",
+  "scripts": {
+    "start": "concurrently -n \"TS,STYLE\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run watch-ts\" \"npm run watch-scss\"",
+    "watch-ts": "tsc -w -p tsconfig.json",
+    "watch-scss": "cross-env NODE_ENV=scss nodemon ./build/src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.11.3",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.23.0"
+  }
+}

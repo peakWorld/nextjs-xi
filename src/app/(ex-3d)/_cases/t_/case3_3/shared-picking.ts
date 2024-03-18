@@ -1,8 +1,10 @@
 import * as THREE from "three";
+import { PickByRay } from "@/app/(ex-3d)/_utils/t_/pickByRay";
 
 type Data = MessageEvent["data"];
 
 export const state = { width: 300, height: 150 };
+export const pickPosition = { x: 0, y: 0 } as THREE.Vector2;
 
 export function init(data: Data) {
   const { canvas } = data;
@@ -55,6 +57,8 @@ export function init(data: Data) {
     return needResize;
   }
 
+  const pickHelper = new PickByRay();
+
   function render(time: number) {
     time *= 0.001;
 
@@ -69,6 +73,8 @@ export function init(data: Data) {
       it.rotation.x = rot;
       it.rotation.y = rot;
     });
+
+    pickHelper.pick(pickPosition, scene, camera, time); // 更新选中对象
 
     renderer.render(scene, camera);
     requestAnimationFrame(render);
