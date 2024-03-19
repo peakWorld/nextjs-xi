@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "description": "学习使用eslint",
   "scripts": {
-    "start": "concurrently -n \"TS,STYLE\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run watch-ts\" \"npm run watch-scss\"",
-    "watch-ts": "tsc -w -p tsconfig.json",
-    "watch-scss": "cross-env NODE_ENV=scss nodemon ./build/src/index.js"
+    "format": "npx eslint --format html ./format/fullOfProblems.js"
   },
   "keywords": [],
   "author": "",

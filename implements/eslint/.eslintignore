@@ -1,0 +1,8 @@
+# eslint 默认忽略所有点文件夹及其子文件
+
+# Allowlist 'test.js' in the '.build' folder
+# 首先 .build必须要处于允许列表中，这样eslint才会知道它的子文件。
+!.build
+# 然后，.build/test.js 必须被明确地列入允许列表，而其余的内容则被拒绝列表。
+.build/*
+!.build/test.js
