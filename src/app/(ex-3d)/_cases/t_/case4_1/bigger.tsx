@@ -57,14 +57,14 @@ export default function Case4_1() {
 
     // 地板
     {
-      const planeSize = 40;
+      const planeSize = 4000;
       const loader = new THREE.TextureLoader();
       const texture = loader.load("/t_/checker.png");
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
       texture.magFilter = THREE.NearestFilter;
       texture.colorSpace = THREE.SRGBColorSpace;
-      const repeats = planeSize / 2;
+      const repeats = planeSize / 200;
       texture.repeat.set(repeats, repeats);
 
       const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
@@ -77,17 +77,45 @@ export default function Case4_1() {
       scene.add(plane);
     }
 
-    {
-      const objLoader = new OBJLoader();
-      objLoader.load("/t_/windmill_2/windmill.obj", (root) => {
-        // 计算模型包围盒的大小和中心位置
-        const box = new THREE.Box3().setFromObject(root);
-        const boxSize = box.getSize(new THREE.Vector3()).length();
-        const boxCenter = box.getCenter(new THREE.Vector3());
-        console.log(boxSize);
-        console.log(boxCenter);
+    function frameArea(sizeToFitOnScreen: number, boxSize: number, boxCenter: THREE.Vector3, camera: THREE.Camera) {
+      const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
+      const halfFovY = THREE.MathUtils.degToRad(camera.fov * 0.5);
+      const distance = halfSizeToFitOnScreen / Math.tan(halfFovY); // 计算(New)相机到风车中心的距离
 
-        scene.add(root);
+      // 计算风车中心和原相机间的 单位向量
+      // const direction = new THREE.Vector3().subVectors(camera.position, boxCenter).normalize();
+      const direction = new THREE.Vector3()
+        .subVectors(camera.position, boxCenter)
+        .multiply(new THREE.Vector3(1, 0, 1)) // 抹除y轴方向的缩放, 保证平行XZ平面(即地面)
+        .normalize();
+
+      // 风车中心 + 单位向量 * 距离 = 新相机位置
+      camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
+      camera.near = boxSize / 100;
+      camera.far = boxSize * 100;
+      camera.updateProjectionMatrix();
+      camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
+    }
+
+    {
+      const mtlLoader = new MTLLoader();
+      mtlLoader.load("/t_/windmill_2/windmill-fixed.mtl", (mtl) => {
+        mtl.preload();
+        const objLoader = new OBJLoader();
+        objLoader.setMaterials(mtl);
+
+        objLoader.load("/t_/windmill_2/windmill.obj", (root) => {
+          scene.add(root);
+
+          // 计算模型包围盒的大小和中心位置
+          const box = new THREE.Box3().setFromObject(root);
+          const boxSize = box.getSize(new THREE.Vector3()).length();
+          const boxCenter = box.getCenter(new THREE.Vector3());
+          // console.log("boxSize", boxSize);
+          // console.log("boxCenter", boxCenter);
+
+          frameArea(boxSize * 1.2, boxSize, boxCenter, camera);
+        });
       });
     }
 

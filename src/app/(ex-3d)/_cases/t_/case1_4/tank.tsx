@@ -170,7 +170,7 @@ export default function Case1_4_Tank() {
     targetBob.add(targetCameraPivot); // 以targetBob坐标系原点为基准; targetCameraPivot坐标系的原点位置是targetBob坐标系中的点(1, Math.PI, -2)
     targetCameraPivot.add(targetCamera);
 
-    // 线路
+    // 运行线路
     const curve = new THREE.SplineCurve([
       new THREE.Vector2(-10, 0),
       new THREE.Vector2(-5, 5),
@@ -187,14 +187,10 @@ export default function Case1_4_Tank() {
     const points = curve.getPoints(50);
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
-    const splineObject = new THREE.Line(geometry, material);
+    const splineObject = new THREE.Line(geometry, material); // 将路线展示在3D中,展示效果
     splineObject.rotation.x = Math.PI * 0.5;
     splineObject.position.y = 0.05;
     scene.add(splineObject);
-
-    const targetPosition = new THREE.Vector3();
-    const tankPosition = new THREE.Vector2();
-    const tankTarget = new THREE.Vector2();
 
     const cameras = [
       { cam: camera, desc: "detached camera" },
@@ -202,6 +198,10 @@ export default function Case1_4_Tank() {
       { cam: targetCamera, desc: "near target looking at tank" },
       { cam: tankCamera, desc: "above back of tank" },
     ];
+
+    const targetPosition = new THREE.Vector3();
+    const tankPosition = new THREE.Vector2();
+    const tankTarget = new THREE.Vector2();
 
     function render(time: number) {
       time *= 0.001;

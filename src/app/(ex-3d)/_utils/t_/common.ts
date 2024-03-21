@@ -2,10 +2,7 @@ import * as THREE from "three";
 
 const loader = new THREE.TextureLoader();
 
-export function resizeRendererToDisplaySize(
-  renderer: THREE.WebGLRenderer,
-  canvas: HTMLCanvasElement
-) {
+export function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer, canvas: HTMLCanvasElement) {
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
 
@@ -43,9 +40,7 @@ export function createMip(level: number, numLevels: number, scale = 1) {
   const u = level / numLevels;
   const size = 2 ** (numLevels - level - 1);
   const halfSize = Math.ceil(size / 2);
-  const ctx = document
-    .createElement("canvas")
-    .getContext("2d") as CanvasRenderingContext2D;
+  const ctx = document.createElement("canvas").getContext("2d") as CanvasRenderingContext2D;
   ctx.canvas.width = size * scale;
   ctx.canvas.height = size * scale;
   ctx.scale(scale, scale);
@@ -55,4 +50,24 @@ export function createMip(level: number, numLevels: number, scale = 1) {
   ctx.fillRect(0, 0, halfSize, halfSize);
   ctx.fillRect(halfSize, halfSize, halfSize, halfSize);
   return ctx.canvas;
+}
+
+// 打印节点树型结构
+function dumpVec3(v3: THREE.Vector3 | THREE.Euler, precision = 3) {
+  return `${v3.x.toFixed(precision)}, ${v3.y.toFixed(precision)}, ${v3.z.toFixed(precision)}`;
+}
+export function dumpObject(obj: THREE.Object3D, lines: string[] = [], isLast = true, prefix = "") {
+  const localPrefix = isLast ? "└─" : "├─";
+  lines.push(`${prefix}${prefix ? localPrefix : ""}${obj.name || "*no-name*"} [${obj.type}]`);
+  const dataPrefix = obj.children.length ? (isLast ? "  │ " : "│ │ ") : isLast ? "    " : "│   ";
+  lines.push(`${prefix}${dataPrefix}  pos: ${dumpVec3(obj.position)}`);
+  lines.push(`${prefix}${dataPrefix}  rot: ${dumpVec3(obj.rotation)}`);
+  lines.push(`${prefix}${dataPrefix}  scl: ${dumpVec3(obj.scale)}`);
+  const newPrefix = prefix + (isLast ? "  " : "│ ");
+  const lastNdx = obj.children.length - 1;
+  obj.children.forEach((child, ndx) => {
+    const isLast = ndx === lastNdx;
+    dumpObject(child, lines, isLast, newPrefix);
+  });
+  return lines;
 }

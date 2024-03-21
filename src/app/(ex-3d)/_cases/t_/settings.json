@@ -166,5 +166,13 @@
   {
     "path": "case4_1?k=bigger",
     "title": "obj文件(模型太大)"
+  },
+  {
+    "path": "case4_2",
+    "title": "gltf文件"
+  },
+  {
+    "path": "case4_3",
+    "title": "背景"
   }
 ]
