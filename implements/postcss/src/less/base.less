@@ -10,9 +10,10 @@
 /** 变量 */
 @width: 10px; // AtRuleVar{name, value|params} => variable:true
 @height: @width + 10px;
-@my-selector: banner;
+@name: banner;
 @images: "../img";
 @property: color;
+@bold: bolder;
 
 body {
   height: @height; // Decl{value}
@@ -23,6 +24,11 @@ body {
   @{property}: #0ee; // Decl{prop}
   font-weight: bold;
   background: url("@{images}/white-sand.png"); // Decl{value}
+}
+
+p.@{name} {
+  @{attr}-color: blue;
+ font-weight: @bold;
 }
 
 // 属性作为变量 $xx

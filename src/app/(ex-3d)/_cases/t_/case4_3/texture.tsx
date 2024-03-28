@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/common";
-import "./index.scss";
 
 export default function Case4_3() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -14,11 +13,16 @@ export default function Case4_3() {
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
-      alpha: true,
       canvas,
     });
 
     const scene = new THREE.Scene();
+
+    // 加载场景背景图
+    const loader = new THREE.TextureLoader();
+    const bgTexture = loader.load("/t_/daikanyama.jpg");
+    bgTexture.colorSpace = THREE.SRGBColorSpace;
+    scene.background = bgTexture;
 
     const fov = 75;
     const aspect = 2; // canvas默认大小
@@ -58,6 +62,17 @@ export default function Case4_3() {
         camera.updateProjectionMatrix();
       }
 
+      // 设置背景贴图的repeat和offset属性
+      {
+        const canvasAspect = canvas.clientWidth / canvas.clientHeight;
+        const imageAspect = bgTexture.image ? bgTexture.image.width / bgTexture.image.height : 1;
+        const aspect = imageAspect / canvasAspect;
+        bgTexture.offset.x = aspect > 1 ? (1 - 1 / aspect) / 2 : 0;
+        bgTexture.repeat.x = aspect > 1 ? 1 / aspect : 1;
+        bgTexture.offset.y = aspect > 1 ? 0 : (1 - aspect) / 2;
+        bgTexture.repeat.y = aspect > 1 ? 1 : aspect;
+      }
+
       cubes.forEach((it, ndx) => {
         const speed = 1 + ndx * 0.2;
         const rot = time * speed;
@@ -76,9 +91,5 @@ export default function Case4_3() {
     };
   }, []);
 
-  return (
-    <div className="case4_3_index w-full h-full">
-      <canvas ref={ref} className="w-full h-full" />
-    </div>
-  );
+  return <canvas ref={ref} className="w-full h-full" />;
 }

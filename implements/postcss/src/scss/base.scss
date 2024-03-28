@@ -42,10 +42,11 @@ a {
 $width: 5em;
 $font-size: 24px;
 $line-height: 10px;
-$name: foo;
+$name: banner;
 $attr: border;
 $content: null;
 $content: "Non-null content" !default; // 变量是 null 空值时将视为被 !default 赋值。
+$bold: bolder;
 
 #main {
   width: $width;
@@ -67,7 +68,7 @@ p:before {
 
 p.#{$name} {
   #{$attr}-color: blue;
-  content: $content;
+  font-weight: $bold;
 }
 
 /** 指令 */

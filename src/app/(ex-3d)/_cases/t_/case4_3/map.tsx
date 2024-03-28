@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/common";
-import "./index.scss";
 
 export default function Case4_3() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -14,18 +14,32 @@ export default function Case4_3() {
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
-      alpha: true,
       canvas,
     });
 
     const scene = new THREE.Scene();
 
+    // 加载等距矩形贴图
+    {
+      const loader = new THREE.TextureLoader();
+      const texture = loader.load("/t_/tears_of_steel_bridge_2k.jpg", () => {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        texture.colorSpace = THREE.SRGBColorSpace;
+        scene.background = texture;
+      });
+      scene.background = texture;
+    }
+
     const fov = 75;
     const aspect = 2; // canvas默认大小
     const near = 0.1;
-    const far = 5;
+    const far = 100;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 2;
+    camera.position.z = 3;
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.set(0, 0, 0);
+    controls.update();
 
     {
       const color = 0xffffff;
@@ -76,9 +90,5 @@ export default function Case4_3() {
     };
   }, []);
 
-  return (
-    <div className="case4_3_index w-full h-full">
-      <canvas ref={ref} className="w-full h-full" />
-    </div>
-  );
+  return <canvas ref={ref} className="w-full h-full" />;
 }

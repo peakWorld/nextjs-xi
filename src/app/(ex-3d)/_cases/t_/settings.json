@@ -174,5 +174,49 @@
   {
     "path": "case4_3",
     "title": "背景"
+  },
+  {
+    "path": "case4_3?k=texture",
+    "title": "背景(纹理)"
+  },
+  {
+    "path": "case4_3?k=cubemap",
+    "title": "天空盒(立方体贴图)"
+  },
+  {
+    "path": "case4_3?k=map",
+    "title": "天空盒(等距矩形贴图)"
+  },
+  {
+    "path": "case4_4",
+    "title": "透明"
+  },
+  {
+    "path": "case4_4?k=cross",
+    "title": "透明(相交面)"
+  },
+  {
+    "path": "case4_4?k=alpha",
+    "title": "透明(alpha测试)"
+  },
+  {
+    "path": "case4_5",
+    "title": "多画布"
+  },
+  {
+    "path": "case4_5?k=common",
+    "title": "多画布(适用)"
+  },
+  {
+    "path": "case4_5?k=outside",
+    "title": "多画布(copied 2D Canvas)"
+  },
+  {
+    "path": "case4_6",
+    "title": "拾取(射线法)"
+  },
+  {
+    "path": "case4_6?k=gpu",
+    "title": "拾取(GPU法)"
   }
 ]

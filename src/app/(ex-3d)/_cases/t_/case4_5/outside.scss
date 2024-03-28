@@ -1,0 +1,15 @@
+.case4_5_outside {
+  position: relative;
+
+  [data-diagram] {
+    display: inline-block;
+    width: 5em;
+    height: 3em;
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
+}

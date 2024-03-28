@@ -46,9 +46,9 @@ p:before {
   content: "I ate 15 pies!";
 }
 
-p.foo {
+p.banner {
   border-color: blue;
-  content: "Non-null content";
+  font-weight: bolder;
 }
 
 /** 指令 */

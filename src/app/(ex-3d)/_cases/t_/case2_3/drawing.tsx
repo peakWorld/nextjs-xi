@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import * as THREE from "three";
 import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/common";
+import { useMouse } from "@/app/(ex-3d)/_hooks/useMouse";
+
+const canvasId = "case2_3_drawing";
 
 export default function Case2_3() {
-  const ref = useRef<HTMLCanvasElement>(null);
+  const posRef = useMouse(canvasId);
 
   useEffect(() => {
     let timer = -1;
-    const canvas = ref.current as HTMLCanvasElement;
+    const canvas = document.querySelector(`#${canvasId}`) as HTMLCanvasElement;
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -55,7 +58,8 @@ export default function Case2_3() {
     makeInstance(geometry, "#00F", 0, 0, -2);
     makeInstance(geometry, "#F0F", 0, 0, 2);
 
-    const state = { x: 0, y: 0 };
+    const temp = new THREE.Vector3();
+
     function render(time: number) {
       time = time * 0.001;
 
@@ -63,8 +67,11 @@ export default function Case2_3() {
         camera.aspect = canvas.clientWidth / canvas.clientHeight;
         camera.updateProjectionMatrix();
       }
+      // 获取世界坐标
+      const pos = posRef.current;
+      temp.set(pos.x, pos.y, 0).unproject(camera);
 
-      base.position.set(state.x, state.y, 0);
+      base.position.set(temp.x, temp.y, 0);
       base.rotation.x = time;
       base.rotation.y = time * 1.11;
 
@@ -73,38 +80,6 @@ export default function Case2_3() {
     }
     requestAnimationFrame(render);
 
-    function getCanvasRelativePosition(event: MouseEvent | Touch) {
-      const rect = canvas.getBoundingClientRect();
-      // canvas.width 画布横轴像素值；rect.width canvas元素宽度
-      // 将屏幕尺寸坐标转化为相对于像素的值
-      return {
-        x: ((event.clientX - rect.left) * canvas.width) / rect.width,
-        y: ((event.clientY - rect.top) * canvas.height) / rect.height,
-      };
-    }
-    const temp = new THREE.Vector3();
-    function setPosition(e: MouseEvent | Touch) {
-      const pos = getCanvasRelativePosition(e);
-      // 获取标准坐标系 - 坐标
-      const x = (pos.x / canvas.width) * 2 - 1;
-      const y = (pos.y / canvas.height) * -2 + 1;
-      // 获取世界坐标 - 坐标
-      temp.set(x, y, 0).unproject(camera);
-      state.x = temp.x;
-      state.y = temp.y;
-    }
-
-    // 鼠标移动逻辑
-    canvas.addEventListener("mousemove", setPosition);
-    canvas.addEventListener(
-      "touchmove",
-      (e) => {
-        e.preventDefault();
-        setPosition(e.touches[0]);
-      },
-      { passive: false }
-    );
-
     return () => {
       if (timer > -1) cancelAnimationFrame(timer);
       renderer.dispose();
@@ -112,5 +87,5 @@ export default function Case2_3() {
     };
   }, []);
 
-  return <canvas ref={ref} className="w-full h-full" />;
+  return <canvas id={canvasId} className="w-full h-full" />;
 }
