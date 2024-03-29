@@ -47,7 +47,8 @@ export class PickByGPU {
 
     // 清理视野偏移，回归正常
     camera.clearViewOffset();
-    // 读取像素(偏移相机渲染1px区域，在pickingTexture中展示的就是此一像素区域的颜色)
+    // 读取像素(偏移相机渲染1px区域，在pickingTexture中的就是此1像素区域的颜色)
+    // 由于透明区域没有颜色值、继续读取到后面物体的颜色
     renderer.readRenderTargetPixels(
       pickingTexture,
       0, // x

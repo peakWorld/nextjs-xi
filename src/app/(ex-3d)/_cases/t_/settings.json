@@ -209,7 +209,7 @@
   },
   {
     "path": "case4_5?k=outside",
-    "title": "多画布(copied 2D Canvas)"
+    "title": "多画布(copied To 2D Canvas)"
   },
   {
     "path": "case4_6",
@@ -218,5 +218,13 @@
   {
     "path": "case4_6?k=gpu",
     "title": "拾取(GPU法)"
+  },
+  {
+    "path": "case4_7",
+    "title": "后期处理"
+  },
+  {
+    "path": "case4_7?k=shader",
+    "title": "后期处理(ShaderPass)"
   }
 ]
