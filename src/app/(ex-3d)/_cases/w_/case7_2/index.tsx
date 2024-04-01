@@ -82,13 +82,7 @@ export default function Case7_2() {
             vec3.fromValues(0, 0, 0),
             vec3.fromValues(0, 1, 0)
           );
-          const pMat = mat4.perspective(
-            mat4.create(),
-            45,
-            view.aspect,
-            0.1,
-            100
-          );
+          const pMat = mat4.perspective(mat4.create(), 45, view.aspect, 0.1, 100);
 
           // 光源位置
           pos_shader.use();
@@ -109,10 +103,7 @@ export default function Case7_2() {
           mat4.rotate(mMat, mMat, currentAngle, vec3.fromValues(1, 1, 0));
           mat4.scale(mMat, mMat, vec3.fromValues(0.5, 0.5, 0.5));
           shader.setMat("model", mMat);
-          const nMat = mat4.transpose(
-            mat4.create(),
-            mat4.invert(mat4.create(), mMat)
-          ); // 模型矩阵-逆转置矩阵
+          const nMat = mat4.transpose(mat4.create(), mat4.invert(mat4.create(), mMat)); // 模型矩阵-逆转置矩阵
           shader.setMat("normal", nMat);
 
           // 键盘移动光源位置
@@ -215,13 +206,7 @@ export default function Case7_2() {
             vec3.fromValues(0, 0, 0),
             vec3.fromValues(0, 1, 0)
           );
-          const pMat = mat4.perspective(
-            mat4.create(),
-            45,
-            view.aspect,
-            0.1,
-            100
-          );
+          const pMat = mat4.perspective(mat4.create(), 45, view.aspect, 0.1, 100);
 
           // 光源位置
           pos_shader.use();
@@ -242,10 +227,7 @@ export default function Case7_2() {
           mat4.rotate(mMat, mMat, currentAngle, vec3.fromValues(1, 1, 0));
           mat4.scale(mMat, mMat, vec3.fromValues(0.5, 0.5, 0.5));
           shader.setMat("model", mMat);
-          const nMat = mat4.transpose(
-            mat4.create(),
-            mat4.invert(mat4.create(), mMat)
-          ); // 模型矩阵-逆转置矩阵
+          const nMat = mat4.transpose(mat4.create(), mat4.invert(mat4.create(), mMat)); // 模型矩阵-逆转置矩阵
           shader.setMat("normal", nMat);
 
           // 材质固定, 改变光的颜色和强度

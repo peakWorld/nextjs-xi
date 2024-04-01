@@ -83,3 +83,24 @@ export function rand(min: number, max?: number) {
 export function randomColor() {
   return `hsl(${rand(360) | 0}, ${rand(50, 100) | 0}%, 50%)`;
 }
+
+// 加载模型后, 自动对齐相机
+export function frameArea(sizeToFitOnScreen: number, boxSize: number, boxCenter: THREE.Vector3, camera: THREE.Camera) {
+  const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
+  const halfFovY = THREE.MathUtils.degToRad(camera.fov * 0.5);
+  const distance = halfSizeToFitOnScreen / Math.tan(halfFovY); // 计算(New)相机到模型中心的距离
+
+  // 计算模型中心和原相机间的 单位向量
+  // const direction = new THREE.Vector3().subVectors(camera.position, boxCenter).normalize();
+  const direction = new THREE.Vector3()
+    .subVectors(camera.position, boxCenter)
+    .multiply(new THREE.Vector3(1, 0, 1)) // 抹除y轴方向的缩放, 保证平行XZ平面(即地面)
+    .normalize();
+
+  // 模型中心 + 单位向量 * 距离 = 新相机位置
+  camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
+  camera.near = boxSize / 100;
+  camera.far = boxSize * 100;
+  camera.updateProjectionMatrix();
+  camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
+}

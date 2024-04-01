@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { resizeRendererToDisplaySize, dumpObject } from "@/app/(ex-3d)/_utils/t_/common";
+import { resizeRendererToDisplaySize, frameArea } from "@/app/(ex-3d)/_utils/t_/common";
 import { curve } from "./line";
 
 export default function Case4_2() {
@@ -68,23 +68,6 @@ export default function Case4_2() {
       cam.right = 1500;
       cam.top = 1500;
       cam.bottom = -1500;
-    }
-
-    function frameArea(sizeToFitOnScreen: number, boxSize: number, boxCenter: THREE.Vector3, camera: THREE.Camera) {
-      const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
-      const halfFovY = THREE.MathUtils.degToRad(camera.fov * 0.5);
-      const distance = halfSizeToFitOnScreen / Math.tan(halfFovY);
-
-      const direction = new THREE.Vector3()
-        .subVectors(camera.position, boxCenter)
-        .multiply(new THREE.Vector3(1, 0, 1))
-        .normalize();
-
-      camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
-      camera.near = boxSize / 100;
-      camera.far = boxSize * 100;
-      camera.updateProjectionMatrix();
-      camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
     }
 
     let cars: THREE.Object3D<THREE.Object3DEventMap>[] = [];

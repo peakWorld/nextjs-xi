@@ -226,5 +226,13 @@
   {
     "path": "case4_7?k=shader",
     "title": "后期处理(ShaderPass)"
+  },
+  {
+    "path": "case4_8",
+    "title": "后期处理(3DLUT)"
+  },
+  {
+    "path": "case4_8?k=3dlut",
+    "title": "生成3DLUT纹理"
   }
 ]

@@ -6,7 +6,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
-import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/common";
+import { resizeRendererToDisplaySize, frameArea } from "@/app/(ex-3d)/_utils/t_/common";
 
 export default function Case4_1() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -75,26 +75,6 @@ export default function Case4_1() {
       const plane = new THREE.Mesh(planeGeo, planeMat);
       plane.rotation.x = Math.PI * -0.5;
       scene.add(plane);
-    }
-
-    function frameArea(sizeToFitOnScreen: number, boxSize: number, boxCenter: THREE.Vector3, camera: THREE.Camera) {
-      const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
-      const halfFovY = THREE.MathUtils.degToRad(camera.fov * 0.5);
-      const distance = halfSizeToFitOnScreen / Math.tan(halfFovY); // 计算(New)相机到风车中心的距离
-
-      // 计算风车中心和原相机间的 单位向量
-      // const direction = new THREE.Vector3().subVectors(camera.position, boxCenter).normalize();
-      const direction = new THREE.Vector3()
-        .subVectors(camera.position, boxCenter)
-        .multiply(new THREE.Vector3(1, 0, 1)) // 抹除y轴方向的缩放, 保证平行XZ平面(即地面)
-        .normalize();
-
-      // 风车中心 + 单位向量 * 距离 = 新相机位置
-      camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
-      camera.near = boxSize / 100;
-      camera.far = boxSize * 100;
-      camera.updateProjectionMatrix();
-      camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
     }
 
     {
