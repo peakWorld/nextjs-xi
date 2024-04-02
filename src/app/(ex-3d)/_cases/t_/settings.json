@@ -234,5 +234,9 @@
   {
     "path": "case4_8?k=3dlut",
     "title": "生成3DLUT纹理"
+  },
+  {
+    "path": "case4_9",
+    "title": "Shadertoy"
   }
 ]

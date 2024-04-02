@@ -149,19 +149,27 @@ export const lutShader = {
 
     varying vec2 vUv;
 
+    // 假设size=8, 那么X轴 8*8, Y轴 8; 其实是 (x*y) * z, xy是一个切面、z是这个切面的平铺次数
+    // 在texCoord中 x、y、z 的区间都是 [0, 1]
+
     vec4 sampleAs3DTexture(sampler2D tex, vec3 texCoord, float size) {
-      float sliceSize = 1.0 / size;
-      float slicePixelSize = sliceSize / size;
-      float width = size - 1.0;
-      float sliceInnerSize = slicePixelSize * width;
-      float zSlice0 = floor( texCoord.z * width);
-      float zSlice1 = min( zSlice0 + 1.0, width);
+      float sliceSize = 1.0 / size;             // 每一个切面的对应的纹理坐标区间  1/8
+      float slicePixelSize = sliceSize / size;  // 切面中一个像素对应的纹理坐标区间 1/64
+      float width = size - 1.0;                 // 切换到索引从0开始 7.0
+      float sliceInnerSize = slicePixelSize * width; // 一个切面区域(不包含尾像素)对应的纹理坐标区间, 7.0 * 1/64
+      float zSlice0 = floor(texCoord.z * width); // zSlice0 是切片索引 0～7
+      float zSlice1 = min(zSlice0 + 1.0, width); // zSlice1 是切片索引 Min(1~8, 7) => (1, 7)
+
+      // 将原始颜色转成对应的纹理坐标
+      // 在一个切片中的偏移量 0.5 * 1/64 + (0~1) * 7/64 => (0.5 ~ 7.5) * 1/64
       float xOffset = slicePixelSize * 0.5 + texCoord.x * sliceInnerSize;
+      // 纹理中V(y)轴的位置 (0~1 * 7 + 0.5) / 8 => (0.5 ~ 7.5) / 8
       float yRange = (texCoord.y * width + 0.5) / size;
+      // 纹理中U(x)轴的位置 xOffset + (0~7) * 1/8
       float s0 = xOffset + (zSlice0 * sliceSize);
 
       #ifdef FILTER_LUT
-        float s1 = xOffset + (zSlice1 * sliceSize);
+        float s1 = xOffset + (zSlice1 * sliceSize); // xOffset + (1~7) * 1/8
         vec4 slice0Color = texture2D(tex, vec2(s0, yRange));
         vec4 slice1Color = texture2D(tex, vec2(s1, yRange));
         float zOffset = mod(texCoord.z * width, 1.0);
