@@ -2,35 +2,41 @@
 
 import Link from "next/link";
 import clsx from "clsx";
-import { useSelectedLayoutSegment, useSearchParams, useParams } from "next/navigation";
-import { type ExSettings, EXTYPE } from "@/app/(ex-3d)/const";
+import { useSearchParams, useParams } from "next/navigation";
+import { type Menu } from "@/app/(ex-3d)/const";
 
-interface Props {
-  menus: ExSettings;
-}
-
-export default function SiderBar({ menus }: Props) {
-  const segment = useSelectedLayoutSegment() as keyof typeof EXTYPE;
-  const params = useParams();
+export default function SiderBar({ menus, prefix }: { menus: Menu; prefix: string }) {
+  const { type, pageId } = useParams();
   const search = useSearchParams();
-  // 隐藏菜单栏
-  if (search.has("ms")) return null;
 
-  const data = menus[EXTYPE[segment]] ?? [];
-  const current = search.get("k") ? `${params.id}?k=${search.get("k")}` : params.id;
+  if (search.has("ms")) return null; // 隐藏菜单栏
+  const current = search.get("k") ? `${pageId}?k=${search.get("k")}` : pageId;
+  // 菜单状态
+  menus.forEach((node) => {
+    const isMatch = node.children.some((it) => it.path === current);
+    node.isOpen = isMatch;
+  });
 
   return (
-    <div className="w-40 flex flex-col items-center mr-3 p-2 bg-slate-100 overflow-y-auto flex-shrink-0">
-      {data.map((it) => (
-        <Link
-          key={it.path}
-          className={clsx("w-full mb-2", {
-            "text-blue-400": it.path === current,
-          })}
-          href={`/${segment}/${it.path}`}
-        >
-          <div className="truncate mb-1">{it.title}</div>
-        </Link>
+    <div className="w-40 flex flex-col mr-3 p-2 bg-slate-100 overflow-y-auto flex-shrink-0">
+      {menus.map((node) => (
+        <details key={node.summary} open={node.isOpen} className="mt-2">
+          <summary className="font-medium">{node.summary}</summary>
+          <div className="ml-4">
+            {node.children.map((it) => (
+              <Link
+                key={it.path}
+                className={clsx("w-full mb-2", {
+                  "text-blue-400": it.path === current,
+                })}
+                href={`/${prefix}/${type}/${it.path}`}
+                title={it.title}
+              >
+                <div className="truncate mb-1">{it.title}</div>
+              </Link>
+            ))}
+          </div>
+        </details>
       ))}
     </div>
   );

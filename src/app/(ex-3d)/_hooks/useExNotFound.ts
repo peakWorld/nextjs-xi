@@ -1,12 +1,20 @@
 import { notFound } from "next/navigation";
-import { EXTYPE } from "@/app/(ex-3d)/const";
-import { getExSettings } from "@/app/(ex-3d)/_utils/ex.so";
+import { Settings, type Menu, type MenuItem } from "@/app/(ex-3d)/const";
+import { readJsonWithRP } from "@/utils/file.so";
 
-// 屏蔽
-export default function useExNotFound(type: EXTYPE, id: string, k: string) {
-  const tp = getExSettings(type)[type];
+export default function useExNotFound(type: string, id: string, k: string) {
+  const { settingPath } = Settings[type];
+  const tp = readJsonWithRP(settingPath) as Menu;
   const url = k ? `${id}?k=${k}` : id;
-  if (!tp.find(({ path }) => path === url)) {
+
+  const pathes = tp.reduce((acc, cur) => {
+    if (cur.children?.length) {
+      acc = [...acc, ...cur.children];
+    }
+    return acc;
+  }, [] as MenuItem[]);
+
+  if (!pathes.find(({ path }) => path === url)) {
     notFound();
   }
 }

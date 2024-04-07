@@ -1,26 +1,28 @@
-/** examples folder related constants*/
-export enum EXTYPE {
-  webgl = "w_",
-  threejs = "t_",
+export type MenuItem = { path: string; title: string };
+
+export type Menu = Array<{
+  summary: string;
+  children: MenuItem[];
+  isOpen?: boolean;
+}>;
+
+interface Setting {
+  loadPage: (id: string, key: string) => Promise<any>;
+  settingPath: string;
 }
 
-export type ExMap = Record<string, (id: string, key: string) => Promise<any>>;
+export enum TYPES {
+  webgl = "w_",
+  threejs = "t_",
+  glsl = "g_",
+}
 
-export type ExSettings = {
-  [EXTYPE.webgl]: Array<{ path: string; title: string }>;
-  [EXTYPE.threejs]: Array<{ path: string; title: string }>;
-};
-
-export const EXMAP: ExMap = {
-  [EXTYPE.webgl]: (id, key = "index") =>
-    import(`@/app/(ex-3d)/_cases/w_/${id}/${key}.tsx`),
-  [EXTYPE.threejs]: (id, key = "index") =>
-    import(`@/app/(ex-3d)/_cases/t_/${id}/${key}.tsx`),
-};
-
-export const EXSETTINGS = {
-  [EXTYPE.webgl]: "@/app/(ex-3d)/_cases/w_/settings.json",
-  [EXTYPE.threejs]: "@/app/(ex-3d)/_cases/t_/settings.json",
-};
-
-/****************************************************************/
+export const Settings = Object.entries(TYPES).reduce((acc, [k, v]) => {
+  acc[k] = {
+    loadPage(id: string, key = "index") {
+      return import(`@/app/(ex-3d)/_cases/${v}/${id}/${key}.tsx`);
+    },
+    settingPath: `@/app/(ex-3d)/_cases/${v}/settings.json`,
+  };
+  return acc;
+}, {} as Record<string, Setting>);

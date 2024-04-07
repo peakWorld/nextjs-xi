@@ -1,242 +1,270 @@
 [
   {
-    "path": "case1_1",
-    "title": "Hello Cube"
+    "summary": "基础",
+    "children": [
+      {
+        "path": "case1_1",
+        "title": "Hello Cube"
+      },
+      {
+        "path": "case1_2",
+        "title": "响应式设计"
+      },
+      {
+        "path": "case1_3",
+        "title": "图元"
+      },
+      {
+        "path": "case1_4",
+        "title": "场景(地月系统)"
+      },
+      {
+        "path": "case1_4?k=tank",
+        "title": "场景(实践)"
+      },
+      {
+        "path": "case1_5",
+        "title": "材质"
+      },
+      {
+        "path": "case1_6",
+        "title": "纹理"
+      },
+      {
+        "path": "case1_6?k=load",
+        "title": "纹理(加载)"
+      },
+      {
+        "path": "case1_6?k=target",
+        "title": "纹理(后台渲染)"
+      },
+      {
+        "path": "case1_6?k=mips",
+        "title": "纹理(过滤)"
+      },
+      {
+        "path": "case1_6?k=operate",
+        "title": "纹理(操作)"
+      },
+      {
+        "path": "case1_7",
+        "title": "光照"
+      },
+      {
+        "path": "case1_7?k=rect",
+        "title": "光照(矩形区域光)"
+      },
+      {
+        "path": "case1_8",
+        "title": "相机(透视)"
+      },
+      {
+        "path": "case1_8?k=z",
+        "title": "相机(z冲突)"
+      },
+      {
+        "path": "case1_8?k=orth",
+        "title": "相机(正交)"
+      },
+      {
+        "path": "case1_8?k=2d",
+        "title": "相机(正交/拟2D)"
+      },
+      {
+        "path": "case1_9",
+        "title": "阴影(假阴影)"
+      },
+      {
+        "path": "case1_9?k=light",
+        "title": "阴影(光阴影)"
+      },
+      {
+        "path": "case1_10",
+        "title": "雾"
+      },
+      {
+        "path": "case1_10?k=help",
+        "title": "雾(辅助)"
+      },
+      {
+        "path": "case1_10?k=car",
+        "title": "雾(展示)"
+      },
+      {
+        "path": "case1_11",
+        "title": "渲染目标(WebGLRenderTarget)"
+      },
+      {
+        "path": "case1_12",
+        "title": "缓冲几何体(自定义)"
+      },
+      {
+        "path": "case1_12?k=typed",
+        "title": "缓冲几何体(类型数组)"
+      }
+    ]
   },
   {
-    "path": "case1_2",
-    "title": "响应式设计"
+    "summary": "技巧",
+    "children": [
+      {
+        "path": "case2_1",
+        "title": "按需渲染"
+      },
+      {
+        "path": "case2_2",
+        "title": "调试"
+      },
+      {
+        "path": "case2_3?k=screenshot",
+        "title": "技巧-截图"
+      },
+      {
+        "path": "case2_3?k=drawing",
+        "title": "技巧-绘图"
+      },
+      {
+        "path": "case2_3?k=keyword",
+        "title": "技巧-键盘输入"
+      },
+      {
+        "path": "case2_3?k=alpha",
+        "title": "技巧-透明化"
+      }
+    ]
   },
   {
-    "path": "case1_3",
-    "title": "图元"
+    "summary": "优化",
+    "children": [
+      {
+        "path": "case3_1?k=globe_2d",
+        "title": "2d地球"
+      },
+      {
+        "path": "case3_1?k=globe",
+        "title": "3d地球"
+      },
+      {
+        "path": "case3_1?k=globe_3d",
+        "title": "3d地球(优化)"
+      },
+      {
+        "path": "case3_1?k=globe_colorful",
+        "title": "3d地球(多彩)"
+      },
+      {
+        "path": "case3_2?k=multi",
+        "title": "3d地球(多数据)"
+      },
+      {
+        "path": "case3_2?k=animation",
+        "title": "3d地球(形变动画)"
+      },
+      {
+        "path": "case3_3",
+        "title": "离屏渲染"
+      },
+      {
+        "path": "case3_3?k=ray",
+        "title": "离屏渲染(射线拾取)"
+      },
+      {
+        "path": "case3_3?k=orbit",
+        "title": "离屏渲染(TODO相机控制)"
+      }
+    ]
   },
   {
-    "path": "case1_4",
-    "title": "场景(地月系统)"
-  },
-  {
-    "path": "case1_4?k=tank",
-    "title": "场景(实践)"
-  },
-  {
-    "path": "case1_5",
-    "title": "材质"
-  },
-  {
-    "path": "case1_6",
-    "title": "纹理"
-  },
-  {
-    "path": "case1_6?k=load",
-    "title": "纹理(加载)"
-  },
-  {
-    "path": "case1_6?k=target",
-    "title": "纹理(后台渲染)"
-  },
-  {
-    "path": "case1_6?k=mips",
-    "title": "纹理(过滤)"
-  },
-  {
-    "path": "case1_6?k=operate",
-    "title": "纹理(操作)"
-  },
-  {
-    "path": "case1_7",
-    "title": "光照"
-  },
-  {
-    "path": "case1_7?k=rect",
-    "title": "光照(矩形区域光)"
-  },
-  {
-    "path": "case1_8",
-    "title": "相机(透视)"
-  },
-  {
-    "path": "case1_8?k=z",
-    "title": "相机(z冲突)"
-  },
-  {
-    "path": "case1_8?k=orth",
-    "title": "相机(正交)"
-  },
-  {
-    "path": "case1_8?k=2d",
-    "title": "相机(正交/拟2D)"
-  },
-  {
-    "path": "case1_9",
-    "title": "阴影(假阴影)"
-  },
-  {
-    "path": "case1_9?k=light",
-    "title": "阴影(光阴影)"
-  },
-  {
-    "path": "case1_10",
-    "title": "雾"
-  },
-  {
-    "path": "case1_10?k=help",
-    "title": "雾(辅助)"
-  },
-  {
-    "path": "case1_10?k=car",
-    "title": "雾(展示)"
-  },
-  {
-    "path": "case1_11",
-    "title": "渲染目标"
-  },
-  {
-    "path": "case1_12",
-    "title": "缓冲几何体(自定义)"
-  },
-  {
-    "path": "case1_12?k=typed",
-    "title": "缓冲几何体(类型数组)"
-  },
-  {
-    "path": "case2_1",
-    "title": "按需渲染"
-  },
-  {
-    "path": "case2_2",
-    "title": "调试"
-  },
-  {
-    "path": "case2_3?k=screenshot",
-    "title": "技巧-截图"
-  },
-  {
-    "path": "case2_3?k=drawing",
-    "title": "技巧-绘图"
-  },
-  {
-    "path": "case2_3?k=keyword",
-    "title": "技巧-键盘输入"
-  },
-  {
-    "path": "case2_3?k=alpha",
-    "title": "技巧-透明化"
-  },
-  {
-    "path": "case3_1?k=globe_2d",
-    "title": "2d地球"
-  },
-  {
-    "path": "case3_1?k=globe",
-    "title": "3d地球"
-  },
-  {
-    "path": "case3_1?k=globe_3d",
-    "title": "3d地球(优化)"
-  },
-  {
-    "path": "case3_1?k=globe_colorful",
-    "title": "3d地球(多彩)"
-  },
-  {
-    "path": "case3_2?k=multi",
-    "title": "3d地球(多数据)"
-  },
-  {
-    "path": "case3_2?k=animation",
-    "title": "3d地球(形变动画)"
-  },
-  {
-    "path": "case3_3",
-    "title": "离屏渲染"
-  },
-  {
-    "path": "case3_3?k=ray",
-    "title": "离屏渲染(射线拾取)"
-  },
-  {
-    "path": "case3_3?k=orbit",
-    "title": "离屏渲染(TODO相机控制)"
-  },
-  {
-    "path": "case4_1",
-    "title": "obj文件"
-  },
-  {
-    "path": "case4_1?k=bigger",
-    "title": "obj文件(模型太大)"
-  },
-  {
-    "path": "case4_2",
-    "title": "gltf文件"
-  },
-  {
-    "path": "case4_3",
-    "title": "背景"
-  },
-  {
-    "path": "case4_3?k=texture",
-    "title": "背景(纹理)"
-  },
-  {
-    "path": "case4_3?k=cubemap",
-    "title": "天空盒(立方体贴图)"
-  },
-  {
-    "path": "case4_3?k=map",
-    "title": "天空盒(等距矩形贴图)"
-  },
-  {
-    "path": "case4_4",
-    "title": "透明"
-  },
-  {
-    "path": "case4_4?k=cross",
-    "title": "透明(相交面)"
-  },
-  {
-    "path": "case4_4?k=alpha",
-    "title": "透明(alpha测试)"
-  },
-  {
-    "path": "case4_5",
-    "title": "多画布"
-  },
-  {
-    "path": "case4_5?k=common",
-    "title": "多画布(适用)"
-  },
-  {
-    "path": "case4_5?k=outside",
-    "title": "多画布(copied To 2D Canvas)"
-  },
-  {
-    "path": "case4_6",
-    "title": "拾取(射线法)"
-  },
-  {
-    "path": "case4_6?k=gpu",
-    "title": "拾取(GPU法)"
-  },
-  {
-    "path": "case4_7",
-    "title": "后期处理"
-  },
-  {
-    "path": "case4_7?k=shader",
-    "title": "后期处理(ShaderPass)"
-  },
-  {
-    "path": "case4_8",
-    "title": "后期处理(3DLUT)"
-  },
-  {
-    "path": "case4_8?k=3dlut",
-    "title": "生成3DLUT纹理"
-  },
-  {
-    "path": "case4_9",
-    "title": "Shadertoy"
+    "summary": "解决方案",
+    "children": [
+      {
+        "path": "case4_1",
+        "title": "obj文件"
+      },
+      {
+        "path": "case4_1?k=bigger",
+        "title": "obj文件(模型太大)"
+      },
+      {
+        "path": "case4_2",
+        "title": "gltf文件"
+      },
+      {
+        "path": "case4_3",
+        "title": "背景"
+      },
+      {
+        "path": "case4_3?k=texture",
+        "title": "背景(纹理)"
+      },
+      {
+        "path": "case4_3?k=cubemap",
+        "title": "天空盒(立方体贴图)"
+      },
+      {
+        "path": "case4_3?k=map",
+        "title": "天空盒(等距矩形贴图)"
+      },
+      {
+        "path": "case4_4",
+        "title": "透明"
+      },
+      {
+        "path": "case4_4?k=cross",
+        "title": "透明(相交面)"
+      },
+      {
+        "path": "case4_4?k=alpha",
+        "title": "透明(alpha测试)"
+      },
+      {
+        "path": "case4_5",
+        "title": "多画布"
+      },
+      {
+        "path": "case4_5?k=common",
+        "title": "多画布(适用)"
+      },
+      {
+        "path": "case4_5?k=outside",
+        "title": "多画布(copied To 2D Canvas)"
+      },
+      {
+        "path": "case4_6",
+        "title": "拾取(射线法)"
+      },
+      {
+        "path": "case4_6?k=gpu",
+        "title": "拾取(GPU法)"
+      },
+      {
+        "path": "case4_7",
+        "title": "后期处理"
+      },
+      {
+        "path": "case4_7?k=shader",
+        "title": "后期处理(ShaderPass)"
+      },
+      {
+        "path": "case4_8",
+        "title": "后期处理(3DLUT)"
+      },
+      {
+        "path": "case4_8?k=3dlut",
+        "title": "生成3DLUT纹理"
+      },
+      {
+        "path": "case4_9",
+        "title": "Shadertoy"
+      },
+      {
+        "path": "case4_9?k=texture",
+        "title": "Shadertoy(纹理)"
+      },
+      {
+        "path": "case4_10",
+        "title": "对齐HTML元元素"
+      }
+    ]
   }
 ]
