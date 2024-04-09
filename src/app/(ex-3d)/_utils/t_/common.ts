@@ -104,3 +104,8 @@ export function frameArea(sizeToFitOnScreen: number, boxSize: number, boxCenter:
   camera.updateProjectionMatrix();
   camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
 }
+
+export async function loadJSON(url: string) {
+  const req = await fetch(url);
+  return req.json();
+}

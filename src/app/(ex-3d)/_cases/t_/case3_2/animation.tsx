@@ -323,7 +323,7 @@ export default function Case3_2() {
     const durationInMs = 1000;
     tweenManager.createTween(mesh.morphTargetInfluences).to(targets, durationInMs).start();
 
-    renderRef.current();
+    renderRef.current?.();
   }, [mesh, selected]);
 
   return (

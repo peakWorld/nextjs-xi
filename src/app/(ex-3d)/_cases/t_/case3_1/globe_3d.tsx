@@ -122,6 +122,7 @@ export default function Case3_1() {
         });
       });
 
+      // 优化: 合并网格点
       const mergedGeometry = BufferGeometryUtils.mergeGeometries(geometries, false);
       const material = new THREE.MeshBasicMaterial({ color: "red" });
       const mesh = new THREE.Mesh(mergedGeometry, material);

@@ -263,7 +263,23 @@
       },
       {
         "path": "case4_10",
-        "title": "对齐HTML元元素"
+        "title": "HTML标签"
+      },
+      {
+        "path": "case4_10?k=overlap",
+        "title": "HTML标签(对象重叠)"
+      },
+      {
+        "path": "case4_10?k=cone",
+        "title": "HTML标签(超出视锥)"
+      },
+      {
+        "path": "case4_10?k=order",
+        "title": "HTML标签(显示顺序)"
+      },
+      {
+        "path": "case4_10?k=globe",
+        "title": "HTML标签(地球仪)"
       }
     ]
   }

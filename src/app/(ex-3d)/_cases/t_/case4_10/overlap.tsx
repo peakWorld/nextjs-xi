@@ -63,6 +63,7 @@ export default function Case4_10() {
     ];
 
     const tempV = new THREE.Vector3();
+    const raycaster = new THREE.Raycaster();
 
     function render(time: number) {
       time *= 0.001;
@@ -90,13 +91,31 @@ export default function Case4_10() {
         // x = -1 表示在最左侧
         // y = -1 表示在最底部
         tempV.project(camera);
+        if (tempV.z > 1) {
+          console.log("tempV", tempV);
+        }
 
-        // 3. 将标准屏幕坐标转化为CSS坐标
-        const x = (tempV.x * 0.5 + 0.5) * canvas.clientWidth;
-        const y = (tempV.y * -0.5 + 0.5) * canvas.clientHeight;
+        // 3.调用Raycast获取所有相交的物体; 如果第一个相交的是此物体，那么就是可见的
+        // 解决问题 => 重叠对象
+        raycaster.setFromCamera(new THREE.Vector2(tempV.x, tempV.y), camera);
+        const intersectedObjects = raycaster.intersectObjects(scene.children);
+        const show = cube === intersectedObjects[0]?.object;
 
-        // 4. 将元素移动到此位置
-        elem.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
+        // 解决问题[不正确] => 超出视锥体范围
+        if (!show || Math.abs(tempV.z) > 1) {
+          // 隐藏Label
+          elem.style.display = "none";
+        } else {
+          // 显示Label
+          elem.style.display = "";
+
+          // 4. 将标准屏幕坐标转化为CSS坐标
+          const x = (tempV.x * 0.5 + 0.5) * canvas.clientWidth;
+          const y = (tempV.y * -0.5 + 0.5) * canvas.clientHeight;
+
+          // 5. 将元素移动到此位置
+          elem.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
+        }
       });
 
       renderer.render(scene, camera);
@@ -107,6 +126,7 @@ export default function Case4_10() {
     return () => {
       if (timer > -1) cancelAnimationFrame(timer);
       renderer.dispose();
+      labelContainerElem!.innerHTML = "";
     };
   }, []);
 

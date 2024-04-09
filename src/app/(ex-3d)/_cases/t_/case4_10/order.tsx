@@ -26,7 +26,7 @@ export default function Case4_10() {
     const near = 0.1;
     const far = 50;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 7;
+    camera.position.z = 15;
 
     const controls = new OrbitControls(camera, canvas);
     controls.target.set(0, 0, 0);
@@ -57,12 +57,15 @@ export default function Case4_10() {
     }
 
     const cubes = [
-      makeInstance(geometry, 0x44aa88, 0, "Aqua"),
-      makeInstance(geometry, 0x8844aa, -2, "Purple"),
-      makeInstance(geometry, 0xaa8844, 2, "Gold"),
+      makeInstance(geometry, 0x44aa88, 0, "Aqua Colored Box"),
+      makeInstance(geometry, 0x8844aa, -2, "Purple Colored Box"),
+      makeInstance(geometry, 0xaa8844, 2, "Gold Colored Box"),
     ];
 
     const tempV = new THREE.Vector3();
+    const raycaster = new THREE.Raycaster();
+    const frustum = new THREE.Frustum();
+    const viewProjection = new THREE.Matrix4();
 
     function render(time: number) {
       time *= 0.001;
@@ -80,23 +83,31 @@ export default function Case4_10() {
         cube.rotation.x = rot;
         cube.rotation.y = rot;
 
-        /*** 在渲染时定位Label元素 **/
-
-        // 1. 获取立方体中心的位置
         cube.updateWorldMatrix(true, false);
         cube.getWorldPosition(tempV);
-
-        // 2. 获取标准化屏幕坐标，x和y都会在-1和1区间
-        // x = -1 表示在最左侧
-        // y = -1 表示在最底部
         tempV.project(camera);
 
-        // 3. 将标准屏幕坐标转化为CSS坐标
-        const x = (tempV.x * 0.5 + 0.5) * canvas.clientWidth;
-        const y = (tempV.y * -0.5 + 0.5) * canvas.clientHeight;
+        // 解决问题 => 重叠对象
+        raycaster.setFromCamera(new THREE.Vector2(tempV.x, tempV.y), camera);
+        const intersectedObjects = raycaster.intersectObjects(scene.children);
+        const show = cube === intersectedObjects[0]?.object;
 
-        // 4. 将元素移动到此位置
-        elem.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
+        // 解决问题 => 检查对象是否在视锥体中
+        viewProjection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse); // 投影矩阵 x 视图矩阵
+        frustum.setFromProjectionMatrix(viewProjection);
+        const inFrustum = frustum.intersectsObject(cube);
+
+        if (!show || !inFrustum) {
+          elem.style.display = "none";
+        } else {
+          elem.style.display = "";
+          const x = (tempV.x * 0.5 + 0.5) * canvas.clientWidth;
+          const y = (tempV.y * -0.5 + 0.5) * canvas.clientHeight;
+          elem.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
+
+          // 解决问题 => Label显示顺序
+          elem.style.zIndex = `${((-tempV.z * 0.5 + 0.5) * 100000) | 0}`;
+        }
       });
 
       renderer.render(scene, camera);
@@ -107,13 +118,14 @@ export default function Case4_10() {
     return () => {
       if (timer > -1) cancelAnimationFrame(timer);
       renderer.dispose();
+      labelContainerElem!.innerHTML = "";
     };
   }, []);
 
   return (
     <div id="container">
       <canvas ref={ref} className="w-full h-full block" />
-      <div id="labels"></div>
+      <div id="labels" className="order"></div>
     </div>
   );
 }
