@@ -279,7 +279,27 @@
       },
       {
         "path": "case4_10?k=globe",
-        "title": "HTML标签(地球仪)"
+        "title": "地球仪"
+      },
+      {
+        "path": "case4_10?k=backlabels",
+        "title": "地球仪(背面标签)"
+      },
+      {
+        "path": "case4_10?k=morelabels",
+        "title": "地球仪(太多标签)"
+      },
+      {
+        "path": "case4_11",
+        "title": "地球仪(选中标签)"
+      },
+      {
+        "path": "case4_11?k=random",
+        "title": "地球仪(随机着色)"
+      },
+      {
+        "path": "case4_11?k=highlight",
+        "title": "地球仪(选中高亮)"
       }
     ]
   }

@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { useEffect, useRef, MutableRefObject } from "react";
+import { getCanvasRelativePosition } from "@/app/(ex-3d)/_utils/t_/common";
 
 export function useMouse(id: string, usePx = false): MutableRefObject<THREE.Vector2> {
   const posRef = useRef(new THREE.Vector2());
@@ -7,17 +8,8 @@ export function useMouse(id: string, usePx = false): MutableRefObject<THREE.Vect
   useEffect(() => {
     const canvas = document.querySelector(`#${id}`) as HTMLCanvasElement;
 
-    function getCanvasRelativePosition(event: MouseEvent | Touch) {
-      const rect = canvas.getBoundingClientRect();
-      // canvas.width 画布横轴像素值；rect.width canvas元素宽度
-      // 将屏幕尺寸坐标转化为相对于像素的值
-      return {
-        x: ((event.clientX - rect.left) * canvas.width) / rect.width,
-        y: ((event.clientY - rect.top) * canvas.height) / rect.height,
-      };
-    }
     function setPickPosition(event: MouseEvent | Touch) {
-      const pos = getCanvasRelativePosition(event);
+      const pos = getCanvasRelativePosition(event, canvas);
       // 像素坐标
       if (usePx) {
         posRef.current.x = pos.x;

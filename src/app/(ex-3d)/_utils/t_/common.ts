@@ -109,3 +109,21 @@ export async function loadJSON(url: string) {
   const req = await fetch(url);
   return req.json();
 }
+
+export function getCanvasRelativePosition(event: MouseEvent | Touch, canvas: HTMLCanvasElement) {
+  const rect = canvas.getBoundingClientRect();
+  // canvas.width 画布横轴像素值；rect.width canvas元素宽度
+  // 将屏幕尺寸坐标转化为对应的像素坐标
+  return {
+    x: ((event.clientX - rect.left) * canvas.width) / rect.width,
+    y: ((event.clientY - rect.top) * canvas.height) / rect.height,
+  } as THREE.Vector2;
+}
+
+export function get255BasedColor(color: string) {
+  const tempColor = new THREE.Color();
+  tempColor.set(color);
+  const base = tempColor.toArray().map((v) => v * 255);
+  base.push(255); // alpha
+  return base;
+}
