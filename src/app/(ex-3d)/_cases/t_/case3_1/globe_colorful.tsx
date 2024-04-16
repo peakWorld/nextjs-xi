@@ -114,9 +114,9 @@ export default function Case3_1() {
           // 将经纬度转换成世界坐标
           positionHelper.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
           originHelper.updateWorldMatrix(true, false);
-          geometry.applyMatrix4(originHelper.matrixWorld); // 对网格进行处理, 获得新的网格信息
+          geometry.applyMatrix4(originHelper.matrixWorld); // 对几何体进行处理, 获得新的几何体信息
 
-          // 计算每个网格的颜色
+          // 计算几何体的颜色
           const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
           const saturation = 1;
           const lightness = THREE.MathUtils.lerp(0.4, 1.0, amount);

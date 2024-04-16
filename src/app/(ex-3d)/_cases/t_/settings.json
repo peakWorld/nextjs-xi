@@ -300,6 +300,38 @@
       {
         "path": "case4_11?k=highlight",
         "title": "地球仪(选中高亮)"
+      },
+      {
+        "path": "case4_12",
+        "title": "Canvas 2D"
+      },
+      {
+        "path": "case4_12?k=texture",
+        "title": "Canvas纹理"
+      },
+      {
+        "path": "case4_12?k=text",
+        "title": "绘制文本"
+      },
+      {
+        "path": "case4_12?k=resolution",
+        "title": "绘制文本(增加分辨率)"
+      },
+      {
+        "path": "case4_13",
+        "title": "广告牌"
+      },
+      {
+        "path": "case4_13?k=facades",
+        "title": "绘制立面"
+      },
+      {
+        "path": "case4_14",
+        "title": "释放资源"
+      },
+      {
+        "path": "case4_15",
+        "title": "像素几何"
       }
     ]
   }

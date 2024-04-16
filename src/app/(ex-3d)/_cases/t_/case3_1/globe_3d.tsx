@@ -116,7 +116,7 @@ export default function Case3_1() {
 
           // originHelper 一个点经过 平移、旋转、缩放等变换后得到的坐标
           // originHelper.matrixWorld 就是这个点坐标经历过的操作, 这里套用给geometry、即geometry中的所有点
-          geometry.applyMatrix4(originHelper.matrixWorld); // 对网格进行处理, 获得新的网格点坐标
+          geometry.applyMatrix4(originHelper.matrixWorld); // 对几何体进行处理, 获得新的几何体点坐标
 
           geometries.push(geometry);
         });

@@ -127,3 +127,23 @@ export function get255BasedColor(color: string) {
   base.push(255); // alpha
   return base;
 }
+
+export function randInt(min: number, max?: number) {
+  if (max === undefined) {
+    max = min;
+    min = 0;
+  }
+  return (Math.random() * (max - min) + min) | 0;
+}
+
+// canvas 2D绘制随机圆圈
+export function drawRandomDot(ctx: CanvasRenderingContext2D) {
+  ctx.fillStyle = `#${randInt(0x1000000).toString(16).padStart(6, "0")}`;
+  ctx.beginPath();
+
+  const x = randInt(256);
+  const y = randInt(256);
+  const radius = randInt(10, 64);
+  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.fill();
+}
