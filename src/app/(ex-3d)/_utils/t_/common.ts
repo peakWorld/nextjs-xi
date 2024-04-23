@@ -113,7 +113,7 @@ export async function loadJSON(url: string) {
 export function getCanvasRelativePosition(event: MouseEvent | Touch, canvas: HTMLCanvasElement) {
   const rect = canvas.getBoundingClientRect();
   // canvas.width 画布横轴像素值；rect.width canvas元素宽度
-  // 将屏幕尺寸坐标转化为对应的像素坐标
+  // 将屏幕尺寸坐标转化为canvas中对应的像素坐标
   return {
     x: ((event.clientX - rect.left) * canvas.width) / rect.width,
     y: ((event.clientY - rect.top) * canvas.height) / rect.height,

@@ -331,7 +331,19 @@
       },
       {
         "path": "case4_15",
+        "title": "像素山脉"
+      },
+      {
+        "path": "case4_15?k=voxel",
         "title": "像素几何"
+      },
+      {
+        "path": "case4_15?k=texture",
+        "title": "像素几何(纹理)"
+      },
+      {
+        "path": "case4_15?k=mul",
+        "title": "像素几何(多区域)"
       }
     ]
   }
