@@ -346,5 +346,14 @@
         "title": "像素几何(多区域)"
       }
     ]
+  },
+  {
+    "summary": "游戏Demo",
+    "children": [
+      {
+        "path": "case5_1",
+        "title": "动画播放"
+      }
+    ]
   }
 ]
