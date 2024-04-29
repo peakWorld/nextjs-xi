@@ -1,0 +1,20 @@
+.basic-3d {
+  position: relative;
+
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+
+    & div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-basis: 50%;
+    }
+  }
+}
