@@ -6,4 +6,5 @@ export interface Screen {
   camera: THREE.Camera;
   controls: OrbitControls;
   ele: HTMLElement;
+  render: (renderer: THREE.WebGLRenderer, canvas: HTMLCanvasElement) => void;
 }
