@@ -1,67 +1,6 @@
 [
   {
-    "summary": "基础",
-    "children": [
-      {
-        "path": "case1",
-        "title": "点"
-      },
-      {
-        "path": "case2",
-        "title": "三角形"
-      },
-      {
-        "path": "case3",
-        "title": "纹理"
-      },
-      {
-        "path": "case4",
-        "title": "坐标系"
-      },
-      {
-        "path": "case5",
-        "title": "正方体"
-      },
-      {
-        "path": "case6",
-        "title": "相机(残缺)"
-      },
-      {
-        "path": "case7_1",
-        "title": "光照(基础)"
-      },
-      {
-        "path": "case7_2",
-        "title": "光照(材质)"
-      },
-      {
-        "path": "case7_3",
-        "title": "光照(贴图)"
-      },
-      {
-        "path": "case7_4",
-        "title": "光照(投光物)"
-      },
-      {
-        "path": "case7_5",
-        "title": "光照(多光源)"
-      },
-      {
-        "path": "case8_1",
-        "title": "加载模型(残缺)"
-      },
-      {
-        "path": "case9_1",
-        "title": "深度测试"
-      },
-      {
-        "path": "case9_2",
-        "title": "模板测试"
-      },
-      {
-        "path": "case10_1",
-        "title": "混合"
-      }
-    ]
+    "summary": "基础概念",
+    "children": []
   }
 ]
