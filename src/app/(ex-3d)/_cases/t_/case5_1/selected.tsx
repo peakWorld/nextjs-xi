@@ -14,6 +14,12 @@ interface Model {
   animations?: Record<string, THREE.AnimationClip>;
 }
 
+interface MixerInfo {
+  mixer: THREE.AnimationMixer;
+  actions: Array<THREE.AnimationAction>;
+  actionNdx: number;
+}
+
 export default function Case5_1() {
   const ref = useRef<HTMLCanvasElement>(null);
 
@@ -73,7 +79,6 @@ export default function Case5_1() {
       const gltfLoader = new GLTFLoader(manager);
       for (const model of Object.values(models)) {
         gltfLoader.load(model.url, (gltf) => {
-          console.log("gltf", gltf);
           model.gltf = gltf;
         });
       }
@@ -89,7 +94,7 @@ export default function Case5_1() {
       });
     }
 
-    const mixers: THREE.AnimationMixer[] = [];
+    const mixerInfos: Array<MixerInfo> = [];
     function init() {
       const loadingElem = document.querySelector("#loading") as HTMLDivElement;
       loadingElem.style.display = "none";
@@ -102,11 +107,30 @@ export default function Case5_1() {
         scene.add(root);
         root.position.x = (ndx - 3) * 3;
 
-        const mixer = new THREE.AnimationMixer(clonedScene); // 克隆蒙皮模型
-        const firstClip = Object.values(model.animations ?? {})[0]; // 首个动画剪辑
-        const action = mixer.clipAction(firstClip); // AnimationAction 操作动画
-        action.play(); // 激活动作, 并不意味着动画会立刻开始
-        mixers.push(mixer);
+        const mixer = new THREE.AnimationMixer(clonedScene);
+        const actions = Object.values(model.animations as Record<string, THREE.AnimationClip>).map((clip) => {
+          return mixer.clipAction(clip);
+        });
+        const mixerInfo = {
+          mixer,
+          actions,
+          actionNdx: -1,
+        };
+        mixerInfos.push(mixerInfo);
+        playNextAction(mixerInfo);
+      });
+    }
+
+    function playNextAction(mixerInfo: MixerInfo) {
+      const { actions, actionNdx } = mixerInfo;
+      const nextActionNdx = (actionNdx + 1) % actions.length; // 模型动画集合中的下一个动画<序号+1>
+      mixerInfo.actionNdx = nextActionNdx;
+      actions.forEach((action, ndx) => {
+        const enabled = ndx === nextActionNdx;
+        action.enabled = enabled; // 开启/禁止此动画
+        if (enabled) {
+          action.play();
+        }
       });
     }
 
@@ -122,7 +146,7 @@ export default function Case5_1() {
       }
 
       // 动画更新
-      for (const mixer of mixers) {
+      for (const { mixer } of mixerInfos) {
         mixer.update(deltaTime);
       }
 
@@ -131,10 +155,21 @@ export default function Case5_1() {
     }
     timer = requestAnimationFrame(render);
 
+    function player(e: KeyboardEvent) {
+      const mixerInfo = mixerInfos[e.keyCode - 49];
+      if (!mixerInfo) {
+        return;
+      }
+      playNextAction(mixerInfo); // 模仿制定模型动画
+    }
+
+    window.addEventListener("keydown", player);
+
     return () => {
       if (timer > -1) cancelAnimationFrame(timer);
       renderer.dispose();
       document.querySelector(".lil-gui")?.remove();
+      window.removeEventListener("keydown", player);
     };
   }, []);
 

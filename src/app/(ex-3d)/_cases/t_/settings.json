@@ -351,8 +351,16 @@
     "summary": "游戏Demo",
     "children": [
       {
+        "path": "case5_1?k=skin",
+        "title": "蒙皮网格"
+      },
+      {
         "path": "case5_1",
-        "title": "动画播放"
+        "title": "播放<动画>"
+      },
+      {
+        "path": "case5_1?k=selected",
+        "title": "播放<选中动画>"
       }
     ]
   }
