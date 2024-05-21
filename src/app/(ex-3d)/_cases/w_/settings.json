@@ -1,6 +1,28 @@
 [
   {
-    "summary": "基础概念",
-    "children": []
+    "summary": "基础",
+    "children": [
+      {
+        "path": "case1_1",
+        "title": "基本原理"
+      },
+      {
+        "path": "case1_1?k=pixel",
+        "title": "基本原理<像素>"
+      },
+      {
+        "path": "case1_2",
+        "title": "如何工作"
+      }
+    ]
+  },
+  {
+    "summary": "图像处理",
+    "children": [
+      {
+        "path": "case2_1",
+        "title": "使用纹理"
+      }
+    ]
   }
 ]

@@ -6,10 +6,10 @@ const nextConfig = {
     includePaths: [path.join(__dirname, "src/styles")],
   },
   reactStrictMode: false,
-  pageExtensions: ["ts", "tsx", "fs", "vs"],
+  pageExtensions: ["ts", "tsx", "glsl"],
 
   webpack(config) {
-    config.module.rules.push({ test: /\.(v|f)s$/, use: "raw-loader" });
+    config.module.rules.push({ test: /\.glsl$/, use: "raw-loader" });
     return config;
   },
 };
