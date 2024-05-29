@@ -2,12 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import { Shader } from "@/app/(ex-3d)/_utils/w_/shader";
-import { resizeCanvasToDisplaySize, loadImage } from "@/app/(ex-3d)/_utils/w_/util";
-import vs from "./vs.glsl";
-import fs from "./fs.glsl";
-import outside_fs from "./fs.outside.glsl";
+import { resizeCanvasToDisplaySize, loadImage, computeKernelWeight } from "@/app/(ex-3d)/_utils/w_/util";
+import vs from "./vs.convolution.glsl";
+import fs from "./fs.convolution.glsl";
 
 const texCoords = [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]; // 纹理坐标
+var edgeDetectKernel = [-1, -1, -1, -1, 8, -1, -1, -1, -1]; // 卷积核
 
 export default function Case2_1() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -33,7 +33,7 @@ export default function Case2_1() {
       if (!gl) return;
 
       // 1. 在GPU上已经创建了一个GLSL程序
-      const program = new Shader(gl, vs, outside_fs).createProgram();
+      const program = new Shader(gl, vs, fs).createProgram();
       if (!program) return;
 
       const image = await loadImage("/w_/leaves.jpg");
@@ -44,6 +44,8 @@ export default function Case2_1() {
 
       var resolutionLocation = gl.getUniformLocation(program, "u_resolution");
       var imageLocation = gl.getUniformLocation(program, "u_image");
+      var kernelLocation = gl.getUniformLocation(program, "u_kernel[0]");
+      var kernelWeightLocation = gl.getUniformLocation(program, "u_kernelWeight");
 
       // 2.1 收集属性的状态
       var vao = gl.createVertexArray();
@@ -78,7 +80,7 @@ export default function Case2_1() {
 
       // 3. 绑定纹理
       var texture = gl.createTexture(); // 创建纹理对象
-      gl.activeTexture(gl.TEXTURE0 + 0); // 激活纹理单元0
+      gl.activeTexture(gl.TEXTURE0 + 0); // 激活纹理单元0<未设置, 默认激活纹理单元0>
       gl.bindTexture(gl.TEXTURE_2D, texture); // 将纹理对象 绑定到纹理单元0的2D绑定点
 
       // 设置参数
@@ -115,6 +117,8 @@ export default function Case2_1() {
         // 4.5 设置程序中全局变量
         gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
         gl.uniform1i(imageLocation, 0); // 纹理单元
+        gl.uniform1fv(kernelLocation, edgeDetectKernel);
+        gl.uniform1f(kernelWeightLocation, computeKernelWeight(edgeDetectKernel));
 
         // 4.6 绘制图形
         var offset = 0;

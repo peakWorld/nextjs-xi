@@ -22,3 +22,10 @@ export async function loadImage(url: string): Promise<HTMLImageElement> {
     image.onload = () => resolve(image);
   });
 }
+
+export function computeKernelWeight(kernel: number[]) {
+  var weight = kernel.reduce(function (prev, curr) {
+    return prev + curr;
+  });
+  return weight <= 0 ? 1 : weight;
+}

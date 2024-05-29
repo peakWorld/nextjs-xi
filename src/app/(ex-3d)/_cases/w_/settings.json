@@ -22,6 +22,31 @@
       {
         "path": "case2_1",
         "title": "使用纹理"
+      },
+      {
+        "path": "case2_1?k=convolution",
+        "title": "卷积核"
+      },
+      {
+        "path": "case2_1?k=multi",
+        "title": "多种效果"
+      }
+    ]
+  },
+  {
+    "summary": "二维运动",
+    "children": [
+      {
+        "path": "case3_1",
+        "title": "平移"
+      },
+      {
+        "path": "case3_1?k=rotate",
+        "title": "旋转|缩放"
+      },
+      {
+        "path": "case3_1?k=matrix",
+        "title": "矩阵"
       }
     ]
   }
