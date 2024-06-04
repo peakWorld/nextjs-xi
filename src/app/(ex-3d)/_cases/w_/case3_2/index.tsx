@@ -1,20 +1,20 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { glMatrix, mat3, vec2 } from "gl-matrix";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { Shader } from "@/app/(ex-3d)/_utils/w_/shader";
 import { resizeCanvasToDisplaySize } from "@/app/(ex-3d)/_utils/w_/util";
-import vs from "./vs.rotate.glsl";
+import vs from "./vs.glsl";
 import fs from "./fs.glsl";
 
 var color = [Math.random(), Math.random(), Math.random(), 1];
 var translation = [250, 250];
-var angleInRadians = (30 * Math.PI) / 180;
-var rotation = [Math.sin(angleInRadians), Math.cos(angleInRadians)];
+var degree = { value: 30 };
 var scale = [0.5, 0.5];
 
-export default function Case3_1() {
+export default function Case3_2() {
   const ref = useRef<HTMLCanvasElement>(null);
-
   // 构成 'F'
   function setGeometry(gl: WebGL2RenderingContext, x: number, y: number) {
     var width = 100;
@@ -81,9 +81,7 @@ export default function Case3_1() {
     var positionLocation = gl.getAttribLocation(program, "a_position");
     var resolutionLocation = gl.getUniformLocation(program, "u_resolution");
     var colorLocation = gl.getUniformLocation(program, "u_color");
-    var translationLocation = gl.getUniformLocation(program, "u_translation");
-    var rotationLocation = gl.getUniformLocation(program, "u_rotation");
-    var scaleLocation = gl.getUniformLocation(program, "u_scale");
+    var matrixLocation = gl.getUniformLocation(program, "u_matrix");
 
     // 2.1 收集属性的状态
     var vao = gl.createVertexArray();
@@ -124,11 +122,22 @@ export default function Case3_1() {
       // 3.5 设置全局变量
       gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
       gl.uniform4fv(colorLocation, color);
-      gl.uniform2fv(translationLocation, translation); // 设置平移
-      gl.uniform2fv(rotationLocation, rotation); // 设置旋转
-      gl.uniform2fv(scaleLocation, scale); // 设置缩放
 
-      // 3.6 绘制图形
+      // 3.6 设置矩阵变换 <位移>*<旋转>*<缩放> * position
+      const matrixTransform = mat3.create();
+      mat3.translate(matrixTransform, matrixTransform, vec2.fromValues(translation[0], translation[1])); // 位移
+      mat3.rotate(matrixTransform, matrixTransform, glMatrix.toRadian(degree.value)); // 旋转
+      mat3.scale(matrixTransform, matrixTransform, vec2.fromValues(scale[0], scale[1])); // 缩放
+      gl.uniformMatrix3fv(matrixLocation, false, matrixTransform);
+
+      // 3.7 绘制图形
+      var offset = 0;
+      var count = 18;
+      gl.drawArrays(gl.TRIANGLES, offset, count);
+
+      // 对照图形
+      const matrix = mat3.create();
+      gl.uniformMatrix3fv(matrixLocation, false, matrix);
       var offset = 0;
       var count = 18;
       gl.drawArrays(gl.TRIANGLES, offset, count);
@@ -137,6 +146,17 @@ export default function Case3_1() {
     }
 
     drawScene();
+
+    const gui = new GUI();
+    gui.add(translation, 0, 0, 800).name("x").onChange(drawScene);
+    gui.add(translation, 1, 0, 800).name("y").onChange(drawScene);
+    gui.add(degree, "value", 0, 360).name("degree").onChange(drawScene);
+    gui.add(scale, 0, -5, 5).name("scaleX").onChange(drawScene);
+    gui.add(scale, 1, -5, 5).name("scaleY").onChange(drawScene);
+
+    return () => {
+      document.querySelector(".lil-gui")?.remove();
+    };
   }, []);
 
   return <canvas className="w-full h-full" ref={ref} />;

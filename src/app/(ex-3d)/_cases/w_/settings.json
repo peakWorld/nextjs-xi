@@ -34,7 +34,7 @@
     ]
   },
   {
-    "summary": "二维运动",
+    "summary": "二维",
     "children": [
       {
         "path": "case3_1",
@@ -45,8 +45,16 @@
         "title": "旋转|缩放"
       },
       {
-        "path": "case3_1?k=matrix",
+        "path": "case3_2",
         "title": "矩阵"
+      },
+      {
+        "path": "case3_2?k=muli",
+        "title": "矩阵(相对位置)"
+      },
+      {
+        "path": "case3_2?k=center",
+        "title": "矩阵(旋转中心)"
       }
     ]
   }

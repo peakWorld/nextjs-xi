@@ -1,20 +1,21 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { mat3, vec2 } from "gl-matrix";
+import { glMatrix, mat3, vec2 } from "gl-matrix";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { Shader } from "@/app/(ex-3d)/_utils/w_/shader";
 import { resizeCanvasToDisplaySize } from "@/app/(ex-3d)/_utils/w_/util";
-import vs from "./vs.rotate.glsl";
+import vs from "./vs.glsl";
 import fs from "./fs.glsl";
 
+var translation = [100, 150];
+var degree = { value: 0 };
+var scale = [1, 1];
 var color = [Math.random(), Math.random(), Math.random(), 1];
-var translation = [250, 250];
-var rotationInRadians = (30 * Math.PI) / 180;
-var scale = [0.5, 0.5];
+var center = [-50, -75];
 
-export default function Case1_1() {
+export default function Case3_2() {
   const ref = useRef<HTMLCanvasElement>(null);
-
   // 构成 'F'
   function setGeometry(gl: WebGL2RenderingContext, x: number, y: number) {
     var width = 100;
@@ -124,13 +125,17 @@ export default function Case1_1() {
       gl.uniform4fv(colorLocation, color);
 
       // 3.6 设置矩阵变换 <位移>*<旋转>*<缩放> * position
-      const matrix = mat3.create();
+      let matrix = mat3.create();
       mat3.translate(matrix, matrix, vec2.fromValues(translation[0], translation[1])); // 位移
-      mat3.rotate(matrix, matrix, rotationInRadians); // 旋转
+      mat3.rotate(matrix, matrix, glMatrix.toRadian(degree.value)); // 旋转<绕原点旋转, 默认'F'的原点就是左上角(0, 0)>
       mat3.scale(matrix, matrix, vec2.fromValues(scale[0], scale[1])); // 缩放
+
+      // 改变原点<创建一个矩阵，将原点移动到'F'的中心>
+      const moveOriginMatrix = mat3.fromTranslation(mat3.create(), vec2.fromValues(center[0], center[1]));
+      matrix = mat3.multiply(matrix, matrix, moveOriginMatrix);
       gl.uniformMatrix3fv(matrixLocation, false, matrix);
 
-      // 3.6 绘制图形
+      // 3.7 绘制图形
       var offset = 0;
       var count = 18;
       gl.drawArrays(gl.TRIANGLES, offset, count);
@@ -139,6 +144,19 @@ export default function Case1_1() {
     }
 
     drawScene();
+
+    const gui = new GUI();
+    gui.add(translation, 0, 0, 800).step(20).name("translationX").onChange(drawScene);
+    gui.add(translation, 1, 0, 800).step(30).name("translationY").onChange(drawScene);
+    gui.add(degree, "value", 0, 360).step(10).name("degree").onChange(drawScene);
+    gui.add(scale, 0, -5, 5).name("scaleX").onChange(drawScene);
+    gui.add(scale, 1, -5, 5).name("scaleY").onChange(drawScene);
+    gui.add(center, 0, -200, 0).step(10).name("cnterX").onChange(drawScene);
+    gui.add(center, 1, -200, 0).step(10).name("cnterY").onChange(drawScene);
+
+    return () => {
+      document.querySelector(".lil-gui")?.remove();
+    };
   }, []);
 
   return <canvas className="w-full h-full" ref={ref} />;

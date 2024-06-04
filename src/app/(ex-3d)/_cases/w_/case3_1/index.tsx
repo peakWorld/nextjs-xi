@@ -9,7 +9,7 @@ import fs from "./fs.glsl";
 var color = [Math.random(), Math.random(), Math.random(), 1];
 var translation = [10, 10];
 
-export default function Case1_1() {
+export default function Case3_1() {
   const ref = useRef<HTMLCanvasElement>(null);
 
   // 构成 'F'
