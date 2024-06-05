@@ -34,7 +34,7 @@
     ]
   },
   {
-    "summary": "二维",
+    "summary": "二维运算",
     "children": [
       {
         "path": "case3_1",
@@ -55,6 +55,15 @@
       {
         "path": "case3_2?k=center",
         "title": "矩阵(旋转中心)"
+      }
+    ]
+  },
+  {
+    "summary": "三维投影",
+    "children": [
+      {
+        "path": "case4_1",
+        "title": "正射投影"
       }
     ]
   }
