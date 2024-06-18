@@ -9,11 +9,12 @@ export function useMutationObserver(cb: MutationCallback) {
     observer.observe(node, { characterData: true });
     return [node];
   }, []);
+
   return useCallback(() => {
     const iterations = ref.current;
     node.data = `${iterations % 2}`;
     ref.current++;
-  }, []);
+  }, [node]);
 }
 
 export function useAsyncState(cb: () => Promise<any> | (() => any)) {

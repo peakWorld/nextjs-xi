@@ -1,25 +1,19 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { App } from "@/app/(ex-3d)/basic-3d/app";
+import { useEffect } from "react";
+import { App } from "./_app";
 import "./index.scss";
 
 export default function Basic3DPage() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
   useEffect(() => {
-    const dom = canvasRef.current;
-    if (!dom) return;
-    const app = new App({ canvas: dom }, Array.from(document.querySelectorAll(".content > div")));
-    // app.requestRenderIfNotRequested();
+    const app = new App();
     return () => {
-      app.dispose();
+      app.destroy();
     };
   }, []);
 
   return (
-    <div className="basic-3d flex h-full w-full">
-      <canvas ref={canvasRef} className="w-full h-full" />
+    <div className="basic-3d flex h-full w-full" id="craft">
       <div className="content">
         <div data-id="spring">春</div>
         <div data-id="summer">夏</div>

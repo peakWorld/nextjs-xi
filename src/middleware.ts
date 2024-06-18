@@ -10,7 +10,7 @@ export function middleware(request: NextRequest) {
 }
 
 // middleware 只处理这些路由
-// 为配置config, 则匹配所有的路由
+// 未配置config, 则匹配所有的路由
 export const config = {
   matcher: [
     "/test/:path*", // 0+ 路由seg

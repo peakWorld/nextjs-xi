@@ -6,7 +6,7 @@
  * @Description: hybrid
  * @FilePath: /js-css-case/src/utils/hybrid/index.ts
  */
-import IosBridge from "./Ios";
+import IosBridge from "./ios";
 import * as utils from "./utils";
 
 type Cb = string | (() => void);
@@ -60,8 +60,7 @@ export default class JsBridge {
       } else if (utils.os === "android") {
         bridge = this._andrBridge;
       } else {
-        bridge = (message: string) =>
-          console.log("not in any native platform", message);
+        bridge = (message: string) => console.log("not in any native platform", message);
       }
       this._bridge = bridge;
     }
@@ -115,17 +114,11 @@ export default class JsBridge {
     }
     const [params, cb, preCb] = this._checkInvokeParams(invokeParams);
     if (preCb) {
-      params["preCallback"] = this._doCallback(
-        preCb,
-        `JsBridge_PreCb_${actionName}_${JsBridge._cbUniqueId++}`
-      );
+      params["preCallback"] = this._doCallback(preCb, `JsBridge_PreCb_${actionName}_${JsBridge._cbUniqueId++}`);
     }
 
     if (cb) {
-      params["callback"] = this._doCallback(
-        preCb,
-        `JsBridge_Cb_${actionName}_${JsBridge._cbUniqueId++}`
-      );
+      params["callback"] = this._doCallback(preCb, `JsBridge_Cb_${actionName}_${JsBridge._cbUniqueId++}`);
     }
 
     const message = this._packMessage(actionName);
@@ -169,10 +162,7 @@ export default class JsBridge {
         }
         // json string
         if (argType === "String" && /^{.*}$/.test(arg as string)) {
-          arg = (arg as string).replace(
-            /"(state|status)"\s*:\s*(\d+)/g,
-            `"$1":"$2"`
-          );
+          arg = (arg as string).replace(/"(state|status)"\s*:\s*(\d+)/g, `"$1":"$2"`);
         }
         return arg as string;
       });
