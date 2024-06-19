@@ -1,18 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { Craft } from "@/libs/craft";
+import { useEffect } from "react";
+import { App } from "./_app";
 
 function ReplicaSu7() {
   useEffect(() => {
-    const craft = new Craft();
-
+    const app = new App();
     return () => {
-      craft.destroy();
+      app.destroy();
     };
   }, []);
 
-  return <div id="craft" />;
+  return <div className="replica-su7 h-full w-full" id="craft" />;
 }
 
 export default ReplicaSu7;
