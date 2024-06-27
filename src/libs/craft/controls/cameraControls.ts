@@ -13,16 +13,26 @@ export interface CameraControlsConfig {
  */
 class CameraControls extends Component {
   controls: CameraControlsImpl;
-  constructor(craft: Craft, config: Partial<CameraControlsConfig> = {}) {
+
+  constructor(craft: Craft, private config: Partial<CameraControlsConfig> = {}) {
     super(craft);
 
     CameraControlsImpl.install({ THREE });
 
-    const controls = new CameraControlsImpl(config.camera ?? craft.camera, config.ele ?? craft.renderer.domElement);
+    const controls = new CameraControlsImpl(this.actualCamera, this.actualEle);
     this.controls = controls;
   }
+
   update(time: number) {
     this.controls.update(this.craft.clock.deltaTime);
+  }
+
+  get actualCamera() {
+    return this.craft.camera ?? this.config.camera;
+  }
+
+  get actualEle() {
+    return this.config.ele ?? this.craft.renderer.domElement;
   }
 }
 

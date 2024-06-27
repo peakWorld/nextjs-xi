@@ -13,17 +13,26 @@ export interface OrbitControlsConfig {
  */
 class OrbitControls extends Component {
   controls: OrbitControlsImpl;
-  constructor(craft: Craft, config: Partial<OrbitControlsConfig> = {}) {
+  constructor(craft: Craft, private config: Partial<OrbitControlsConfig> = {}) {
     super(craft);
     const { enableDamping = true } = config;
 
-    const controls = new OrbitControlsImpl(config.camera ?? craft.camera, config.ele ?? craft.renderer.domElement);
+    const controls = new OrbitControlsImpl(this.actualCamera, this.actualEle);
 
     this.controls = controls;
     controls.enableDamping = enableDamping;
   }
+
   update(time: number) {
     this.controls.update();
+  }
+
+  get actualCamera() {
+    return this.craft.camera ?? this.config.camera;
+  }
+
+  get actualEle() {
+    return this.config.ele ?? this.craft.renderer.domElement;
   }
 }
 

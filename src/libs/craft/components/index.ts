@@ -5,3 +5,4 @@ export * from "./mouse";
 export * from "./clock";
 export * from "./physics";
 export * from "./keyboard";
+export * from "./assetManager";

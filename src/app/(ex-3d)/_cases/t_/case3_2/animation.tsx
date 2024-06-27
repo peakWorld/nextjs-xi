@@ -5,7 +5,6 @@ import { use, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import TWEEN from "three/addons/libs/tween.module.js";
 import { resizeRendererToDisplaySize } from "@/app/(ex-3d)/_utils/t_/common";
 import { TweenManger } from "@/app/(ex-3d)/_utils/t_/tweenManger";
 import { useAsyncState } from "@/hooks/common";

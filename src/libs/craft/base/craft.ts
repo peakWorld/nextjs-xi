@@ -28,13 +28,6 @@ class Craft {
 
     this.renderRequested = false;
 
-    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 100);
-    camera.position.z = 1;
-    this.camera = camera;
-
-    const scene = new THREE.Scene();
-    this.scene = scene;
-
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
@@ -47,6 +40,13 @@ class Craft {
     const container = document.querySelector(sel) as HTMLDivElement;
     container?.appendChild(renderer.domElement);
     this.container = container;
+
+    const camera = new THREE.PerspectiveCamera(70, container.clientWidth / container.clientHeight, 0.01, 100);
+    camera.position.z = 1;
+    this.camera = camera;
+
+    const scene = new THREE.Scene();
+    this.scene = scene;
 
     const animator = new Animator(this, {
       autoRender,

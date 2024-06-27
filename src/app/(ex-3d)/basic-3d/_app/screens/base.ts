@@ -57,14 +57,14 @@ export default class Screen extends Craft.Component {
     // 更新渲染区域(canvas元素)的大小
     this.craft.resizer.resizeRenderer(this.craft.renderer);
 
+    // 更新裁剪区域(忽略默认相机)
+    Craft.applyViewScissor(this.craft, this.ele);
+
     // 更新相机设置
     const { width, height } = this.ele.getBoundingClientRect();
     const aspect = width / height;
     this.camera.aspect = aspect;
     this.camera.updateProjectionMatrix();
-
-    // 更新裁剪区域(忽略默认相机)
-    Craft.applyViewScissor(this.craft, this.ele);
   }
 
   update(time: number): void {
