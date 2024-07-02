@@ -24,11 +24,12 @@ class CameraControls extends Component {
   }
 
   update(time: number) {
+    // TODO BUG: 导致camera的position变成vector3<0,0,0>
     this.controls.update(this.craft.clock.deltaTime);
   }
 
   get actualCamera() {
-    return this.craft.camera ?? this.config.camera;
+    return this.config.camera ?? this.craft.camera;
   }
 
   get actualEle() {

@@ -28,7 +28,7 @@ class OrbitControls extends Component {
   }
 
   get actualCamera() {
-    return this.craft.camera ?? this.config.camera;
+    return this.config.camera ?? this.craft.camera;
   }
 
   get actualEle() {

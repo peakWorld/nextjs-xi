@@ -15,6 +15,7 @@ class Clock extends Component {
     super(craft);
 
     const clock = new THREE.Clock();
+    // clock.start();
     this.clock = clock;
 
     this.deltaTime = 0;
