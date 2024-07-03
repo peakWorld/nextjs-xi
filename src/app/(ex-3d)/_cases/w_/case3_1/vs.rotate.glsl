@@ -11,7 +11,9 @@ void main() {
 // 缩放
   vec2 scaledPosition = a_position * u_scale;
 
-  // 旋转位置 https://www.jianshu.com/p/2d06cda34c02
+  // 旋转位置<逆时针> https://www.jianshu.com/p/2d06cda34c02
+
+  // 此处为顺时针计算
   vec2 rotatedPosition = vec2(
     // rotatedX
   scaledPosition.x * u_rotation.y + scaledPosition.y * u_rotation.x,
