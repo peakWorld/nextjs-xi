@@ -22,3 +22,8 @@ export function updateColor(level: number, offset: number) {
   const b = (Math.sin(val + 4) * 55 + 200) / 255;
   return new THREE.Color(r, g, b);
 }
+
+// 是否是奇数
+export function isOdd(value: number) {
+  return value % 2 == 1;
+}

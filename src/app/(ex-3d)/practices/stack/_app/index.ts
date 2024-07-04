@@ -18,8 +18,8 @@ export class App extends Craft.Craft {
     const camera = new Craft.OrthographicCamera({ frustum: 4, near: -100 });
     this.camera = camera;
 
-    const controls = new Craft.OrbitControls(this);
-    this.controls = controls;
+    // const controls = new Craft.OrbitControls(this);
+    // this.controls = controls;
 
     const world = new World(this);
     this.world = world;

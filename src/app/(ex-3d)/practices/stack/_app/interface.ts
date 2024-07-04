@@ -22,8 +22,23 @@ export interface State {
   boxParams: BoxParams;
 
   /** 摄像机位置 */
-  cameraPostion: THREE.Vector3;
+  cameraPosition: THREE.Vector3;
 
   /** 摄像机视线位置 */
   lookAtPosition: THREE.Vector3;
+
+  /** 方块移动速度 */
+  speed: number;
+
+  /** 方块移动速度增量 */
+  speedInc: number;
+
+  /** 方块移动速度上限 */
+  speedLimit: number;
+
+  /** 方块移动方向 */
+  moveAxis: "x" | "z";
+
+  /** 方块移动距离上限 */
+  moveLimit: number;
 }
