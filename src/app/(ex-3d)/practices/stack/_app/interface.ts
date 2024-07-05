@@ -39,6 +39,9 @@ export interface State {
   /** 方块移动方向 */
   moveAxis: "x" | "z";
 
+  /** 方块移动的边 */
+  moveEdge: "width" | "depth";
+
   /** 方块移动距离上限 */
   moveLimit: number;
 }

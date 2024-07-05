@@ -31,6 +31,7 @@ export class World extends Craft.Component {
       moveLimit: 1.2,
       currentY: 0,
       moveAxis: "x",
+      moveEdge: "width",
       colorOffset: utils.randomIntegerInRange(0, 255),
       cameraPosition: new THREE.Vector3(2, 2, 2),
       lookAtPosition: new THREE.Vector3(0, 0, 0),
@@ -41,9 +42,12 @@ export class World extends Craft.Component {
   }
 
   init() {
+    this.clickContainer = this.clickContainer.bind(this);
+
     this.initCamera();
     this.initLights();
     this.createBase();
+    this.bindEvents();
   }
 
   initCamera() {
@@ -61,6 +65,17 @@ export class World extends Craft.Component {
     const ambientLight = new THREE.AmbientLight("#ffffff", 0.4);
     this.container.add(light);
     this.container.add(ambientLight);
+  }
+
+  clickContainer() {
+    if (this.state.level === 0) {
+      return this.start();
+    }
+    return this.detectOverlap();
+  }
+
+  bindEvents() {
+    this.craft.container.addEventListener("click", this.clickContainer, false);
   }
 
   createBase() {
@@ -88,6 +103,7 @@ export class World extends Craft.Component {
 
     // 移动方向
     this.state.moveAxis = utils.isOdd(this.state.level) ? "x" : "z";
+    this.state.moveEdge = utils.isOdd(this.state.level) ? "width" : "depth";
 
     // 移动速度
     if (this.state.speed < this.state.speedLimit) {
@@ -121,9 +137,66 @@ export class World extends Craft.Component {
     gsap.to(this.craft.camera.position, {
       y: this.state.cameraPosition.y,
       duration: 0.4,
-      onUpdate: () => {
-        console.log(this.craft.camera.matrix.elements.toString());
+    });
+  }
+
+  // 检测是否重叠
+  detectOverlap() {
+    const { boxParams, moveAxis, moveEdge, currentY } = this.state;
+    const currentPosition = this.box.position[moveAxis];
+    const prevPosition = boxParams[moveAxis];
+    const direction = Math.sign(currentPosition - prevPosition);
+    const edge = boxParams[moveEdge];
+
+    // 重叠距离 边长 - 方向 * 移动距离
+    const overlap = edge - direction * (currentPosition - prevPosition);
+
+    if (overlap <= 0) {
+      return;
+    }
+
+    // 重叠方块
+    const overlapBoxParams = { ...boxParams };
+    const overlapBoxPosition = (currentPosition - prevPosition) / 2 + prevPosition;
+    overlapBoxParams.y = currentY;
+    overlapBoxParams[moveAxis] = overlapBoxPosition;
+    overlapBoxParams[moveEdge] = overlap;
+    const overlapBox = utils.createBox(overlapBoxParams);
+    this.container.add(overlapBox);
+
+    // 切掉方块
+    const slicedBoxParams = { ...boxParams };
+    const slicedBoxEdge = edge - overlap;
+    const slicedBoxPosition = direction * (edge / 2 + (edge - overlap / 2)) + prevPosition;
+    slicedBoxParams.y = currentY;
+    slicedBoxParams[moveEdge] = slicedBoxEdge;
+    slicedBoxParams[moveAxis] = slicedBoxPosition;
+    const slicedBox = utils.createBox(slicedBoxParams);
+    this.container.add(slicedBox);
+    this.dropBox(slicedBox);
+
+    // 更新状态
+    this.state.boxParams = overlapBoxParams;
+    this.container.remove(this.box);
+    this.nextLevel();
+  }
+
+  dropBox(box: THREE.Mesh) {
+    const { moveAxis } = this.state;
+    gsap.to(box.position, {
+      y: "-=3.2",
+      ease: "power1.easeIn",
+      duration: 1.5,
+      onComplete: () => {
+        this.container.remove(box);
       },
+    });
+    gsap.to(box.rotation, {
+      delay: 0.1,
+      x: moveAxis === "z" ? utils.randomIntegerInRange(4, 5) : 0.1,
+      y: 0.1,
+      z: moveAxis === "x" ? utils.randomIntegerInRange(4, 5) : 0.1,
+      duration: 1.5,
     });
   }
 
