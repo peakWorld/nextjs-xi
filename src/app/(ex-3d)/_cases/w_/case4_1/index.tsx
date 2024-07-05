@@ -5,6 +5,7 @@ import { glMatrix, mat4, vec3 } from "gl-matrix";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { Shader } from "@/app/(ex-3d)/_utils/w_/shader";
 import { resizeCanvasToDisplaySize } from "@/app/(ex-3d)/_utils/w_/util";
+import { set3DF0 } from "@/app/(ex-3d)/_utils/w_/data-f";
 import vs from "./vs.glsl";
 import fs from "./fs.glsl";
 
@@ -15,77 +16,6 @@ var scale = [1, 1, 1];
 
 export default function Case4_1() {
   const ref = useRef<HTMLCanvasElement>(null);
-  // 构成 'F'
-  function setGeometry(gl: WebGL2RenderingContext, x: number, y: number) {
-    var width = 100;
-    var height = 150;
-    var thickness = 30;
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([
-        // 左竖
-        x,
-        y,
-        0,
-        x + thickness,
-        y,
-        0,
-        x,
-        y + height,
-        0,
-        x,
-        y + height,
-        0,
-        x + thickness,
-        y,
-        0,
-        x + thickness,
-        y + height,
-        0,
-
-        // 上横
-        x + thickness,
-        y,
-        0,
-        x + width,
-        y,
-        0,
-        x + thickness,
-        y + thickness,
-        0,
-        x + thickness,
-        y + thickness,
-        0,
-        x + width,
-        y,
-        0,
-        x + width,
-        y + thickness,
-        0,
-
-        // 中横
-        x + thickness,
-        y + thickness * 2,
-        0,
-        x + (width * 2) / 3,
-        y + thickness * 2,
-        0,
-        x + thickness,
-        y + thickness * 3,
-        0,
-        x + thickness,
-        y + thickness * 3,
-        0,
-        x + (width * 2) / 3,
-        y + thickness * 2,
-        0,
-        x + (width * 2) / 3,
-        y + thickness * 3,
-        0,
-      ]),
-      gl.STATIC_DRAW
-    );
-  }
 
   useEffect(() => {
     const gl = ref.current?.getContext("webgl2");
@@ -107,7 +37,7 @@ export default function Case4_1() {
     // 2.2.1 数据存放到缓存区<position>
     var buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    setGeometry(gl, 0, 0);
+    gl.bufferData(gl.ARRAY_BUFFER, set3DF0(0, 0), gl.STATIC_DRAW);
 
     // 2.2.2 属性如何从缓冲区取出数据
     gl.enableVertexAttribArray(positionLocation);
@@ -140,7 +70,7 @@ export default function Case4_1() {
       gl.uniform4fv(colorLocation, color);
 
       const matrix = mat4.create();
-      // 3.6 投影方法<将像素坐标转换到裁剪空间>
+      // 3.6 投影方法<将非裁剪空间坐标 转换到 裁剪空间坐标>
       const getProjection = function (width: number, height: number, depth: number): Array<number> {
         return [2 / width, 0, 0, 0, 0, -2 / height, 0, 0, 0, 0, 2 / depth, 0, -1, 1, 0, 1];
       };

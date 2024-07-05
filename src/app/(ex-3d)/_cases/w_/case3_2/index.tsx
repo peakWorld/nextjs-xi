@@ -5,6 +5,7 @@ import { glMatrix, mat3, vec2 } from "gl-matrix";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { Shader } from "@/app/(ex-3d)/_utils/w_/shader";
 import { resizeCanvasToDisplaySize } from "@/app/(ex-3d)/_utils/w_/util";
+import { set2DF } from "@/app/(ex-3d)/_utils/w_/data-f";
 import vs from "./vs.glsl";
 import fs from "./fs.glsl";
 
@@ -15,59 +16,6 @@ var scale = [0.5, 0.5];
 
 export default function Case3_2() {
   const ref = useRef<HTMLCanvasElement>(null);
-  // 构成 'F'
-  function setGeometry(gl: WebGL2RenderingContext, x: number, y: number) {
-    var width = 100;
-    var height = 150;
-    var thickness = 30;
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([
-        // 左竖
-        x,
-        y,
-        x + thickness,
-        y,
-        x,
-        y + height,
-        x,
-        y + height,
-        x + thickness,
-        y,
-        x + thickness,
-        y + height,
-
-        // 上横
-        x + thickness,
-        y,
-        x + width,
-        y,
-        x + thickness,
-        y + thickness,
-        x + thickness,
-        y + thickness,
-        x + width,
-        y,
-        x + width,
-        y + thickness,
-
-        // 中横
-        x + thickness,
-        y + thickness * 2,
-        x + (width * 2) / 3,
-        y + thickness * 2,
-        x + thickness,
-        y + thickness * 3,
-        x + thickness,
-        y + thickness * 3,
-        x + (width * 2) / 3,
-        y + thickness * 2,
-        x + (width * 2) / 3,
-        y + thickness * 3,
-      ]),
-      gl.STATIC_DRAW
-    );
-  }
 
   useEffect(() => {
     const gl = ref.current?.getContext("webgl2");
@@ -90,7 +38,7 @@ export default function Case3_2() {
     // 2.2.1 数据存放到缓存区<position>
     var buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    setGeometry(gl, 0, 0);
+    gl.bufferData(gl.ARRAY_BUFFER, set2DF(0, 0), gl.STATIC_DRAW);
 
     // 2.2.2 属性如何从缓冲区取出数据
     gl.enableVertexAttribArray(positionLocation);
