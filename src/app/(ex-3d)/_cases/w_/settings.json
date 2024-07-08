@@ -64,6 +64,14 @@
       {
         "path": "case4_1",
         "title": "正射投影"
+      },
+      {
+        "path": "case4_1?k=cube",
+        "title": "立方F"
+      },
+      {
+        "path": "case4_2",
+        "title": "透视投影"
       }
     ]
   }
