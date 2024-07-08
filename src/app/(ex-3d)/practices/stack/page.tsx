@@ -4,16 +4,23 @@ import { useEffect, useRef, useState } from "react";
 import { App } from "./_app";
 import "./page.scss";
 
+enum Status {
+  running,
+  stopped,
+  paused,
+  finished,
+}
+
 function Stack() {
   const appRef = useRef<App>();
   const [level, setLevel] = useState(0);
-  const [running, setRun] = useState(false);
+  const [status, setStatus] = useState(Status.paused);
 
   useEffect(() => {
     const app = new App();
 
     app.world.on("start", () => {
-      setRun(true);
+      setStatus(Status.running);
     });
 
     app.world.on("level", (value: number) => {
@@ -21,7 +28,7 @@ function Stack() {
     });
 
     app.world.on("end", () => {
-      setRun(false);
+      setStatus(Status.finished);
       setLevel(0);
     });
 
@@ -32,13 +39,30 @@ function Stack() {
     };
   }, []);
 
-  const handleGo = () => {
-    appRef.current?.world.emit("start");
+  const handleGo = (evt: any) => {
+    appRef.current?.world.start();
+  };
+
+  const handleRestart = (evt: any) => {
+    setStatus(Status.paused);
+    appRef.current?.world.reStart();
   };
 
   return (
     <div className="stack h-full w-full" id="craft">
-      <div className="tool">{running ? <div>Level: {level}</div> : <div onClick={handleGo}>GO!</div>}</div>
+      <div className="tool">
+        {status === Status.running && <div>Level: {level}</div>}
+        {status === Status.finished && (
+          <div onClick={handleRestart} className="cursor">
+            Restart !
+          </div>
+        )}
+        {status === Status.paused && (
+          <div onClick={handleGo} className="cursor">
+            Go !
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -23,9 +23,10 @@ export class App extends Craft.Craft {
 
     const world = new World(this);
     this.world = world;
+  }
 
-    world.on("start", () => {
-      world.start();
-    });
+  destroy() {
+    super.destroy();
+    this.world.dispose();
   }
 }

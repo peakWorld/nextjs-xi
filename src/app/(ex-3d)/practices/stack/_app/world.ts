@@ -26,8 +26,8 @@ export class World extends Craft.Component {
     this.state = {
       level: 0,
       speed: 0.02,
-      speedInc: 0.005,
-      speedLimit: 0.5,
+      speedInc: 0.002,
+      speedLimit: 0.05,
       moveLimit: 1.2,
       currentY: 0,
       moveAxis: "x",
@@ -53,7 +53,7 @@ export class World extends Craft.Component {
   initCamera() {
     const { craft, state } = this;
     const { cameraPosition, lookAtPosition } = state;
-    const { camera, controls } = craft;
+    const { camera } = craft;
     camera.position.copy(cameraPosition);
     camera.lookAt(lookAtPosition); // 计算四元数
     // controls.controls.target.set(lookAtPosition.x, lookAtPosition.y, lookAtPosition.z);
@@ -91,6 +91,7 @@ export class World extends Craft.Component {
   }
 
   start() {
+    this.emit("start");
     this.nextLevel();
   }
 
@@ -106,17 +107,17 @@ export class World extends Craft.Component {
     this.state.moveEdge = utils.isOdd(this.state.level) ? "width" : "depth";
 
     // 移动速度
-    if (this.state.speed < this.state.speedLimit) {
-      this.state.speed += this.state.speedInc;
+    if (Math.abs(this.state.speed) < this.state.speedLimit) {
+      this.state.speed = Math.abs(this.state.speed) + this.state.speedInc;
     }
 
     // 世界坐标系中Y轴高度
     this.state.currentY += this.state.boxParams.height;
+    this.state.boxParams.color = utils.updateColor(this.state.level, this.state.colorOffset);
 
     // 生成新的移动方块
     const boxParams = { ...this.state.boxParams };
     boxParams.y = this.state.currentY;
-    boxParams.color = utils.updateColor(this.state.level, this.state.colorOffset);
     const box = utils.createBox(boxParams);
     this.container.add(box);
     this.box = box;
@@ -152,6 +153,22 @@ export class World extends Craft.Component {
     const overlap = edge - direction * (currentPosition - prevPosition);
 
     if (overlap <= 0) {
+      console.log("detectOverlap...");
+
+      this.status = Status.PAUSED;
+      this.dropBox(this.box);
+
+      gsap.to(this.craft.camera, {
+        zoom: 0.6,
+        duration: 1,
+        ease: "Power1.easeOut",
+        onUpdate: () => {
+          this.craft.camera.updateProjectionMatrix();
+        },
+        onComplete: () => {
+          this.emit("end");
+        },
+      });
       return;
     }
 
@@ -203,6 +220,7 @@ export class World extends Craft.Component {
   update(time: number) {
     if (this.status === Status.RUNNING) {
       const { moveAxis, speed, moveLimit } = this.state;
+      console.log("update", speed);
       this.box.position[moveAxis] += speed;
       // 移到末端就反转方向
       if (Math.abs(this.box.position[moveAxis]) > moveLimit) {
@@ -210,4 +228,10 @@ export class World extends Craft.Component {
       }
     }
   }
+
+  dispose() {
+    this.craft.container.removeEventListener("click", this.clickContainer, false);
+  }
+
+  reStart() {}
 }

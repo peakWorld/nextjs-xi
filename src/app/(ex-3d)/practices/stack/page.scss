@@ -3,5 +3,17 @@
 }
 
 .stack {
+  position: relative;
   background: var(--blue-grad-1);
+
+  .tool {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 20px;
+
+    .cursor {
+      cursor: pointer;
+    }
+  }
 }
