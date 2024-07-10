@@ -71,6 +71,10 @@
       },
       {
         "path": "case4_2",
+        "title": "透视投影(模拟)"
+      },
+      {
+        "path": "case4_2?k=perspective",
         "title": "透视投影"
       }
     ]

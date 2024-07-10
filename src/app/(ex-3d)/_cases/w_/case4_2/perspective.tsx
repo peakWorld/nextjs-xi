@@ -6,14 +6,12 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { Shader } from "@/app/(ex-3d)/_utils/w_/shader";
 import { resizeCanvasToDisplaySize } from "@/app/(ex-3d)/_utils/w_/util";
 import { set3DCubeRight, set3DCubeColors } from "@/app/(ex-3d)/_utils/w_/data-f";
-import vs from "./vs.glsl";
-// import vs from "./vs.divideZ.glsl";
-import fs from "./fs.glsl";
+import vs from "./vs.perspective.glsl";
+import fs from "./fs.perspective.glsl";
 
 const translation = [250, 250, 0];
 const degree = [40, 25, 325];
 const scale = [1, 1, 1];
-let fudgeFactor = [1.0];
 
 export default function Case4_2() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -90,23 +88,17 @@ export default function Case4_2() {
       // 使用 属性状态集
       gl.bindVertexArray(vao);
 
-      // 设置全局变量
-
       const matrix = mat4.create();
-      // 在正射投影 中模拟实现远小近大的效果<矩阵 替代顶点着色器中的计算>
-      const makeZToWMatrix = function (fudgeFactor: number): Array<number> {
-        return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, fudgeFactor, 0, 0, 0, 1];
+      // 透视投影
+      const getPerspectiveMat = function (fieldOfViewInRadians: number, aspect: number, near: number, far: number) {
+        var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
+        var rangeInv = 1.0 / (near - far);
+        return [f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (near + far) * rangeInv, -1, 0, 0, near * far * rangeInv * 2, 0];
       };
+      //@ts-ignore
+      const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
       // @ts-ignore
-      const zToMat = mat4.fromValues(...makeZToWMatrix(fudgeFactor[0]));
-      mat4.multiply(matrix, matrix, zToMat);
-
-      // 投影方法<将非裁剪空间坐标 转换到 裁剪空间坐标>
-      const getProjection = function (width: number, height: number, depth: number): Array<number> {
-        return [2 / width, 0, 0, 0, 0, -2 / height, 0, 0, 0, 0, 2 / depth, 0, -1, 1, 0, 1];
-      };
-      // @ts-ignore
-      const projection = mat4.fromValues(...getProjection(gl.canvas.clientWidth, gl.canvas.clientHeight, 400));
+      const projection = mat4.fromValues(...getPerspectiveMat(glMatrix.toRadian(60), aspect, 1, 2000));
       mat4.multiply(matrix, matrix, projection);
 
       // 设置矩阵变换 <位移>*<旋转>*<缩放> * position
@@ -128,10 +120,9 @@ export default function Case4_2() {
     drawScene();
 
     const gui = new GUI();
-    gui.add(fudgeFactor, 0, 0, 2).name("fudgeFactor").onChange(drawScene);
     gui.add(translation, 0, 0, 800).step(10).name("X").onChange(drawScene);
     gui.add(translation, 1, 0, 800).step(10).name("Y").onChange(drawScene);
-    gui.add(translation, 2, -300, 300).step(10).name("Z").onChange(drawScene);
+    gui.add(translation, 2, 0, 800).step(10).name("Z").onChange(drawScene);
     gui.add(degree, 0, 0, 360).step(5).name("roateX").onChange(drawScene);
     gui.add(degree, 1, 0, 360).step(5).name("roateY").onChange(drawScene);
     gui.add(degree, 2, 0, 360).step(5).name("roateZ").onChange(drawScene);
