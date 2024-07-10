@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { merge } from "lodash";
 import gsap from "gsap";
 import * as Craft from "@/libs/craft";
 import * as utils from "./util";
@@ -9,6 +10,21 @@ export enum Status {
   RUNNING,
   PAUSED,
 }
+
+const state: State = {
+  level: 0,
+  speed: 0.02,
+  speedInc: 0.002,
+  speedLimit: 0.05,
+  moveLimit: 1.2,
+  currentY: 0,
+  moveAxis: "x",
+  moveEdge: "width",
+  colorOffset: utils.randomIntegerInRange(0, 255),
+  cameraPosition: new THREE.Vector3(2, 2, 2),
+  lookAtPosition: new THREE.Vector3(0, 0, 0),
+  boxParams: { width: 1, height: 0.2, depth: 1, x: 0, y: 0, z: 0, color: new THREE.Color("#ffffff") },
+};
 
 export class World extends Craft.Component {
   declare craft: App;
@@ -21,31 +37,17 @@ export class World extends Craft.Component {
   constructor(craft: App) {
     super(craft);
 
-    this.status = Status.PAUSED;
-
-    this.state = {
-      level: 0,
-      speed: 0.02,
-      speedInc: 0.002,
-      speedLimit: 0.05,
-      moveLimit: 1.2,
-      currentY: 0,
-      moveAxis: "x",
-      moveEdge: "width",
-      colorOffset: utils.randomIntegerInRange(0, 255),
-      cameraPosition: new THREE.Vector3(2, 2, 2),
-      lookAtPosition: new THREE.Vector3(0, 0, 0),
-      boxParams: { width: 1, height: 0.2, depth: 1, x: 0, y: 0, z: 0, color: new THREE.Color("#ffffff") },
-    };
+    this.clickContainer = this.clickContainer.bind(this);
 
     this.init();
+    this.initLights();
   }
 
   init() {
-    this.clickContainer = this.clickContainer.bind(this);
+    this.state = merge({}, state);
+    this.status = Status.PAUSED;
 
     this.initCamera();
-    this.initLights();
     this.createBase();
     this.bindEvents();
   }
@@ -68,6 +70,7 @@ export class World extends Craft.Component {
   }
 
   clickContainer() {
+    console.log("clickContainer");
     if (this.state.level === 0) {
       return this.start();
     }
@@ -76,6 +79,10 @@ export class World extends Craft.Component {
 
   bindEvents() {
     this.craft.container.addEventListener("click", this.clickContainer, false);
+  }
+
+  unBindEvents() {
+    this.craft.container.removeEventListener("click", this.clickContainer, false);
   }
 
   createBase() {
@@ -153,11 +160,10 @@ export class World extends Craft.Component {
     const overlap = edge - direction * (currentPosition - prevPosition);
 
     if (overlap <= 0) {
-      console.log("detectOverlap...");
-
       this.status = Status.PAUSED;
       this.dropBox(this.box);
 
+      // 相机视角变化
       gsap.to(this.craft.camera, {
         zoom: 0.6,
         duration: 1,
@@ -166,6 +172,7 @@ export class World extends Craft.Component {
           this.craft.camera.updateProjectionMatrix();
         },
         onComplete: () => {
+          this.unBindEvents();
           this.emit("end");
         },
       });
@@ -230,8 +237,18 @@ export class World extends Craft.Component {
   }
 
   dispose() {
-    this.craft.container.removeEventListener("click", this.clickContainer, false);
+    this.unBindEvents();
   }
 
-  reStart() {}
+  reStart() {
+    console.log("reStart");
+    // this.container.traverse((child) => {
+    //   if (child instanceof THREE.Mesh) {
+    //     console.log("remove", child);
+    //     this.container.remove(child);
+    //   }
+    // });
+
+    // this.init();
+  }
 }

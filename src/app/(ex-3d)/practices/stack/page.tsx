@@ -6,7 +6,6 @@ import "./page.scss";
 
 enum Status {
   running,
-  stopped,
   paused,
   finished,
 }
