@@ -10,6 +10,8 @@ export class App extends Craft.Craft {
   constructor() {
     super("#craft");
 
+    window.app = this;
+
     this.scene.add(new THREE.AxesHelper(10));
 
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;

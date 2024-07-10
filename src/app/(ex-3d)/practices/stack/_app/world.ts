@@ -11,7 +11,7 @@ export enum Status {
   PAUSED,
 }
 
-const state: State = {
+const getState: () => State = () => ({
   level: 0,
   speed: 0.02,
   speedInc: 0.002,
@@ -24,14 +24,14 @@ const state: State = {
   cameraPosition: new THREE.Vector3(2, 2, 2),
   lookAtPosition: new THREE.Vector3(0, 0, 0),
   boxParams: { width: 1, height: 0.2, depth: 1, x: 0, y: 0, z: 0, color: new THREE.Color("#ffffff") },
-};
+});
 
 export class World extends Craft.Component {
   declare craft: App;
   declare container: THREE.Scene;
 
   state!: State;
-  status!: Status; // 开启关闭
+  status!: Status; // 运动停止
   box!: THREE.Mesh; // 每个层级移动的方块
 
   constructor(craft: App) {
@@ -44,7 +44,8 @@ export class World extends Craft.Component {
   }
 
   init() {
-    this.state = merge({}, state);
+    // 初始化状态 每次启动时随机数不一致
+    this.state = merge({}, getState());
     this.status = Status.PAUSED;
 
     this.initCamera();
@@ -141,7 +142,7 @@ export class World extends Craft.Component {
   updateCameraHeight() {
     this.state.cameraPosition.y += this.state.boxParams.height;
 
-    // 在render前会根据新position\复用四元数 重新计算相机位置
+    // 在render前会根据新position,复用四元数 重新计算相机位置
     gsap.to(this.craft.camera.position, {
       y: this.state.cameraPosition.y,
       duration: 0.4,
@@ -227,7 +228,6 @@ export class World extends Craft.Component {
   update(time: number) {
     if (this.status === Status.RUNNING) {
       const { moveAxis, speed, moveLimit } = this.state;
-      console.log("update", speed);
       this.box.position[moveAxis] += speed;
       // 移到末端就反转方向
       if (Math.abs(this.box.position[moveAxis]) > moveLimit) {
@@ -242,13 +242,34 @@ export class World extends Craft.Component {
 
   reStart() {
     console.log("reStart");
-    // this.container.traverse((child) => {
-    //   if (child instanceof THREE.Mesh) {
-    //     console.log("remove", child);
-    //     this.container.remove(child);
-    //   }
-    // });
 
-    // this.init();
+    // 相机还原
+    gsap.to(this.craft.camera, {
+      zoom: 1,
+      duration: 1,
+      ease: "Power1.easeOut",
+      onUpdate: () => {
+        this.craft.camera.updateProjectionMatrix();
+      },
+      onComplete: () => {},
+    });
+
+    // 删除旧数据
+    const childIds: number[] = [];
+    this.container.children.forEach((child) => {
+      if (child?.isMesh) {
+        childIds.push(child.id);
+      }
+    });
+
+    this.container.remove(
+      ...childIds.map((id) => {
+        const obj = this.container.getObjectById(id);
+        return obj as THREE.Object3D;
+      })
+    );
+
+    // 初始化新状态
+    this.init();
   }
 }
