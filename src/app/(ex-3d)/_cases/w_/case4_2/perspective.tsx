@@ -20,26 +20,26 @@ export default function Case4_2() {
     const gl = ref.current?.getContext("webgl2");
     if (!gl) return;
 
-    // 1. 在GPU上已经创建了一个GLSL程序
+    // 在GPU上已经创建了一个GLSL程序
     const program = new Shader(gl, vs, fs).createProgram();
     if (!program) return;
 
-    // 2. 给GLSL程序提供数据
+    // 给GLSL程序提供数据
     const positionLocation = gl.getAttribLocation(program, "a_position");
     const colorLocation = gl.getAttribLocation(program, "a_color");
     const matrixLocation = gl.getUniformLocation(program, "u_matrix");
 
-    // 2.1 收集属性的状态
+    // 收集属性的状态
     const vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
 
     {
-      // 2.2.1 数据存放到缓存区<position>
+      // 数据存放到缓存区<position>
       const positionBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, set3DCubeRight(), gl.STATIC_DRAW);
 
-      // 2.2.2 属性如何从缓冲区取出数据
+      // 属性如何从缓冲区取出数据
       gl.enableVertexAttribArray(positionLocation);
       const size = 3;
       const type = gl.FLOAT;
@@ -50,12 +50,12 @@ export default function Case4_2() {
     }
 
     {
-      // 2.3.1 数据存放到缓存区<color>
+      // 数据存放到缓存区<color>
       const colorBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, set3DCubeColors(), gl.STATIC_DRAW);
 
-      // 2.3.2 属性如何从缓冲区取出数据
+      // 属性如何从缓冲区取出数据
       gl.enableVertexAttribArray(colorLocation);
       const size = 3;
       const type = gl.UNSIGNED_BYTE;
@@ -65,7 +65,7 @@ export default function Case4_2() {
       gl.vertexAttribPointer(colorLocation, size, type, normalize, stride, offset);
     }
 
-    // 3. 绘制图形
+    // 绘制图形
     function drawScene() {
       resizeCanvasToDisplaySize(ref.current as HTMLCanvasElement); // 调整画布大小
       if (!gl || !program) return;
