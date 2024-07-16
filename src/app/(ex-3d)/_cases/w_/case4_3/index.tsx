@@ -7,13 +7,9 @@ import { Shader } from "@/app/(ex-3d)/_utils/w_/shader";
 import { resizeCanvasToDisplaySize } from "@/app/(ex-3d)/_utils/w_/util";
 import { set3DCubeRight, set3DCubeColors } from "@/app/(ex-3d)/_utils/w_/data-f";
 import vs from "./vs.glsl";
-// import vs from "./vs.divideZ.glsl";
 import fs from "./fs.glsl";
 
-const translation = [250, 250, 0];
-const degree = [40, 25, 325];
-const scale = [1, 1, 1];
-let fudgeFactor = [1.0];
+const translation = [0, 0, -360];
 
 export default function Case4_2() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -93,28 +89,17 @@ export default function Case4_2() {
       // 设置全局变量
 
       const matrix = mat4.create();
-      // 在正射投影 中模拟实现远小近大的效果<矩阵 替代顶点着色器中的计算>
-      const makeZToWMatrix = function (fudgeFactor: number): Array<number> {
-        return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, fudgeFactor, 0, 0, 0, 1];
-      };
-      // @ts-ignore
-      const zToMat = mat4.fromValues(...makeZToWMatrix(fudgeFactor[0]));
-      mat4.multiply(matrix, matrix, zToMat);
-
-      // 投影方法<将非裁剪空间坐标 转换到 裁剪空间坐标>
-      const getProjection = function (width: number, height: number, depth: number): Array<number> {
-        return [2 / width, 0, 0, 0, 0, -2 / height, 0, 0, 0, 0, 2 / depth, 0, -1, 1, 0, 1];
-      };
-      // @ts-ignore
-      const projection = mat4.fromValues(...getProjection(gl.canvas.clientWidth, gl.canvas.clientHeight, 400));
+      const projection = mat4.perspectiveNO(
+        mat4.create(),
+        glMatrix.toRadian(60),
+        ref.current!.clientWidth / ref.current!.clientHeight,
+        1,
+        2000
+      );
       mat4.multiply(matrix, matrix, projection);
 
       // 设置矩阵变换 <位移>*<旋转>*<缩放> * position
       mat4.translate(matrix, matrix, vec3.fromValues(translation[0], translation[1], translation[2])); // 位移
-      mat4.rotateX(matrix, matrix, glMatrix.toRadian(degree[0])); // 旋转X
-      mat4.rotateY(matrix, matrix, glMatrix.toRadian(degree[1])); // 旋转Y
-      mat4.rotateZ(matrix, matrix, glMatrix.toRadian(degree[2])); // 旋转Z
-      mat4.scale(matrix, matrix, vec3.fromValues(scale[0], scale[1], scale[2])); // 缩放
       gl.uniformMatrix4fv(matrixLocation, false, matrix);
 
       // 绘制图形
@@ -128,13 +113,7 @@ export default function Case4_2() {
     drawScene();
 
     const gui = new GUI();
-    gui.add(fudgeFactor, 0, 0, 2).name("fudgeFactor").onChange(drawScene);
-    gui.add(translation, 0, 0, 800).step(10).name("X").onChange(drawScene);
-    gui.add(translation, 1, 0, 800).step(10).name("Y").onChange(drawScene);
-    gui.add(translation, 2, -300, 300).step(10).name("Z").onChange(drawScene);
-    gui.add(degree, 0, 0, 360).step(5).name("roateX").onChange(drawScene);
-    gui.add(degree, 1, 0, 360).step(5).name("roateY").onChange(drawScene);
-    gui.add(degree, 2, 0, 360).step(5).name("roateZ").onChange(drawScene);
+    // gui.add(fudgeFactor, 0, 0, 2).name("fudgeFactor").onChange(drawScene);
 
     return () => {
       document.querySelector(".lil-gui")?.remove();

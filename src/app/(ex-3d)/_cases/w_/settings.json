@@ -63,19 +63,23 @@
     "children": [
       {
         "path": "case4_1",
-        "title": "正射投影"
+        "title": "正射投影(实践)"
       },
       {
         "path": "case4_1?k=cube",
         "title": "立方F"
       },
       {
-        "path": "case4_2",
-        "title": "透视投影(模拟)"
+        "path": "case4_2?k=divideZ",
+        "title": "透视投影(实践)"
       },
       {
-        "path": "case4_2?k=perspective",
-        "title": "透视投影"
+        "path": "case4_2?k=matrix",
+        "title": "透视投影(矩阵)"
+      },
+      {
+        "path": "case4_3",
+        "title": "相机"
       }
     ]
   }

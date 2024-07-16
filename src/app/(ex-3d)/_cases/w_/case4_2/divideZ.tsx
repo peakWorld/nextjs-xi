@@ -6,12 +6,13 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { Shader } from "@/app/(ex-3d)/_utils/w_/shader";
 import { resizeCanvasToDisplaySize } from "@/app/(ex-3d)/_utils/w_/util";
 import { set3DCubeRight, set3DCubeColors } from "@/app/(ex-3d)/_utils/w_/data-f";
-import vs from "./vs.perspective.glsl";
-import fs from "./fs.perspective.glsl";
+import vs from "./vs.divideZ.glsl";
+import fs from "./fs.glsl";
 
 const translation = [250, 250, 0];
 const degree = [40, 25, 325];
 const scale = [1, 1, 1];
+let fudgeFactor = [1.0];
 
 export default function Case4_2() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -20,26 +21,27 @@ export default function Case4_2() {
     const gl = ref.current?.getContext("webgl2");
     if (!gl) return;
 
-    // 在GPU上已经创建了一个GLSL程序
+    // 1. 在GPU上已经创建了一个GLSL程序
     const program = new Shader(gl, vs, fs).createProgram();
     if (!program) return;
 
-    // 给GLSL程序提供数据
+    // 2. 给GLSL程序提供数据
     const positionLocation = gl.getAttribLocation(program, "a_position");
     const colorLocation = gl.getAttribLocation(program, "a_color");
     const matrixLocation = gl.getUniformLocation(program, "u_matrix");
+    const factorLocation = gl.getUniformLocation(program, "u_fudgeFactor");
 
-    // 收集属性的状态
+    // 2.1 收集属性的状态
     const vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
 
     {
-      // 数据存放到缓存区<position>
+      // 2.2.1 数据存放到缓存区<position>
       const positionBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, set3DCubeRight(), gl.STATIC_DRAW);
 
-      // 属性如何从缓冲区取出数据
+      // 2.2.2 属性如何从缓冲区取出数据
       gl.enableVertexAttribArray(positionLocation);
       const size = 3;
       const type = gl.FLOAT;
@@ -50,12 +52,12 @@ export default function Case4_2() {
     }
 
     {
-      // 数据存放到缓存区<color>
+      // 2.3.1 数据存放到缓存区<color>
       const colorBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, set3DCubeColors(), gl.STATIC_DRAW);
 
-      // 属性如何从缓冲区取出数据
+      // 2.3.2 属性如何从缓冲区取出数据
       gl.enableVertexAttribArray(colorLocation);
       const size = 3;
       const type = gl.UNSIGNED_BYTE;
@@ -65,7 +67,7 @@ export default function Case4_2() {
       gl.vertexAttribPointer(colorLocation, size, type, normalize, stride, offset);
     }
 
-    // 绘制图形
+    // 3. 绘制图形
     function drawScene() {
       resizeCanvasToDisplaySize(ref.current as HTMLCanvasElement); // 调整画布大小
       if (!gl || !program) return;
@@ -88,17 +90,16 @@ export default function Case4_2() {
       // 使用 属性状态集
       gl.bindVertexArray(vao);
 
+      // 设置全局变量
+      gl.uniform1fv(factorLocation, fudgeFactor);
+
       const matrix = mat4.create();
-      // 透视投影
-      const getPerspectiveMat = function (fieldOfViewInRadians: number, aspect: number, near: number, far: number) {
-        var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
-        var rangeInv = 1.0 / (near - far);
-        return [f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (near + far) * rangeInv, -1, 0, 0, near * far * rangeInv * 2, 0];
+      // 投影方法<将非裁剪空间坐标 转换到 裁剪空间坐标>
+      const getProjection = function (width: number, height: number, depth: number): Array<number> {
+        return [2 / width, 0, 0, 0, 0, -2 / height, 0, 0, 0, 0, 2 / depth, 0, -1, 1, 0, 1];
       };
-      //@ts-ignore
-      const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
       // @ts-ignore
-      const projection = mat4.fromValues(...getPerspectiveMat(glMatrix.toRadian(60), aspect, 1, 2000));
+      const projection = mat4.fromValues(...getProjection(gl.canvas.clientWidth, gl.canvas.clientHeight, 400));
       mat4.multiply(matrix, matrix, projection);
 
       // 设置矩阵变换 <位移>*<旋转>*<缩放> * position
@@ -120,9 +121,10 @@ export default function Case4_2() {
     drawScene();
 
     const gui = new GUI();
+    gui.add(fudgeFactor, 0, 0, 2).name("fudgeFactor").onChange(drawScene);
     gui.add(translation, 0, 0, 800).step(10).name("X").onChange(drawScene);
     gui.add(translation, 1, 0, 800).step(10).name("Y").onChange(drawScene);
-    gui.add(translation, 2, 0, 800).step(10).name("Z").onChange(drawScene);
+    gui.add(translation, 2, -300, 300).step(10).name("Z").onChange(drawScene);
     gui.add(degree, 0, 0, 360).step(5).name("roateX").onChange(drawScene);
     gui.add(degree, 1, 0, 360).step(5).name("roateY").onChange(drawScene);
     gui.add(degree, 2, 0, 360).step(5).name("roateZ").onChange(drawScene);
