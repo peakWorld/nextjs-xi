@@ -9,8 +9,7 @@ import { set3DCubeRight, set3DCubeColors } from "@/app/(ex-3d)/_utils/w_/data-f"
 import vs from "./vs.glsl";
 import fs from "./fs.glsl";
 
-const translation = [-150, 0, -360];
-const degree = [190, 40, 30];
+const cameraAngleRadians = [0];
 
 export default function Case4_3() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -69,6 +68,9 @@ export default function Case4_3() {
       resizeCanvasToDisplaySize(ref.current as HTMLCanvasElement); // 调整画布大小
       if (!gl || !program) return;
 
+      const numFs = 5;
+      const radius = 200;
+
       // 剔除背面三角形
       gl.enable(gl.CULL_FACE);
       // 开启深度测试
@@ -95,26 +97,42 @@ export default function Case4_3() {
       const zNear = 1;
       const zFar = 2000;
       const projection = mat4.perspectiveNO(mat4.create(), radians, aspect, zNear, zFar); // 投影矩阵
+
+      const cameraMatrix = mat4.create(); // 相机矩阵
+      mat4.fromYRotation(cameraMatrix, glMatrix.toRadian(cameraAngleRadians[0]));
+      mat4.translate(cameraMatrix, cameraMatrix, vec3.fromValues(0, 0, radius * 1.5)); // 位移
+
+      var viewMatrix = mat4.invert(mat4.create(), cameraMatrix); // 视图矩阵(相机矩阵的逆矩阵)
+
       mat4.multiply(matrix, matrix, projection);
+      mat4.multiply(matrix, matrix, viewMatrix); // 视图投影矩阵
 
-      mat4.translate(matrix, matrix, vec3.fromValues(translation[0], translation[1], translation[2])); // 位移
-      mat4.rotateX(matrix, matrix, glMatrix.toRadian(degree[0])); // 旋转X
-      mat4.rotateY(matrix, matrix, glMatrix.toRadian(degree[1])); // 旋转Y
-      mat4.rotateZ(matrix, matrix, glMatrix.toRadian(degree[2])); // 旋转Z
-      gl.uniformMatrix4fv(matrixLocation, false, matrix);
+      for (var ii = 0; ii < numFs; ++ii) {
+        var angle = (ii * Math.PI * 2) / numFs;
 
-      // 绘制图形
-      const offset = 0;
-      const count = 16 * 6;
-      gl.drawArrays(gl.TRIANGLES, offset, count);
+        var x = Math.cos(angle) * radius;
+        var z = Math.sin(angle) * radius;
+
+        var worldMat = mat4.create();
+        mat4.translate(worldMat, worldMat, vec3.fromValues(x, 0, z));
+
+        mat4.multiply(matrix, matrix, worldMat);
+        gl.uniformMatrix4fv(matrixLocation, false, matrix);
+
+        // 绘制图形
+        const primitiveType = gl.TRIANGLES;
+        const offset = 0;
+        const count = 16 * 6;
+        gl.drawArrays(primitiveType, offset, count);
+      }
 
       // requestAnimationFrame(drawScene);
     }
 
     drawScene();
 
-    // const gui = new GUI();
-    // gui.add(fudgeFactor, 0, 0, 2).name("fudgeFactor").onChange(drawScene);
+    const gui = new GUI();
+    gui.add(cameraAngleRadians, 0, 0, 360).name("cameraAngleRadians").onChange(drawScene);
 
     return () => {
       document.querySelector(".lil-gui")?.remove();

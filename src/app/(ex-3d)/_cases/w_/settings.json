@@ -75,11 +75,15 @@
       },
       {
         "path": "case4_2?k=matrix",
-        "title": "透视投影(矩阵)"
+        "title": "透视投影(实践矩阵)"
       },
       {
         "path": "case4_3",
-        "title": "相机"
+        "title": "透视投影"
+      },
+      {
+        "path": "case4_3?k=view",
+        "title": "相机矩阵"
       }
     ]
   }
