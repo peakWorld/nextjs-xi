@@ -9,7 +9,17 @@ export class World extends Craft.Component {
 
   constructor(craft: App) {
     super(craft);
+
+    this.drawPath();
+    this.getLinePoints();
+    this.createParticles();
   }
+
+  drawPath() {}
+
+  getLinePoints() {}
+
+  createParticles() {}
 
   update(time: number) {}
 

@@ -3,7 +3,7 @@ import * as Craft from "@/libs/craft";
 import { World } from "./world";
 
 export class App extends Craft.Craft {
-  declare camera: THREE.OrthographicCamera;
+  declare camera: THREE.PerspectiveCamera;
   declare controls: Craft.OrbitControls;
   world: World;
 
@@ -12,12 +12,12 @@ export class App extends Craft.Craft {
 
     window.app = this;
 
-    this.scene.add(new THREE.AxesHelper(10));
-
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.setClearColor(0x000000, 0);
 
-    const camera = new Craft.OrthographicCamera({ frustum: 4, near: -100 });
+    const camera = new THREE.PerspectiveCamera(75, 2, 100, 1000);
+    camera.position.set(0, 0, 600);
+    camera.lookAt(0, 0, 0);
     this.camera = camera;
 
     // const controls = new Craft.OrbitControls(this);
