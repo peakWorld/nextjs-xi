@@ -9,6 +9,19 @@ import { set3DCubeRight, set3DCubeColors } from "@/app/(ex-3d)/_utils/w_/data-f"
 import vs from "./vs.glsl";
 import fs from "./fs.glsl";
 
+function transformVector(m: mat4, v: number[]) {
+  var dst = [];
+  for (var i = 0; i < 4; ++i) {
+    // 行
+    dst[i] = 0.0;
+    for (var j = 0; j < 4; ++j) {
+      // 列
+      dst[i] += v[j] * m[j * 4 + i];
+    }
+  }
+  return dst;
+}
+
 const cameraAngleRadians = [0];
 
 export default function Case4_3() {
@@ -32,10 +45,21 @@ export default function Case4_3() {
     gl.bindVertexArray(vao);
 
     {
+      const positions = set3DCubeRight();
+      const matrix = mat4.create();
+      mat4.fromXRotation(matrix, Math.PI);
+      mat4.translate(matrix, matrix, vec3.fromValues(-50, -75, -15));
+
+      for (var ii = 0; ii < positions.length; ii += 3) {
+        var vector = transformVector(matrix, [positions[ii + 0], positions[ii + 1], positions[ii + 2], 1]);
+        positions[ii + 0] = vector[0];
+        positions[ii + 1] = vector[1];
+        positions[ii + 2] = vector[2];
+      }
       // 2.2.1 数据存放到缓存区<position>
       const positionBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, set3DCubeRight(), gl.STATIC_DRAW);
+      gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
 
       // 2.2.2 属性如何从缓冲区取出数据
       gl.enableVertexAttribArray(positionLocation);
@@ -98,10 +122,12 @@ export default function Case4_3() {
       const zFar = 2000;
       const projection = mat4.perspectiveNO(mat4.create(), radians, aspect, zNear, zFar); // 投影矩阵
 
-      const cameraMatrix = mat4.create(); // 相机矩阵
+      let cameraMatrix = mat4.create(); // 相机矩阵
       mat4.fromYRotation(cameraMatrix, glMatrix.toRadian(cameraAngleRadians[0]));
-      mat4.translate(cameraMatrix, cameraMatrix, vec3.fromValues(0, 0, radius * 1.5)); // 位移
-
+      mat4.translate(cameraMatrix, cameraMatrix, vec3.fromValues(0, 50, radius * 1.5)); // 位移
+      // const cameraPostion = mat4.getTranslation(vec3.create(), cameraMatrix);
+      // console.log("cameraPostion", cameraPostion);
+      // cameraMatrix = mat4.lookAt(mat4.create(), cameraPostion, vec3.fromValues(radius, 0, 0), vec3.fromValues(0, 1, 0));
       var viewMatrix = mat4.invert(mat4.create(), cameraMatrix); // 视图矩阵(相机矩阵的逆矩阵)
 
       mat4.multiply(matrix, matrix, projection);
@@ -132,7 +158,7 @@ export default function Case4_3() {
     drawScene();
 
     const gui = new GUI();
-    gui.add(cameraAngleRadians, 0, 0, 360).name("cameraAngleRadians").onChange(drawScene);
+    gui.add(cameraAngleRadians, 0, -360, 360).name("cameraAngleRadians").onChange(drawScene);
 
     return () => {
       document.querySelector(".lil-gui")?.remove();
