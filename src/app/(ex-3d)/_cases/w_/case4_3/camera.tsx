@@ -124,20 +124,11 @@ export default function Case4_3() {
       const zFar = 2000;
       const projection = mat4.perspectiveNO(mat4.create(), radians, aspect, zNear, zFar); // 投影矩阵
 
-      // 相机矩阵
-      let cameraMatrix = mat4.create();
+      let cameraMatrix = mat4.create(); // 相机矩阵
       mat4.fromYRotation(cameraMatrix, glMatrix.toRadian(cameraAngleRadians[0]));
-      mat4.translate(cameraMatrix, cameraMatrix, vec3.fromValues(0, 50, radius * 2)); // 位移
+      mat4.translate(cameraMatrix, cameraMatrix, vec3.fromValues(0, 0, radius * 2)); // 位移
 
-      // lookAt
-      const up = vec3.fromValues(0, 1, 0);
-      const fPosition = vec3.fromValues(radius, 0, 0);
-      const cameraPosition = [cameraMatrix[12], cameraMatrix[13], cameraMatrix[14]];
-      //@ts-ignore
-      cameraMatrix = mat4.targetTo(mat4.create(), vec3.fromValues(...cameraPosition), fPosition, up);
-
-      // 视图矩阵(相机矩阵的逆矩阵)
-      const viewMatrix = mat4.invert(mat4.create(), cameraMatrix);
+      const viewMatrix = mat4.invert(mat4.create(), cameraMatrix); // 视图矩阵(相机矩阵的逆矩阵)
       mat4.multiply(matrix, projection, viewMatrix); // 视图投影矩阵
 
       for (let ii = 0; ii < numFs; ++ii) {

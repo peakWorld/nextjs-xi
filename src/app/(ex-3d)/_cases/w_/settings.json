@@ -82,8 +82,12 @@
         "title": "透视投影"
       },
       {
+        "path": "case4_3?k=camera",
+        "title": "相机矩阵<未锁定>"
+      },
+      {
         "path": "case4_3?k=view",
-        "title": "相机矩阵"
+        "title": "视图矩阵"
       }
     ]
   }
