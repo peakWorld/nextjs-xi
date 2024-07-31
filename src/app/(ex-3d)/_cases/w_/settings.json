@@ -90,5 +90,14 @@
         "title": "视图矩阵"
       }
     ]
+  },
+  {
+    "summary": "光照",
+    "children": [
+      {
+        "path": "case5_1",
+        "title": "方向光源"
+      }
+    ]
   }
 ]

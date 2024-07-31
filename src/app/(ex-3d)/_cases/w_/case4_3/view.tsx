@@ -127,13 +127,13 @@ export default function Case4_3() {
       // 相机矩阵
       let cameraMatrix = mat4.create();
       mat4.fromYRotation(cameraMatrix, glMatrix.toRadian(cameraAngleRadians[0]));
-      mat4.translate(cameraMatrix, cameraMatrix, vec3.fromValues(0, 50, radius * 2)); // 位移
+      mat4.translate(cameraMatrix, cameraMatrix, vec3.fromValues(0, 50, radius * 2));
 
       // lookAt
       const up = vec3.fromValues(0, 1, 0);
       const fPosition = vec3.fromValues(radius, 0, 0);
-      const cameraPosition = [cameraMatrix[12], cameraMatrix[13], cameraMatrix[14]];
-      //@ts-ignore
+      const cameraPosition = [cameraMatrix[12], cameraMatrix[13], cameraMatrix[14]]; // 相机坐标
+      //@ts-ignore <某个位置看向某处, 非视图矩阵>
       cameraMatrix = mat4.targetTo(mat4.create(), vec3.fromValues(...cameraPosition), fPosition, up);
 
       // 视图矩阵(相机矩阵的逆矩阵)
