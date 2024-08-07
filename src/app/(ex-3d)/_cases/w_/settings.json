@@ -96,6 +96,10 @@
     "children": [
       {
         "path": "case5_1",
+        "title": "方向光源<法向量未变>"
+      },
+      {
+        "path": "case5_1?k=normal",
         "title": "方向光源"
       }
     ]
