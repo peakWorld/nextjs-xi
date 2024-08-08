@@ -138,7 +138,7 @@ export default function Case5_1() {
 
       // 设置全局变量
       gl.uniformMatrix4fv(matrixLocation, false, matrix);
-      gl.uniform4fv(colorLocation, [0.2, 1, 0.2, 1]); // 设置使用的颜色
+      gl.uniform4fv(colorLocation, [0.2, 1, 0.2, 1]); // 设置物体颜色
       gl.uniform3fv(reverseLightDirectionLocation, vec3.normalize(vec3.create(), vec3.fromValues(0.5, 0.7, 1))); // 设置光线方向<反向>
 
       // 绘制图形

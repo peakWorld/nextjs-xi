@@ -6,9 +6,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { Shader } from "@/app/(ex-3d)/_utils/w_/shader";
 import { resizeCanvasToDisplaySize } from "@/app/(ex-3d)/_utils/w_/util";
 import { set3DCubeRight, set3DCubeNormals } from "@/app/(ex-3d)/_utils/w_/data-f";
-import vs from "./vs.normal.glsl";
-// import vs from "./vs.inverse.glsl";
-import fs from "./fs.normal.glsl";
+import vs from "./vs.glsl";
+import fs from "./fs.glsl";
 
 function transformVector(m: mat4, v: number[]) {
   const dst = [];
@@ -40,11 +39,11 @@ export default function Case5_1() {
     // 2. 给GLSL程序提供数据
     const positionLocation = gl.getAttribLocation(program, "a_position"); // 顶点位置
     const normalLocation = gl.getAttribLocation(program, "a_normal"); // 顶点法向量
-    const mvpLocation = gl.getUniformLocation(program, "u_mvp"); // 变化矩阵
-    const modelLocation = gl.getUniformLocation(program, "u_model"); // 模型矩阵<世界矩阵>
-    const inverseTransposeLocation = gl.getUniformLocation(program, "u_inverseTranspose"); // 模型矩阵<世界矩阵>的逆转值矩阵
+    const mvpLocation = gl.getUniformLocation(program, "u_worldViewProjection"); // 变化矩阵
+    const worldLocation = gl.getUniformLocation(program, "u_world"); // 模型矩阵<世界矩阵>
+    const inverseTransposeLocation = gl.getUniformLocation(program, "u_worldInverseTranspose"); // 模型矩阵<世界矩阵>的逆转值矩阵
     const colorLocation = gl.getUniformLocation(program, "u_color"); // 物体颜色
-    const reverseLightDirectionLocation = gl.getUniformLocation(program, "u_reverseLightDirection"); // 光照方向
+    const lightWorldPositionLocation = gl.getUniformLocation(program, "u_lightWorldPosition"); // 光源位置
 
     // 2.1 收集属性的状态
     const vao = gl.createVertexArray();
@@ -148,11 +147,11 @@ export default function Case5_1() {
 
       // 设置全局变量
       gl.uniformMatrix4fv(mvpLocation, false, matrix);
-      gl.uniformMatrix4fv(modelLocation, false, worldMat); // 模型矩阵
+      gl.uniformMatrix4fv(worldLocation, false, worldMat); // 模型矩阵
       gl.uniformMatrix4fv(inverseTransposeLocation, false, worldMatInverseTranspose); // 模型矩阵的逆转值矩阵
 
       gl.uniform4fv(colorLocation, [0.2, 1, 0.2, 1]); // 设置物体颜色
-      gl.uniform3fv(reverseLightDirectionLocation, vec3.normalize(vec3.create(), vec3.fromValues(0.5, 0.7, 1))); // 设置光线方向<反向>
+      gl.uniform3fv(lightWorldPositionLocation, [20, 30, 60]); // 设置光源位置
 
       // 绘制图形
       const primitiveType = gl.TRIANGLES;

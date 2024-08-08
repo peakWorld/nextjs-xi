@@ -13,4 +13,5 @@ void main() {
 
   // 在物体变化时, 重定向法向量<忽略 位移｜缩放; 只考虑旋转>
   v_normal = mat3(u_model) * a_normal;
+  // v_normal = (u_model * vec4(a_normal, 0.0f)).xyz;
 }

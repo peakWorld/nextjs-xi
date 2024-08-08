@@ -101,6 +101,26 @@
       {
         "path": "case5_1?k=normal",
         "title": "方向光源"
+      },
+      {
+        "path": "case5_2",
+        "title": "点光源"
+      },
+      {
+        "path": "case5_2?k=hightlight",
+        "title": "点光源<镜面高光>"
+      },
+      {
+        "path": "case5_2?k=color",
+        "title": "点光源<光照颜色>"
+      },
+      {
+        "path": "case5_2?k=attenuation",
+        "title": "点光源<光照衰减>"
+      },
+      {
+        "path": "case5_3",
+        "title": "聚光灯"
       }
     ]
   }

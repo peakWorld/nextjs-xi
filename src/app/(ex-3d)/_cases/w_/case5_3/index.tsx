@@ -6,9 +6,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { Shader } from "@/app/(ex-3d)/_utils/w_/shader";
 import { resizeCanvasToDisplaySize } from "@/app/(ex-3d)/_utils/w_/util";
 import { set3DCubeRight, set3DCubeNormals } from "@/app/(ex-3d)/_utils/w_/data-f";
-import vs from "./vs.normal.glsl";
-// import vs from "./vs.inverse.glsl";
-import fs from "./fs.normal.glsl";
+import vs from "./vs.glsl";
+import fs from "./fs.glsl";
 
 function transformVector(m: mat4, v: number[]) {
   const dst = [];
@@ -24,7 +23,8 @@ function transformVector(m: mat4, v: number[]) {
 }
 
 const Radians = [0];
-const Scales = [1, 1, 1];
+const shininess = [32];
+const lightPos = [20, 30, 60];
 
 export default function Case5_1() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -40,11 +40,21 @@ export default function Case5_1() {
     // 2. 给GLSL程序提供数据
     const positionLocation = gl.getAttribLocation(program, "a_position"); // 顶点位置
     const normalLocation = gl.getAttribLocation(program, "a_normal"); // 顶点法向量
-    const mvpLocation = gl.getUniformLocation(program, "u_mvp"); // 变化矩阵
-    const modelLocation = gl.getUniformLocation(program, "u_model"); // 模型矩阵<世界矩阵>
-    const inverseTransposeLocation = gl.getUniformLocation(program, "u_inverseTranspose"); // 模型矩阵<世界矩阵>的逆转值矩阵
+    const mvpLocation = gl.getUniformLocation(program, "u_worldViewProjection"); // 变化矩阵
+    const worldLocation = gl.getUniformLocation(program, "u_world"); // 模型矩阵<世界矩阵>
+    const inverseTransposeLocation = gl.getUniformLocation(program, "u_worldInverseTranspose"); // 模型矩阵<世界矩阵>的逆转值矩阵
     const colorLocation = gl.getUniformLocation(program, "u_color"); // 物体颜色
-    const reverseLightDirectionLocation = gl.getUniformLocation(program, "u_reverseLightDirection"); // 光照方向
+    const viewWorldPositionLocation = gl.getUniformLocation(program, "u_viewWorldPosition"); // 相机位置<观察者>
+
+    const lightWorldPositionLocation = gl.getUniformLocation(program, "u_lightWorldPosition"); // 光源位置
+    const lightColorLocation = gl.getUniformLocation(program, "u_lightColor"); // 光源颜色
+    const shininessLocation = gl.getUniformLocation(program, "u_shininess"); // 聚光系数
+    const specularColorLocation = gl.getUniformLocation(program, "u_specularColor"); // 聚光颜色
+
+    // 衰减系数
+    const constantLocation = gl.getUniformLocation(program, "light.constant");
+    const linearLocation = gl.getUniformLocation(program, "light.linear");
+    const quadraticLocation = gl.getUniformLocation(program, "light.quadratic");
 
     // 2.1 收集属性的状态
     const vao = gl.createVertexArray();
@@ -129,16 +139,15 @@ export default function Case5_1() {
       const projection = mat4.perspectiveNO(mat4.create(), radians, aspect, zNear, zFar); // 投影矩阵
 
       // 视图矩阵
-      var camera = vec3.fromValues(100, 150, 200);
+      var camera = [100, 150, 200];
       var target = vec3.fromValues(0, 35, 0);
       var up = vec3.fromValues(0, 1, 0);
-      const viewMatrix = mat4.lookAt(mat4.create(), camera, target, up);
+      const viewMatrix = mat4.lookAt(mat4.create(), vec3.fromValues(camera[0], camera[1], camera[2]), target, up);
       mat4.multiply(matrix, projection, viewMatrix);
 
       // 模型矩阵
       const worldMat = mat4.create();
       mat4.rotateY(worldMat, worldMat, glMatrix.toRadian(Radians[0]));
-      mat4.scale(worldMat, worldMat, vec3.fromValues(Scales[0], Scales[1], Scales[2]));
       mat4.multiply(matrix, matrix, worldMat);
 
       // 模型矩阵的逆转置矩阵
@@ -148,11 +157,20 @@ export default function Case5_1() {
 
       // 设置全局变量
       gl.uniformMatrix4fv(mvpLocation, false, matrix);
-      gl.uniformMatrix4fv(modelLocation, false, worldMat); // 模型矩阵
+      gl.uniformMatrix4fv(worldLocation, false, worldMat); // 模型矩阵
       gl.uniformMatrix4fv(inverseTransposeLocation, false, worldMatInverseTranspose); // 模型矩阵的逆转值矩阵
-
       gl.uniform4fv(colorLocation, [0.2, 1, 0.2, 1]); // 设置物体颜色
-      gl.uniform3fv(reverseLightDirectionLocation, vec3.normalize(vec3.create(), vec3.fromValues(0.5, 0.7, 1))); // 设置光线方向<反向>
+      gl.uniform3fv(viewWorldPositionLocation, camera); // 设置相机位置<观察者>
+
+      gl.uniform3fv(lightWorldPositionLocation, lightPos); // 设置光源位置
+      gl.uniform3fv(lightColorLocation, [1, 0.6, 0.6]); // 设置光照颜色
+      gl.uniform3fv(specularColorLocation, [1, 0.2, 0.2]); // 设置高光颜色
+      gl.uniform1f(shininessLocation, shininess[0]); // 设置高光散射/半径
+
+      // 衰减系数<光照衰减常量值 600>
+      gl.uniform1f(constantLocation, 1.0);
+      gl.uniform1f(linearLocation, 0.007);
+      gl.uniform1f(quadraticLocation, 0.0002);
 
       // 绘制图形
       const primitiveType = gl.TRIANGLES;
@@ -160,16 +178,17 @@ export default function Case5_1() {
       const count = 16 * 6;
       gl.drawArrays(primitiveType, offset, count);
 
-      // requestAnimationFrame(drawScene);
+      requestAnimationFrame(drawScene);
     }
 
     drawScene();
 
     const gui = new GUI();
     gui.add(Radians, 0, -180, 180).step(10).name("RadiansY").onChange(drawScene);
-    gui.add(Scales, 0, 0, 2).step(0.1).name("ScalesX").onChange(drawScene);
-    gui.add(Scales, 1, 0, 2).step(0.1).name("ScalesY").onChange(drawScene);
-    gui.add(Scales, 2, 0, 2).step(0.1).name("ScalesZ").onChange(drawScene);
+    gui.add(shininess, 0, 8, 128).step(4).name("Shininess").onChange(drawScene);
+    gui.add(lightPos, 0, 0, 150).step(5).name("lightX").onChange(drawScene);
+    gui.add(lightPos, 1, 0, 150).step(5).name("lightY").onChange(drawScene);
+    gui.add(lightPos, 2, 0, 150).step(5).name("lightZ").onChange(drawScene);
 
     return () => {
       document.querySelector(".lil-gui")?.remove();

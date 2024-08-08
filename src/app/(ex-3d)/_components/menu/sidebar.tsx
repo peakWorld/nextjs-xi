@@ -18,7 +18,7 @@ export default function SiderBar({ menus, prefix }: { menus: Menu; prefix: strin
   });
 
   return (
-    <div className="w-40 flex flex-col mr-3 p-2 bg-slate-100 overflow-y-auto flex-shrink-0">
+    <div className="w-60 flex flex-col mr-3 p-2 bg-slate-100 overflow-y-auto flex-shrink-0">
       {menus.map((node) => (
         <details key={node.summary} open={node.isOpen} className="mt-2">
           <summary className="font-medium">{node.summary}</summary>
