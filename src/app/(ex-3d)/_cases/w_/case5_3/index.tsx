@@ -25,6 +25,9 @@ function transformVector(m: mat4, v: number[]) {
 const Radians = [0];
 const shininess = [32];
 const lightPos = [20, 30, 60];
+const limit = [20];
+const lightRotationX = [0];
+const lightRotationY = [0];
 
 export default function Case5_1() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -48,13 +51,17 @@ export default function Case5_1() {
 
     const lightWorldPositionLocation = gl.getUniformLocation(program, "u_lightWorldPosition"); // 光源位置
     const lightColorLocation = gl.getUniformLocation(program, "u_lightColor"); // 光源颜色
-    const shininessLocation = gl.getUniformLocation(program, "u_shininess"); // 聚光系数
-    const specularColorLocation = gl.getUniformLocation(program, "u_specularColor"); // 聚光颜色
+    const shininessLocation = gl.getUniformLocation(program, "u_shininess"); // 镜面系数
+    const specularColorLocation = gl.getUniformLocation(program, "u_specularColor"); // 镜面光颜色
 
     // 衰减系数
     const constantLocation = gl.getUniformLocation(program, "light.constant");
     const linearLocation = gl.getUniformLocation(program, "light.linear");
     const quadraticLocation = gl.getUniformLocation(program, "light.quadratic");
+
+    // 聚光灯
+    var lightDirectionLocation = gl.getUniformLocation(program, "u_lightDirection"); // 聚光方向
+    var limitLocation = gl.getUniformLocation(program, "u_limit"); // 聚光大小
 
     // 2.1 收集属性的状态
     const vao = gl.createVertexArray();
@@ -172,6 +179,21 @@ export default function Case5_1() {
       gl.uniform1f(linearLocation, 0.007);
       gl.uniform1f(quadraticLocation, 0.0002);
 
+      // 聚光
+      gl.uniform1f(limitLocation, Math.cos(glMatrix.toRadian(limit[0]))); // cos弧度
+      // const lightMat = mat4.create();
+      // mat4.targetTo(lightMat, vec3.fromValues(lightPos[0], lightPos[1], lightPos[2]), target, up);
+      // mat4.rotateX(lightMat, lightMat, glMatrix.toRadian(lightRotationX[0]));
+      // mat4.rotateY(lightMat, lightMat, glMatrix.toRadian(lightRotationY[0]));
+      // const lightDirection = [-lightMat[8], -lightMat[9], -lightMat[10]];
+
+      const lightDirection = vec3.subtract(
+        vec3.create(),
+        target,
+        vec3.fromValues(lightPos[0], lightPos[1], lightPos[2])
+      );
+      gl.uniform3fv(lightDirectionLocation, lightDirection);
+
       // 绘制图形
       const primitiveType = gl.TRIANGLES;
       const offset = 0;
@@ -181,14 +203,14 @@ export default function Case5_1() {
       requestAnimationFrame(drawScene);
     }
 
+    // 开始绘制
     drawScene();
 
     const gui = new GUI();
     gui.add(Radians, 0, -180, 180).step(10).name("RadiansY").onChange(drawScene);
-    gui.add(shininess, 0, 8, 128).step(4).name("Shininess").onChange(drawScene);
-    gui.add(lightPos, 0, 0, 150).step(5).name("lightX").onChange(drawScene);
-    gui.add(lightPos, 1, 0, 150).step(5).name("lightY").onChange(drawScene);
-    gui.add(lightPos, 2, 0, 150).step(5).name("lightZ").onChange(drawScene);
+    gui.add(limit, 0, 0, 90).step(5).name("Limit").onChange(drawScene);
+    gui.add(lightRotationX, 0, -90, 90).step(5).name("lightRotationX").onChange(drawScene);
+    gui.add(lightRotationY, 0, -90, 90).step(5).name("lightRotationY").onChange(drawScene);
 
     return () => {
       document.querySelector(".lil-gui")?.remove();

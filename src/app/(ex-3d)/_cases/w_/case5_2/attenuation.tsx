@@ -48,8 +48,8 @@ export default function Case5_1() {
 
     const lightWorldPositionLocation = gl.getUniformLocation(program, "u_lightWorldPosition"); // 光源位置
     const lightColorLocation = gl.getUniformLocation(program, "u_lightColor"); // 光源颜色
-    const shininessLocation = gl.getUniformLocation(program, "u_shininess"); // 聚光系数
-    const specularColorLocation = gl.getUniformLocation(program, "u_specularColor"); // 聚光颜色
+    const shininessLocation = gl.getUniformLocation(program, "u_shininess"); // 镜面系数
+    const specularColorLocation = gl.getUniformLocation(program, "u_specularColor"); // 镜面光颜色
 
     // 衰减系数
     const constantLocation = gl.getUniformLocation(program, "light.constant");

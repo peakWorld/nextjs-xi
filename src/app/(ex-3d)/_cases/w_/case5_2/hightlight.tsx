@@ -46,7 +46,7 @@ export default function Case5_1() {
     const viewWorldPositionLocation = gl.getUniformLocation(program, "u_viewWorldPosition"); // 相机位置<观察者>
 
     const lightWorldPositionLocation = gl.getUniformLocation(program, "u_lightWorldPosition"); // 光源位置
-    const shininessLocation = gl.getUniformLocation(program, "u_shininess");
+    const shininessLocation = gl.getUniformLocation(program, "u_shininess"); // 镜面系数
 
     // 2.1 收集属性的状态
     const vao = gl.createVertexArray();
