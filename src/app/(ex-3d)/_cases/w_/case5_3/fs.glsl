@@ -34,7 +34,7 @@ void main() {
   // 聚光 dot => cos
   float theta = dot(surfaceToLightDirection, normalize(-u_lightDirection));
 
-  // 超出限制范围, 无光
+  // 在限制范围内, 有光
   if(theta >= u_limit) {
     // 漫反射
     diff = max(dot(normal, surfaceToLightDirection), 0.0f);

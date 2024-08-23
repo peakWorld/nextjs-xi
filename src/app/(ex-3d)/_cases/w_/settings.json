@@ -121,6 +121,19 @@
       {
         "path": "case5_3",
         "title": "聚光灯"
+      },
+      {
+        "path": "case5_3?k=soften",
+        "title": "聚光灯<软化>"
+      }
+    ]
+  },
+  {
+    "summary": "代码组织",
+    "children": [
+      {
+        "path": "case6_1",
+        "title": "码少"
       }
     ]
   }
