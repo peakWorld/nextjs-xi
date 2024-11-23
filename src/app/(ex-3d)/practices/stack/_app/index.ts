@@ -15,7 +15,7 @@ export class App extends Craft.Craft {
     this.scene.add(new THREE.AxesHelper(10));
 
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-    this.renderer.setClearColor(0x000000, 0);
+    this.renderer.setClearColor(0x0000ff, 0);
 
     const camera = new Craft.OrthographicCamera({ frustum: 4, near: -100 });
     this.camera = camera;

@@ -11,9 +11,7 @@
     right: 10px;
     top: 10px;
     font-size: 20px;
-
-    .cursor {
-      cursor: pointer;
-    }
+    cursor: pointer;
+    z-index: 100;
   }
 }

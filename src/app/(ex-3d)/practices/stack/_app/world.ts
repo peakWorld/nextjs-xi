@@ -12,18 +12,26 @@ export enum Status {
 }
 
 const getState: () => State = () => ({
-  level: 0,
-  speed: 0.02,
-  speedInc: 0.002,
-  speedLimit: 0.05,
-  moveLimit: 1.2,
-  currentY: 0,
-  moveAxis: "x",
-  moveEdge: "width",
-  colorOffset: utils.randomIntegerInRange(0, 255),
-  cameraPosition: new THREE.Vector3(2, 2, 2),
-  lookAtPosition: new THREE.Vector3(0, 0, 0),
-  boxParams: { width: 1, height: 0.2, depth: 1, x: 0, y: 0, z: 0, color: new THREE.Color("#ffffff") },
+  level: 0, // 当前游戏关卡数
+  speed: 0.02, // 方块移动的基础速度
+  speedInc: 0.002, // 每关速度的增量，使游戏逐渐变难
+  speedLimit: 0.05, // 方块移动速度的上限
+  moveLimit: 1.2, // 方块在x/z轴上移动的最大距离（从中心点算起）
+  currentY: 0, // 当前方块的y轴位置（高度）
+  moveAxis: "x", // 当前方块移动的轴向："x" 或 "z"
+  moveEdge: "width", // 当前切割的边："width" 或 "depth"
+  colorOffset: utils.randomIntegerInRange(0, 255), // 方块颜色的随机偏移值，用于生成渐变色
+  cameraPosition: new THREE.Vector3(2, 2, 2), // 相机的初始位置（斜45度俯视）
+  lookAtPosition: new THREE.Vector3(0, 0, 0), // 相机看向的位置（场景中心点）
+  boxParams: {
+    width: 1, // 方块宽度
+    height: 0.2, // 方块高度
+    depth: 1, // 方块深度
+    x: 0, // x轴位置
+    y: 0, // y轴位置
+    z: 0, // z轴位置
+    color: new THREE.Color("#ffffff"), // 方块颜色
+  },
 });
 
 export class World extends Craft.Component {
@@ -37,20 +45,17 @@ export class World extends Craft.Component {
   constructor(craft: App) {
     super(craft);
 
-    this.clickContainer = this.clickContainer.bind(this);
-
     this.init();
     this.initLights();
+    this.clickContainer = this.clickContainer.bind(this);
   }
 
   init() {
-    // 初始化状态 每次启动时随机数不一致
     this.state = merge({}, getState());
-    this.status = Status.PAUSED;
+    this.status = Status.PAUSED; // 设置初始游戏状态为暂停
 
-    this.initCamera();
-    this.createBase();
-    this.bindEvents();
+    this.initCamera(); // 初始化相机设置
+    this.createBase(); // 创建游戏基座（最底部的方块）
   }
 
   initCamera() {
@@ -59,7 +64,6 @@ export class World extends Craft.Component {
     const { camera } = craft;
     camera.position.copy(cameraPosition);
     camera.lookAt(lookAtPosition); // 计算四元数
-    // controls.controls.target.set(lookAtPosition.x, lookAtPosition.y, lookAtPosition.z);
   }
 
   initLights() {
@@ -71,41 +75,31 @@ export class World extends Craft.Component {
   }
 
   clickContainer() {
-    console.log("clickContainer");
     if (this.state.level === 0) {
       return this.start();
     }
     return this.detectOverlap();
   }
 
-  bindEvents() {
-    this.craft.container.addEventListener("click", this.clickContainer, false);
-  }
-
-  unBindEvents() {
-    this.craft.container.removeEventListener("click", this.clickContainer, false);
-  }
-
   createBase() {
     const { boxParams } = this.state;
     const baseParams = { ...boxParams };
-    const H = 2.5;
+    const H = 20;
     baseParams.height = H;
     // 设置底座<底座顶层 高出原点半个方块高度>
-    baseParams.y = -(H / 2 - boxParams.height / 2);
+    // 确保第一层方块的y轴位置为0.2
+    baseParams.y = -H / 2 + boxParams.height / 2;
     baseParams.color = utils.updateColor(0, this.state.colorOffset);
     const base = utils.createBox(baseParams);
     this.container.add(base);
   }
 
   start() {
-    this.emit("start");
     this.nextLevel();
   }
 
   nextLevel() {
     this.state.level += 1;
-    this.emit("level", this.state.level);
 
     // 更新状态
     this.status = Status.RUNNING;
@@ -151,20 +145,29 @@ export class World extends Craft.Component {
 
   // 检测是否重叠
   detectOverlap() {
+    // 从状态中获取必要参数
     const { boxParams, moveAxis, moveEdge, currentY } = this.state;
+    // 获取当前移动方块在移动轴上的位置
     const currentPosition = this.box.position[moveAxis];
+    // 获取当前移动方块在移动轴上的初始位置
     const prevPosition = boxParams[moveAxis];
+    // 计算移动方向（1或-1）：当前位置减去前一个位置的正负号
     const direction = Math.sign(currentPosition - prevPosition);
+    // 获取当前切割边的长度（width或depth）
     const edge = boxParams[moveEdge];
 
-    // 重叠距离 边长 - 方向 * 移动距离
+    // 计算重叠距离：
+    // edge: 方块的边长
+    // direction * (currentPosition - prevPosition): 方块移动的实际距离（考虑方向）
+    // 如果重叠为负，表示完全没有重叠；如果为正，表示重叠的长度
     const overlap = edge - direction * (currentPosition - prevPosition);
 
+    // 如果没有重叠，游戏结束
     if (overlap <= 0) {
       this.status = Status.PAUSED;
-      this.dropBox(this.box);
+      this.dropBox(this.box); // 让当前方块掉落
 
-      // 相机视角变化
+      // 缩小相机视角以展示游戏结束效果
       gsap.to(this.craft.camera, {
         zoom: 0.6,
         duration: 1,
@@ -172,38 +175,40 @@ export class World extends Craft.Component {
         onUpdate: () => {
           this.craft.camera.updateProjectionMatrix();
         },
-        onComplete: () => {
-          this.unBindEvents();
-          this.emit("end");
-        },
+        onComplete: () => {},
       });
       return;
     }
 
-    // 重叠方块
+    // 创建重叠部分的新方块
     const overlapBoxParams = { ...boxParams };
+    // 计算重叠部分的中心位置：前一个位置和当前位置的中点
     const overlapBoxPosition = (currentPosition - prevPosition) / 2 + prevPosition;
     overlapBoxParams.y = currentY;
     overlapBoxParams[moveAxis] = overlapBoxPosition;
-    overlapBoxParams[moveEdge] = overlap;
+    overlapBoxParams[moveEdge] = overlap; // 设置重叠部分的长度
     const overlapBox = utils.createBox(overlapBoxParams);
     this.container.add(overlapBox);
 
-    // 切掉方块
+    // 创建被切掉的部分（将掉落的部分）
     const slicedBoxParams = { ...boxParams };
+    // 计算切掉部分的长度
     const slicedBoxEdge = edge - overlap;
+    // 计算切掉部分的中心位置：
+    // direction * (edge/2 + (edge-overlap/2)): 根据方向确定切掉部分的偏移量
+    // prevPosition: 加上前一个方块的位置作为基准点
     const slicedBoxPosition = direction * (edge / 2 + (edge - overlap / 2)) + prevPosition;
     slicedBoxParams.y = currentY;
     slicedBoxParams[moveEdge] = slicedBoxEdge;
     slicedBoxParams[moveAxis] = slicedBoxPosition;
     const slicedBox = utils.createBox(slicedBoxParams);
     this.container.add(slicedBox);
-    this.dropBox(slicedBox);
+    this.dropBox(slicedBox); // 让切掉的部分掉落
 
-    // 更新状态
+    // 更新游戏状态：使用重叠部分作为下一层的基准
     this.state.boxParams = overlapBoxParams;
-    this.container.remove(this.box);
-    this.nextLevel();
+    this.container.remove(this.box); // 移除原始移动方块
+    this.nextLevel(); // 进入下一关
   }
 
   dropBox(box: THREE.Mesh) {
@@ -236,12 +241,10 @@ export class World extends Craft.Component {
     }
   }
 
-  dispose() {
-    this.unBindEvents();
-  }
+  dispose() {}
 
-  reStart() {
-    console.log("reStart");
+  restart() {
+    console.log("restart");
 
     // 相机还原
     gsap.to(this.craft.camera, {

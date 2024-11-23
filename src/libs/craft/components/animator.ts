@@ -20,6 +20,7 @@ class Animator {
     this.tasks.push(fn);
   }
   update() {
+    console.log("Animator update");
     this.craft.renderer.setAnimationLoop((time: number) => {
       this.tick(time);
     });
